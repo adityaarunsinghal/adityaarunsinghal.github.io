@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /sitemap.htm
+Sitemap: https://adityasinghal.com/sitemap.xml
+https://github.com/adityaarunsinghal/adityaarunsinghal.github.io/blob/master/sitemap.xml
