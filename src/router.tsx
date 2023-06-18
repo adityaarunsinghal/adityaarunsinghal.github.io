@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import App from './App.tsx';
-import { OldStaticWebsite } from './OldStaticWebsite.tsx';
+import PrivateApp from './PrivateApp/PrivateApp.tsx';
+import { OldStaticWebsite } from './OldStaticWesbite/OldStaticWebsite.tsx';
 import ErrorBoundary from './ErrorBoundary.tsx';
 
 export default function Router() {
@@ -8,12 +8,10 @@ export default function Router() {
     {
       path: '/',
       element: <OldStaticWebsite />,
-      errorElement: <ErrorBoundary />,
     },
     {
-      path: '/react-app',
-      element: <App />,
-      errorElement: <ErrorBoundary />,
+      path: '/private',
+      element: <PrivateApp />,
     },
     {
       path: '/404',

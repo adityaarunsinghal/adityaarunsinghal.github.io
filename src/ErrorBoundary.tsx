@@ -25,13 +25,27 @@ class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     return (
-      <>
-        <h3>Sorry... there's no page like that. Where are you trying to go?</h3>
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        <h2 style={{ fontSize: 'max(2vw, 16px)' }}>
+          Sorry, that was not a real page.
+        </h2>
         <img
           src={fourOHfour}
           alt='Sorry 404!'
+          style={{
+            maxWidth: '75%',
+            height: 'auto',
+            width: '100%',
+          }}
         />
-      </>
+      </div>
     );
   }
 }
