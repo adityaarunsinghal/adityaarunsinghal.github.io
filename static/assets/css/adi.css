@@ -4,10 +4,10 @@
 }
 
 .disclaimer-note-box {
-	background-color: rgba(240, 248, 255, 0.3);
-	width: 80vw;
-	margin: auto;
-	border-radius: 1rem;
+  background-color: rgba(240, 248, 255, 0.3);
+  width: 80vw;
+  margin: auto;
+  border-radius: 1rem;
 }
 
 @media (min-width: 1270px) {
