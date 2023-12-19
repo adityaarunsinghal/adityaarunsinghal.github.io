@@ -1,0 +1,25 @@
+.love-message-container {
+  position: relative;
+}
+
+.love-message {
+  position: relative;
+  z-index: 1;
+}
+
+.tooltip {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.love-message-container:hover .tooltip {
+  opacity: 1;
+}
