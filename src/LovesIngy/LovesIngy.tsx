@@ -1,8 +1,13 @@
 import { ChangeEvent, Component } from 'react';
-import './LovesIngy.css';
+import { loveMessages } from './loveMessages';
+
+interface LoveMessage {
+  message: string;
+  timestamp: string;
+}
 
 interface State {
-  loveMessages: string[];
+  loveMessages: LoveMessage[];
   newLoveMessage: string;
   hoveredIndex: number | null;
 }
@@ -17,10 +22,19 @@ class LovesIngy extends Component<Record<string, never>, State> {
     };
   }
 
+  componentDidMount() {
+    this.setState({ loveMessages: loveMessages });
+  }
+
+
   handleAddLoveMessage = () => {
     const { newLoveMessage, loveMessages } = this.state;
     if (newLoveMessage.trim() !== '') {
-      const newMessages = [...loveMessages, newLoveMessage];
+      const newMessage: LoveMessage = {
+        message: newLoveMessage,
+        timestamp: new Date().toISOString(),
+      };
+      const newMessages = [...loveMessages, newMessage];
       this.setState({ loveMessages: newMessages, newLoveMessage: '' });
     }
   };
@@ -41,7 +55,7 @@ class LovesIngy extends Component<Record<string, never>, State> {
     return (
       <div>
         <div>
-          {this.state.loveMessages.map((message, index) => (
+          {this.state.loveMessages.map(({ message, timestamp }, index) => (
             <div
               key={index}
               className="love-message-container"
@@ -50,7 +64,7 @@ class LovesIngy extends Component<Record<string, never>, State> {
             >
               <p className="love-message">{message}</p>
               {this.state.hoveredIndex === index && (
-                <div className="tooltip">{new Date().toLocaleString()}</div>
+                <div className="tooltip">{new Date(timestamp).toLocaleString()}</div>
               )}
             </div>
           ))}
