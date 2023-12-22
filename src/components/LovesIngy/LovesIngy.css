@@ -1,25 +1,107 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #fff0f5; /* Light pink background */
+  color: #444;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .love-message-container {
   position: relative;
+  background-color: #ffe4e1; /* Light pink container */
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Softer shadow */
+  border-left: 5px solid #ff69b4; /* Bright pink border */
+  transition: transform 0.2s ease;
+}
+
+.love-message-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* More pronounced shadow on hover */
 }
 
 .love-message {
-  position: relative;
-  z-index: 1;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #ad1457; /* Darker pink text */
+  font-weight: bold; /* Make the text stand out more */
 }
 
 .tooltip {
   position: absolute;
-  top: -25px;
+  top: -35px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #333;
+  background-color: #ff1493; /* Deep pink tooltip */
   color: #fff;
-  padding: 5px;
+  padding: 5px 10px;
   border-radius: 3px;
+  font-size: 12px;
+  white-space: nowrap;
   opacity: 0;
   transition: opacity 0.3s ease;
+  z-index: 2; /* Ensure tooltip is above other elements */
 }
 
 .love-message-container:hover .tooltip {
   opacity: 1;
+}
+
+input[type="text"] {
+  padding: 10px 15px;
+  border: 2px solid #ff69b4; /* Bright pink border */
+  border-radius: 20px;
+  width: calc(100% - 40px);
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(255,105,180,0.3); /* Shadow with a pink hue */
+  transition: all 0.2s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #ff1493; /* Deep pink on focus */
+  box-shadow: 0 0 8px rgba(255,105,180,0.5); /* Glowing effect */
+  outline: none;
+}
+
+button {
+  background-color: #ff69b4; /* Bright pink button */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-weight: bold; /* Bold text */
+}
+
+button:hover {
+  background-color: #ff1493; /* Deep pink on hover */
+  box-shadow: 0 0 12px rgba(255,105,180,0.5); /* Glowing effect on hover */
+}
+
+/* Utility classes for layout */
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.add-message-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.add-message-container input {
+  flex-grow: 1;
+  margin-right: 10px;
 }

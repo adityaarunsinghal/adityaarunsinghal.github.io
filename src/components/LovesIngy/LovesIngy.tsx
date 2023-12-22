@@ -1,4 +1,5 @@
 import { ChangeEvent, Component } from 'react';
+import './LovesIngy.css';
 import { loveMessages } from './loveMessages';
 
 interface LoveMessage {
@@ -51,9 +52,15 @@ class LovesIngy extends Component<Record<string, never>, State> {
     this.setState({ hoveredIndex: null });
   };
 
+  handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      this.handleAddLoveMessage();
+    }
+  };
+
   render() {
     return (
-      <div>
+      <div className="container">
         <div>
           {this.state.loveMessages.map(({ message, timestamp }, index) => (
             <div
@@ -69,12 +76,13 @@ class LovesIngy extends Component<Record<string, never>, State> {
             </div>
           ))}
         </div>
-        <div>
+        <div className="add-message-container">
           <input
             type="text"
             placeholder="Add a new love message"
             value={this.state.newLoveMessage}
             onChange={this.handleInputChange}
+            onKeyPress={this.handleKeyPress}
           />
           <button onClick={this.handleAddLoveMessage}>Add Love Message</button>
         </div>
