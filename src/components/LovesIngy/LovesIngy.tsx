@@ -1,6 +1,6 @@
 import { ChangeEvent, Component } from 'react';
 import './LovesIngy.css';
-import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy } from "firebase/firestore";
 import { firebaseapp } from '../../firebase';
 
 interface LoveMessage {
@@ -27,7 +27,8 @@ class LovesIngy extends Component<Record<string, never>, State> {
   componentDidMount() {
     const db = getFirestore(firebaseapp);
     const loveMessagesRef = collection(db, 'love-ingy-messages');
-    onSnapshot(loveMessagesRef, (snapshot) => {
+    const queryOrderByTimestamp = query(loveMessagesRef, orderBy('timestamp', 'desc'));
+    onSnapshot(queryOrderByTimestamp, (snapshot) => {
       const messages = snapshot.docs.map(doc => {
         const data = doc.data();
         return {

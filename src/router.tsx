@@ -36,7 +36,7 @@ const router = createBrowserRouter([
     path: "/givesingy",
     element: (
       // <PrivateRoute>
-      <RedirectToExternal url="https://forms.gle/rzA6ZdspAxvKzq5j6" />
+      <RedirectToExternal url="https://docs.google.com/forms/d/e/1FAIpQLSfLkz4REqAGwsaLP-vAuUtXJLT2V8aEUEN5ulT4huW7ylkGxw/viewform" />
       // </PrivateRoute>
     ),
   },

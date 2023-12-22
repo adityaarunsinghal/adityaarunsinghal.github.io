@@ -1,11 +1,15 @@
 import React from 'react';
-import { auth } from '../../firebase';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import './Login.css'; // Import the CSS file
+import { auth } from '../../firebase';
 
 const Login: React.FC = () => {
   // Define allowed email addresses
   const allowedEmails = ['adityaarunsinghal@gmail.com', 'johannefriedman@gmail.com'];
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -17,7 +21,7 @@ const Login: React.FC = () => {
         alert('Access denied. Only Adi and Ingy can log in.');
         return;
       }
-      // Redirect after successful login
+      navigate(from); // Redirect to the original page or the default path
     } catch (error) {
       console.error(error);
     }
