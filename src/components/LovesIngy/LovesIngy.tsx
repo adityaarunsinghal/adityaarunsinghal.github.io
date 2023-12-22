@@ -1,6 +1,7 @@
 import { ChangeEvent, Component } from 'react';
 import './LovesIngy.css';
-import { loveMessages } from './loveMessages';
+import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
+import { firebaseapp } from '../../firebase';
 
 interface LoveMessage {
   message: string;
@@ -24,22 +25,33 @@ class LovesIngy extends Component<Record<string, never>, State> {
   }
 
   componentDidMount() {
-    this.setState({ loveMessages: loveMessages });
+    const db = getFirestore(firebaseapp);
+    const loveMessagesRef = collection(db, 'love-ingy-messages');
+    onSnapshot(loveMessagesRef, (snapshot) => {
+      const messages = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          message: data.message,
+          timestamp: data.timestamp ? data.timestamp.toDate().toISOString() : new Date().toISOString(),
+        };
+      });
+      this.setState({ loveMessages: messages });
+    });
   }
 
-
-  handleAddLoveMessage = () => {
-    const { newLoveMessage, loveMessages } = this.state;
+  handleAddLoveMessage = async () => {
+    const { newLoveMessage } = this.state;
     if (newLoveMessage.trim() !== '') {
-      const newMessage: LoveMessage = {
+      const db = getFirestore(firebaseapp);
+      const loveMessagesRef = collection(db, 'love-ingy-messages');
+      await addDoc(loveMessagesRef, {
         message: newLoveMessage,
-        timestamp: new Date().toISOString(),
-      };
-      const newMessages = [...loveMessages, newMessage];
-      this.setState({ loveMessages: newMessages, newLoveMessage: '' });
+        timestamp: serverTimestamp(),
+      });
+      this.setState({ newLoveMessage: '' });
     }
   };
-
   handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ newLoveMessage: e.target.value });
   };
@@ -60,7 +72,8 @@ class LovesIngy extends Component<Record<string, never>, State> {
 
   render() {
     return (
-      <body className='love-ingy-body'>
+      <>
+        <div className='love-ingy-body'></div> {/* Background */}
         <div className="container">
           <div>
             {this.state.loveMessages.map(({ message, timestamp }, index) => (
@@ -89,7 +102,7 @@ class LovesIngy extends Component<Record<string, never>, State> {
             <button className='love-ingy-button' onClick={this.handleAddLoveMessage}>Add Love Message</button>
           </div>
         </div>
-      </body>
+      </>
     );
   }
 }
