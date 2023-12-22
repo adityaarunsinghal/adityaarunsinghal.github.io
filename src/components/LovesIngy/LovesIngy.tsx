@@ -60,33 +60,36 @@ class LovesIngy extends Component<Record<string, never>, State> {
 
   render() {
     return (
-      <div className="container">
-        <div>
-          {this.state.loveMessages.map(({ message, timestamp }, index) => (
-            <div
-              key={index}
-              className="love-message-container"
-              onMouseEnter={() => this.handleMouseEnter(index)}
-              onMouseLeave={this.handleMouseLeave}
-            >
-              <p className="love-message">{message}</p>
-              {this.state.hoveredIndex === index && (
-                <div className="tooltip">{new Date(timestamp).toLocaleString()}</div>
-              )}
-            </div>
-          ))}
+      <body className='love-ingy-body'>
+        <div className="container">
+          <div>
+            {this.state.loveMessages.map(({ message, timestamp }, index) => (
+              <div
+                key={index}
+                className="love-message-container"
+                onMouseEnter={() => this.handleMouseEnter(index)}
+                onMouseLeave={this.handleMouseLeave}
+              >
+                <p className="love-message">{message}</p>
+                {this.state.hoveredIndex === index && (
+                  <div className="tooltip">{new Date(timestamp).toLocaleString()}</div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="add-message-container">
+            <input
+              className='love-ingy-input'
+              type="text"
+              placeholder="Add a new love message"
+              value={this.state.newLoveMessage}
+              onChange={this.handleInputChange}
+              onKeyPress={this.handleKeyPress}
+            />
+            <button className='love-ingy-button' onClick={this.handleAddLoveMessage}>Add Love Message</button>
+          </div>
         </div>
-        <div className="add-message-container">
-          <input
-            type="text"
-            placeholder="Add a new love message"
-            value={this.state.newLoveMessage}
-            onChange={this.handleInputChange}
-            onKeyPress={this.handleKeyPress}
-          />
-          <button onClick={this.handleAddLoveMessage}>Add Love Message</button>
-        </div>
-      </div>
+      </body>
     );
   }
 }

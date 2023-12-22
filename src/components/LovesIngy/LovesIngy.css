@@ -1,9 +1,8 @@
-body {
+.love-ingy-body {
   font-family: 'Arial', sans-serif;
-  background-color: #fff0f5; /* Light pink background */
+  background-color: #fff0f5;
   color: #444;
   margin: 0;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,25 +10,25 @@ body {
 
 .love-message-container {
   position: relative;
-  background-color: #ffe4e1; /* Light pink container */
+  background-color: #ffe4e1;
   margin-bottom: 10px;
   padding: 10px 20px;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Softer shadow */
-  border-left: 5px solid #ff69b4; /* Bright pink border */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-left: 5px solid #ff69b4;
   transition: transform 0.2s ease;
 }
 
 .love-message-container:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* More pronounced shadow on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .love-message {
   font-size: 16px;
   line-height: 1.4;
-  color: #ad1457; /* Darker pink text */
-  font-weight: bold; /* Make the text stand out more */
+  color: #ad1457;
+  font-weight: bold;
 }
 
 .tooltip {
@@ -37,7 +36,7 @@ body {
   top: -35px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #ff1493; /* Deep pink tooltip */
+  background-color: #ff1493;
   color: #fff;
   padding: 5px 10px;
   border-radius: 3px;
@@ -45,48 +44,47 @@ body {
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 2; /* Ensure tooltip is above other elements */
+  z-index: 2;
 }
 
 .love-message-container:hover .tooltip {
   opacity: 1;
 }
 
-input[type="text"] {
+.love-ingy-input[type="text"] {
   padding: 10px 15px;
-  border: 2px solid #ff69b4; /* Bright pink border */
+  border: 2px solid #ff69b4;
   border-radius: 20px;
   width: calc(100% - 40px);
   box-sizing: border-box;
   margin-bottom: 10px;
-  box-shadow: 0 2px 5px rgba(255,105,180,0.3); /* Shadow with a pink hue */
+  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.3);
   transition: all 0.2s ease;
 }
 
-input[type="text"]:focus {
-  border-color: #ff1493; /* Deep pink on focus */
-  box-shadow: 0 0 8px rgba(255,105,180,0.5); /* Glowing effect */
+.love-ingy-input[type="text"]:focus {
+  border-color: #ff1493;
+  box-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
   outline: none;
 }
 
-button {
-  background-color: #ff69b4; /* Bright pink button */
+.love-ingy-button {
+  background-color: #ff69b4;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  font-weight: bold; /* Bold text */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
 }
 
-button:hover {
-  background-color: #ff1493; /* Deep pink on hover */
-  box-shadow: 0 0 12px rgba(255,105,180,0.5); /* Glowing effect on hover */
+.love-ingy-button:hover {
+  background-color: #ff1493;
+  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
 }
 
-/* Utility classes for layout */
 .container {
   width: 100%;
   max-width: 600px;
@@ -101,7 +99,7 @@ button:hover {
   margin-top: 20px;
 }
 
-.add-message-container input {
+.add-message-container .love-ingy-input {
   flex-grow: 1;
   margin-right: 10px;
 }
