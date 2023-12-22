@@ -5,7 +5,7 @@ import LovesIngy from './components/LovesIngy/LovesIngy';
 import { OldStaticWebsite } from './components/OldStaticWebsite/OldStaticWebsite';
 import PrivateRoute from './components/PrivateRoute';
 import RedirectToExternal from './components/RedirectToExternal';
-import Login from './components/Login';
+import Login from './components/Login/Login';
 
 const router = createBrowserRouter([
   {
@@ -35,9 +35,9 @@ const router = createBrowserRouter([
   {
     path: "/givesingy",
     element: (
-      <PrivateRoute>
-        <RedirectToExternal url="https://forms.gle/rzA6ZdspAxvKzq5j6" />
-      </PrivateRoute>
+      // <PrivateRoute>
+      <RedirectToExternal url="https://forms.gle/rzA6ZdspAxvKzq5j6" />
+      // </PrivateRoute>
     ),
   },
   {
