@@ -1,6 +1,6 @@
 import { ChangeEvent, Component } from 'react';
 import './LovesIngy.css';
-import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy } from "firebase/firestore";
+import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, Timestamp } from "firebase/firestore";
 import { firebaseapp } from '../../firebase';
 
 interface LoveMessage {
@@ -46,10 +46,25 @@ class LovesIngy extends Component<Record<string, never>, State> {
     if (newLoveMessage.trim() !== '') {
       const db = getFirestore(firebaseapp);
       const loveMessagesRef = collection(db, 'love-ingy-messages');
-      await addDoc(loveMessagesRef, {
+      let messageData = {
         message: newLoveMessage,
         timestamp: serverTimestamp(),
-      });
+      };
+
+      // Check if newLoveMessage is a valid JSON
+      try {
+        const parsedMessage = JSON.parse(newLoveMessage);
+        if (parsedMessage && typeof parsedMessage === 'object') {
+          messageData = {
+            message: parsedMessage.text,
+            timestamp: new Timestamp(parsedMessage.timestamp / 1000, parsedMessage.timestamp % 1000),
+          };
+        }
+      } catch (e) {
+        // Not a JSON, proceed with original message
+      }
+
+      await addDoc(loveMessagesRef, messageData);
       this.setState({ newLoveMessage: '' });
     }
   };
