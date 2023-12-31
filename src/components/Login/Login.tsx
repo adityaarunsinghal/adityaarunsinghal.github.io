@@ -6,7 +6,9 @@ import { auth } from '../../firebase';
 
 const Login: React.FC = () => {
   // Define allowed email addresses
-  const allowedEmails = ['adityaarunsinghal@gmail.com', 'johannefriedman@gmail.com'];
+  const allowedEmails = ['adityaarunsinghal@gmail.com',
+    'johannefriedman@gmail.com',
+    'johanne.friedman@gmail.com'];
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
