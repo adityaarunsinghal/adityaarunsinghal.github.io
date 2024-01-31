@@ -4,8 +4,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LovesIngy from './components/LovesIngy/LovesIngy';
 import { OldStaticWebsite } from './components/OldStaticWebsite/OldStaticWebsite';
 import PrivateRoute from './components/PrivateRoute';
-import RedirectToExternal from './components/RedirectToExternal';
 import Login from './components/Login/Login';
+import GivesIngy from './components/GivesIngy/GivesIngy';
 
 const router = createBrowserRouter([
   {
@@ -35,9 +35,9 @@ const router = createBrowserRouter([
   {
     path: "/givesingy",
     element: (
-      // <PrivateRoute>
-      <RedirectToExternal url="https://docs.google.com/forms/d/e/1FAIpQLSfLkz4REqAGwsaLP-vAuUtXJLT2V8aEUEN5ulT4huW7ylkGxw/viewform" />
-      // </PrivateRoute>
+      <PrivateRoute>
+        <GivesIngy />
+      </PrivateRoute>
     ),
   },
   {

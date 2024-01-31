@@ -1,0 +1,83 @@
+.give-ingy-body {
+  font-family: 'Arial', sans-serif;
+  background-color: #fff0f5;
+  color: #444;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: /* Your background styling */ ;
+  z-index: -1; /* Ensures the background is behind the content */
+}
+
+label {
+  /* margin-bottom: 1rem; */
+  color: #ff1493;
+}
+
+p {
+  padding-left: 10px;
+}
+
+.date {
+  padding: 10px 15px;
+  width: calc(100% - 40px);
+  border: 2px solid #ff69b4;
+  border-radius: 20px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.3);
+  transition: all 0.2s ease;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  padding-top: 5rem;
+  box-sizing: border-box;
+  position: relative; /* Ensures the content is above the background */
+  z-index: 1;
+}
+
+.give-ingy-input[type='text'] {
+  padding: 10px 15px;
+  border: 2px solid #ff69b4;
+  border-radius: 20px;
+  width: calc(100% - 40px);
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.3);
+  transition: all 0.2s ease;
+}
+
+.give-ingy-input[type='text']:focus {
+  border-color: #ff1493;
+  box-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
+  outline: none;
+}
+
+.give-ingy-button {
+  background-color: #ff69b4;
+  color: white;
+  padding: 10px 15px;
+  border: 2px solid #ff69b4;
+  border-radius: 20px;
+  width: calc(100% - 40px);
+  box-sizing: border-box;
+  margin-top: 20px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+.give-ingy-button:hover {
+  background-color: #ff1493;
+  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
+}
