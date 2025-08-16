@@ -38,34 +38,46 @@ class LovesIngy extends Component<Record<string, never>, State> {
         };
       });
       this.setState({ loveMessages: messages });
+    }, (error) => {
+      console.error('Error fetching messages:', error);
+      if (error.code === 'permission-denied') {
+        alert('Access denied. You do not have permission to view these messages.');
+      }
     });
   }
 
   handleAddLoveMessage = async () => {
     const { newLoveMessage } = this.state;
     if (newLoveMessage.trim() !== '') {
-      const db = getFirestore(firebaseapp);
-      const loveMessagesRef = collection(db, 'love-ingy-messages');
-      let messageData = {
-        message: newLoveMessage,
-        timestamp: serverTimestamp(),
-      };
-
-      // Check if newLoveMessage is a valid JSON
       try {
-        const parsedMessage = JSON.parse(newLoveMessage);
-        if (parsedMessage && typeof parsedMessage === 'object') {
-          messageData = {
-            message: parsedMessage.text,
-            timestamp: new Timestamp(parsedMessage.timestamp / 1000, parsedMessage.timestamp % 1000),
-          };
-        }
-      } catch (e) {
-        // Not a JSON, proceed with original message
-      }
+        const db = getFirestore(firebaseapp);
+        const loveMessagesRef = collection(db, 'love-ingy-messages');
+        let messageData = {
+          message: newLoveMessage,
+          timestamp: serverTimestamp(),
+        };
 
-      await addDoc(loveMessagesRef, messageData);
-      this.setState({ newLoveMessage: '' });
+        // Check if newLoveMessage is a valid JSON
+        try {
+          const parsedMessage = JSON.parse(newLoveMessage);
+          if (parsedMessage && typeof parsedMessage === 'object') {
+            messageData = {
+              message: parsedMessage.text,
+              timestamp: new Timestamp(parsedMessage.timestamp / 1000, parsedMessage.timestamp % 1000),
+            };
+          }
+        } catch (e) {
+          // Not a JSON, proceed with original message
+        }
+
+        await addDoc(loveMessagesRef, messageData);
+        this.setState({ newLoveMessage: '' });
+      } catch (error: any) {
+        console.error('Error adding message:', error);
+        if (error.code === 'permission-denied') {
+          alert('Access denied. You do not have permission to add messages.');
+        }
+      }
     }
   };
   handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
