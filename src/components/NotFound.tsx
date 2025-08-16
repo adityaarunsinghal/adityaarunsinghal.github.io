@@ -1,4 +1,5 @@
-import fourOHfour from '@/images/404.gif';
+import React from 'react';
+import fourOHfour from '../images/404.gif';
 
 const NotFound: React.FC = () => {
   const handleGoHome = () => {
