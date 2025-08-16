@@ -1,23 +1,35 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
-import PrivateApp from './components/PrivateApp/PrivateApp';
-import ErrorBoundary from './components/ErrorBoundary';
-import LovesIngy from './components/LovesIngy/LovesIngy';
-import { OldStaticWebsite } from './components/OldStaticWebsite/OldStaticWebsite';
-import PrivateRoute from './components/PrivateRoute';
-import Login from './components/Login/Login';
+import PrivateApp from '@/components/PrivateApp/PrivateApp';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import LovesIngy from '@/components/LovesIngy/LovesIngy';
+import { OldStaticWebsite } from '@/components/OldStaticWebsite/OldStaticWebsite';
+import PrivateRoute from '@/components/PrivateRoute';
+import Login from '@/components/Login/Login';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <OldStaticWebsite />,
+    element: (
+      <ErrorBoundary>
+        <OldStaticWebsite />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <ErrorBoundary>
+        <Login />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/private',
-    element: <PrivateApp />,
+    element: (
+      <ErrorBoundary>
+        <PrivateApp />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/404',
@@ -26,14 +38,16 @@ const router = createBrowserRouter([
   {
     path: "/lovesingy",
     element: (
-      <PrivateRoute>
-        <LovesIngy />
-      </PrivateRoute>
+      <ErrorBoundary>
+        <PrivateRoute>
+          <LovesIngy />
+        </PrivateRoute>
+      </ErrorBoundary>
     ),
   },
   {
     path: '/*',
-    element: <Navigate to='/404' />,
+    element: <Navigate to='/404' replace />,
   },
 ]);
 

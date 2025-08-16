@@ -1,17 +1,21 @@
 import React, { useEffect, useState, ReactNode } from 'react';
 import { auth } from '../firebase';
 import { User, onAuthStateChanged } from 'firebase/auth';
+import Loading from '@/components/Loading';
 
 import { createContext } from 'react';
 
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
 }
 
 const defaultValue: AuthContextType = {
   user: null,
+  loading: true,
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthContextType>(defaultValue);
 
 interface AuthProviderProps {
@@ -32,11 +36,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading message="Authenticating..." />;
   }
 
   return (
-    <AuthContext.Provider value={{ user: currentUser }}>
+    <AuthContext.Provider value={{ user: currentUser, loading }}>
       {children}
     </AuthContext.Provider>
   );

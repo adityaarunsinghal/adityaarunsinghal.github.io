@@ -1,10 +1,29 @@
 import { defineConfig } from 'vite';
 import copy from 'rollup-plugin-copy';
 import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    visualizer({
+      filename: 'dist/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/contexts': path.resolve(__dirname, './src/contexts'),
+      '@/images': path.resolve(__dirname, './src/images'),
+    },
+  },
   server: {
     fs: {
       strict: false,

@@ -72,9 +72,9 @@ class LovesIngy extends Component<Record<string, never>, State> {
 
         await addDoc(loveMessagesRef, messageData);
         this.setState({ newLoveMessage: '' });
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('Error adding message:', error);
-        if (error.code === 'permission-denied') {
+        if (error && typeof error === 'object' && 'code' in error && error.code === 'permission-denied') {
           alert('Access denied. You do not have permission to add messages.');
         }
       }
