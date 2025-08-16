@@ -5,7 +5,6 @@ import LovesIngy from './components/LovesIngy/LovesIngy';
 import { OldStaticWebsite } from './components/OldStaticWebsite/OldStaticWebsite';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './components/Login/Login';
-import GivesIngy from './components/GivesIngy/GivesIngy';
 
 const router = createBrowserRouter([
   {
@@ -29,14 +28,6 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <LovesIngy />
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "/givesingy",
-    element: (
-      <PrivateRoute>
-        <GivesIngy />
       </PrivateRoute>
     ),
   },
