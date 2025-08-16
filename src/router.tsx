@@ -1,6 +1,7 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import PrivateApp from '@/components/PrivateApp/PrivateApp';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import NotFound from '@/components/NotFound';
 import LovesIngy from '@/components/LovesIngy/LovesIngy';
 import { OldStaticWebsite } from '@/components/OldStaticWebsite/OldStaticWebsite';
 import PrivateRoute from '@/components/PrivateRoute';
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/404',
-    element: <ErrorBoundary />,
+    element: (
+      <ErrorBoundary>
+        <NotFound />
+      </ErrorBoundary>
+    ),
   },
   {
     path: "/lovesingy",
