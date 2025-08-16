@@ -21,7 +21,8 @@
       "@/components/*": ["src/components/*"],
       "@/hooks/*": ["src/hooks/*"],
       "@/contexts/*": ["src/contexts/*"],
-      "@/images/*": ["src/images/*"]
+      "@/images/*": ["src/images/*"],
+      "@/config": ["src/config"]
     },
 
     /* Linting */

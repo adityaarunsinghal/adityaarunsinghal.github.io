@@ -22,6 +22,7 @@ export default defineConfig({
       '@/hooks': path.resolve(__dirname, './src/hooks'),
       '@/contexts': path.resolve(__dirname, './src/contexts'),
       '@/images': path.resolve(__dirname, './src/images'),
+      '@/config': path.resolve(__dirname, './src/config'),
     },
   },
   server: {

@@ -1,34 +1,24 @@
-import { ChangeEvent, Component } from 'react';
+import { useState, useEffect } from 'react';
 import './LovesIngy.css';
-import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, Timestamp } from "firebase/firestore";
-import { firebaseapp } from '../../firebase';
+import { collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, Timestamp } from "firebase/firestore";
+import { db } from '../../firebase';
 
 interface LoveMessage {
+  id: string;
   message: string;
   timestamp: string;
 }
 
-interface State {
-  loveMessages: LoveMessage[];
-  newLoveMessage: string;
-  hoveredIndex: number | null;
-}
+const LovesIngy = () => {
+  const [loveMessages, setLoveMessages] = useState<LoveMessage[]>([]);
+  const [newLoveMessage, setNewLoveMessage] = useState('');
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-class LovesIngy extends Component<Record<string, never>, State> {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.state = {
-      loveMessages: [],
-      newLoveMessage: '',
-      hoveredIndex: null,
-    };
-  }
-
-  componentDidMount() {
-    const db = getFirestore(firebaseapp);
+  useEffect(() => {
     const loveMessagesRef = collection(db, 'love-ingy-messages');
     const queryOrderByTimestamp = query(loveMessagesRef, orderBy('timestamp', 'desc'));
-    onSnapshot(queryOrderByTimestamp, (snapshot) => {
+    
+    const unsubscribe = onSnapshot(queryOrderByTimestamp, (snapshot) => {
       const messages = snapshot.docs.map(doc => {
         const data = doc.data();
         return {
@@ -37,20 +27,20 @@ class LovesIngy extends Component<Record<string, never>, State> {
           timestamp: data.timestamp ? data.timestamp.toDate().toISOString() : new Date().toISOString(),
         };
       });
-      this.setState({ loveMessages: messages });
+      setLoveMessages(messages);
     }, (error) => {
       console.error('Error fetching messages:', error);
       if (error.code === 'permission-denied') {
         alert('Access denied. You do not have permission to view these messages.');
       }
     });
-  }
 
-  handleAddLoveMessage = async () => {
-    const { newLoveMessage } = this.state;
+    return unsubscribe;
+  }, []);
+
+  const handleAddLoveMessage = async () => {
     if (newLoveMessage.trim() !== '') {
       try {
-        const db = getFirestore(firebaseapp);
         const loveMessagesRef = collection(db, 'love-ingy-messages');
         let messageData = {
           message: newLoveMessage,
@@ -71,7 +61,7 @@ class LovesIngy extends Component<Record<string, never>, State> {
         }
 
         await addDoc(loveMessagesRef, messageData);
-        this.setState({ newLoveMessage: '' });
+        setNewLoveMessage('');
       } catch (error: unknown) {
         console.error('Error adding message:', error);
         if (error && typeof error === 'object' && 'code' in error && error.code === 'permission-denied') {
@@ -80,59 +70,46 @@ class LovesIngy extends Component<Record<string, never>, State> {
       }
     }
   };
-  handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ newLoveMessage: e.target.value });
-  };
 
-  handleMouseEnter = (index: number) => {
-    this.setState({ hoveredIndex: index });
-  };
-
-  handleMouseLeave = () => {
-    this.setState({ hoveredIndex: null });
-  };
-
-  handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      this.handleAddLoveMessage();
+      handleAddLoveMessage();
     }
   };
 
-  render() {
-    return (
-      <>
-        <div className='love-ingy-body'></div> {/* Background */}
-        <div className="container">
-          <div>
-            {this.state.loveMessages.map(({ message, timestamp }, index) => (
-              <div
-                key={index}
-                className="love-message-container"
-                onMouseEnter={() => this.handleMouseEnter(index)}
-                onMouseLeave={this.handleMouseLeave}
-              >
-                <p className="love-message">{message}</p>
-                {this.state.hoveredIndex === index && (
-                  <div className="tooltip">{new Date(timestamp).toLocaleString()}</div>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="add-message-container">
-            <input
-              className='love-ingy-input'
-              type="text"
-              placeholder="Add a new love message"
-              value={this.state.newLoveMessage}
-              onChange={this.handleInputChange}
-              onKeyPress={this.handleKeyPress}
-            />
-            <button className='love-ingy-button' onClick={this.handleAddLoveMessage}>Add Love Message</button>
-          </div>
+  return (
+    <>
+      <div className='love-ingy-body'></div>
+      <div className="container">
+        <div>
+          {loveMessages.map(({ id, message, timestamp }, index) => (
+            <div
+              key={id}
+              className="love-message-container"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <p className="love-message">{message}</p>
+              {hoveredIndex === index && (
+                <div className="tooltip">{new Date(timestamp).toLocaleString()}</div>
+              )}
+            </div>
+          ))}
         </div>
-      </>
-    );
-  }
-}
+        <div className="add-message-container">
+          <input
+            className='love-ingy-input'
+            type="text"
+            placeholder="Add a new love message"
+            value={newLoveMessage}
+            onChange={(e) => setNewLoveMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+          <button className='love-ingy-button' onClick={handleAddLoveMessage}>Add Love Message</button>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default LovesIngy;
