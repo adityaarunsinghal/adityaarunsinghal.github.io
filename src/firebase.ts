@@ -19,6 +19,11 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+// Validate required config
+if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+  throw new Error('Missing required Firebase configuration');
+}
+
 // Initialize Firebase
 const firebaseapp = initializeApp(firebaseConfig);
 

@@ -13,6 +13,7 @@ const LovesIngy = () => {
   const [loveMessages, setLoveMessages] = useState<LoveMessage[]>([]);
   const [newLoveMessage, setNewLoveMessage] = useState('');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loveMessagesRef = collection(db, 'love-ingy-messages');
@@ -30,8 +31,9 @@ const LovesIngy = () => {
       setLoveMessages(messages);
     }, (error) => {
       console.error('Error fetching messages:', error);
+      setError('Failed to load messages. Please refresh the page.');
       if (error.code === 'permission-denied') {
-        alert('Access denied. You do not have permission to view these messages.');
+        setError('Access denied. You do not have permission to view these messages.');
       }
     });
 
@@ -81,6 +83,7 @@ const LovesIngy = () => {
     <>
       <div className='love-ingy-body'></div>
       <div className="container">
+        {error && <div style={{ color: 'red', marginBottom: '20px' }}>{error}</div>}
         <div>
           {loveMessages.map(({ id, message, timestamp }, index) => (
             <div
