@@ -13,9 +13,15 @@ const NotFound: React.FC = () => {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       textAlign: 'center',
-      padding: '2rem'
+      padding: '2rem',
+      width: '90%',
+      maxWidth: '600px'
     }}>
-      <h2 style={{ fontSize: 'max(2vw, 16px)', marginBottom: '1rem' }}>
+      <h2 style={{ 
+        fontSize: 'max(2vw, 16px)', 
+        marginBottom: '1rem',
+        color: '#333'
+      }}>
         Sorry, that was not a real page.
       </h2>
       
@@ -23,24 +29,29 @@ const NotFound: React.FC = () => {
         src={fourOHfour}
         alt='Sorry 404!'
         style={{
-          maxWidth: '75%',
+          maxWidth: '100%',
           height: 'auto',
-          width: '100%',
-          marginBottom: '2rem'
+          marginBottom: '2rem',
+          borderRadius: '8px'
         }}
       />
 
       <button 
         onClick={handleGoHome}
         style={{
-          padding: '0.5rem 1rem',
+          padding: '12px 24px',
           backgroundColor: '#2ecc71',
           color: 'white',
           border: 'none',
-          borderRadius: '4px',
+          borderRadius: '6px',
           cursor: 'pointer',
-          fontSize: '1rem'
+          fontSize: '16px',
+          fontWeight: '500',
+          transition: 'background-color 0.2s ease',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}
+        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#27ae60'}
+        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2ecc71'}
       >
         Go Home
       </button>
