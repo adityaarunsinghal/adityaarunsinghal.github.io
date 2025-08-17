@@ -20,6 +20,11 @@ jobs:
         node-version: '22'
         cache: 'npm'
         
+    - name: Configure Git
+      run: |
+        git config --global user.email "adityaarunsinghal@gmail.com"
+        git config --global user.name "Aditya Singhal"
+        
     - name: Install dependencies
       run: npm ci
       
