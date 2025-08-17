@@ -76,7 +76,24 @@ src/
 
 ## Deployment
 
-The site automatically deploys to GitHub Pages when changes are pushed to the main branch via GitHub Actions.
+**Manual Deployment Only**: The site does not auto-deploy on push to master.
+
+To deploy changes to production:
+```bash
+npm run deploy
+```
+
+This builds the site and pushes to the `gh-pages` branch where GitHub Pages serves it.
+
+### Auto-Deployment (Optional)
+To enable auto-deployment on push to master, uncomment the trigger lines in `.github/workflows/deploy.yml`:
+```yaml
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+```
 
 ### Manual Deployment
 ```bash
