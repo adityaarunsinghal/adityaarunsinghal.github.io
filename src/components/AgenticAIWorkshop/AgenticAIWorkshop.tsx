@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './AgenticAIWorkshop.css';
 
 const AgenticAIWorkshop = () => {
@@ -131,6 +132,9 @@ const AgenticAIWorkshop = () => {
           <div className="cta-content">
             <h2>Ready to Build the Future?</h2>
             <p>Join us for this intensive workshop series and create AI agents that solve real problems.</p>
+            <Link to="/agentic-ai-workshop/intake-form" className="cta-button">
+              Fill Out Intake Form
+            </Link>
             <div className="cta-note">
               <strong>Commitment Required:</strong> Attend all sessions to get the most out of this workshop series.
             </div>

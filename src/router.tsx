@@ -4,6 +4,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import NotFound from '@/components/NotFound';
 import LovesIngy from '@/components/LovesIngy/LovesIngy';
 import AgenticAIWorkshop from '@/components/AgenticAIWorkshop/AgenticAIWorkshop';
+import IntakeForm from '@/components/IntakeForm';
 import { OldStaticWebsite } from '@/components/OldStaticWebsite/OldStaticWebsite';
 import PrivateRoute from '@/components/PrivateRoute';
 import Login from '@/components/Login/Login';
@@ -56,6 +57,22 @@ const router = createBrowserRouter([
     element: (
       <ErrorBoundary>
         <AgenticAIWorkshop />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: '/agentic-ai-workshop/intake-form',
+    element: (
+      <ErrorBoundary>
+        <IntakeForm />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: '/intake-form',
+    element: (
+      <ErrorBoundary>
+        <IntakeForm />
       </ErrorBoundary>
     ),
   },
