@@ -112,3 +112,27 @@
   flex-grow: 1;
   margin-right: 10px;
 }
+.heart-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.heart-button:hover {
+  opacity: 1;
+  transform: scale(1.2);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.heart-button:active {
+  transform: scale(0.9);
+}

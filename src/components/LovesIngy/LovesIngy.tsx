@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import './LovesIngy.css';
 import { collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, Timestamp } from "firebase/firestore";
 import { db } from '../../firebase';
@@ -79,9 +80,46 @@ const LovesIngy = () => {
     }
   };
 
+  const triggerHeartShower = () => {
+    const heart = confetti.shapeFromText({ text: '💖', scalar: 2 });
+    
+    confetti({
+      shapes: [heart],
+      scalar: 1.5,
+      spread: 180,
+      particleCount: 30,
+      origin: { y: 0.1 },
+      startVelocity: 35,
+      gravity: 0.8,
+      drift: 0,
+      ticks: 200
+    });
+    
+    // Second wave
+    setTimeout(() => {
+      confetti({
+        shapes: [heart],
+        scalar: 1.2,
+        spread: 120,
+        particleCount: 20,
+        origin: { y: 0.2, x: 0.8 },
+        startVelocity: 25,
+        gravity: 0.6,
+        ticks: 150
+      });
+    }, 200);
+  };
+
   return (
     <>
       <div className='love-ingy-body'></div>
+      <button 
+        className="heart-button"
+        onClick={triggerHeartShower}
+        title="💖"
+      >
+        💖
+      </button>
       <div className="container">
         {error && <div style={{ color: 'red', marginBottom: '20px' }}>{error}</div>}
         <div>
