@@ -3,6 +3,7 @@ import PrivateApp from '@/components/PrivateApp/PrivateApp';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import NotFound from '@/components/NotFound';
 import LovesIngy from '@/components/LovesIngy/LovesIngy';
+import AgenticAIWorkshop from '@/components/AgenticAIWorkshop/AgenticAIWorkshop';
 import { OldStaticWebsite } from '@/components/OldStaticWebsite/OldStaticWebsite';
 import PrivateRoute from '@/components/PrivateRoute';
 import Login from '@/components/Login/Login';
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
         <PrivateRoute>
           <LovesIngy />
         </PrivateRoute>
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: '/agentic-ai-workshop',
+    element: (
+      <ErrorBoundary>
+        <AgenticAIWorkshop />
       </ErrorBoundary>
     ),
   },
