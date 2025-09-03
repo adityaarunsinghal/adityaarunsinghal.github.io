@@ -1,0 +1,13 @@
+repos:
+  - repo: local
+    hooks:
+      - id: lint
+        name: ESLint
+        entry: npm run lint
+        language: system
+        files: \.(js|jsx|ts|tsx)$
+      - id: build
+        name: Build check
+        entry: npm run build
+        language: system
+        pass_filenames: false
