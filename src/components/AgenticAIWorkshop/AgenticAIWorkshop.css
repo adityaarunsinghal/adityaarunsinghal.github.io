@@ -529,7 +529,7 @@
   margin-bottom: 30px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .commitment-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -693,6 +693,15 @@
   
   .primary-button, .secondary-button {
     width: 100%;
+    max-width: 280px;
+  }
+  
+  .cta-section {
+    padding: 50px 15px;
+  }
+  
+  .primary-button.large {
+    width: calc(100% - 30px);
     max-width: 280px;
   }
 }
