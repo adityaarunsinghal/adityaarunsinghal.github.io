@@ -56,7 +56,7 @@ const IntakeForm = () => {
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text'
         }}>
-          Workshop Application
+          Workshop Intake Form
         </h1>
         
         <p style={{ 
@@ -127,7 +127,7 @@ const IntakeForm = () => {
           border: '1px solid rgba(255, 193, 7, 0.3)',
           fontSize: '0.9rem'
         }}>
-          <strong style={{ color: '#ffc107' }}>Note:</strong> Please include whether you're an undergraduate, graduate student, or alumni in your application.
+          <strong style={{ color: '#ffc107' }}>Note:</strong> Please include whether you're an undergraduate, graduate student, or alumni in your intake form.
         </div>
       </div>
       
