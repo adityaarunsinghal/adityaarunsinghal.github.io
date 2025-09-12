@@ -164,6 +164,21 @@
   margin: 0 auto;
 }
 
+.instructors-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .instructors-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
 .instructor-info h3 {
   font-size: 1.8rem;
   margin-bottom: 20px;

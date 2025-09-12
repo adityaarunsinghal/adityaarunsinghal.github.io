@@ -295,14 +295,26 @@ const AgenticAIWorkshop = () => {
 
         <div className="instructor-section">
           <div className="instructor-card">
-            <h2>About the Instructor</h2>
-            <div className="instructor-content">
+            <h2>About the Instructors</h2>
+            <div className="instructors-grid">
               <div className="instructor-info">
                 <h3>Adi Singhal</h3>
                 <p className="instructor-bio">
                   Former CDS student and founder of the <strong>NYU Data Science Club</strong>. Currently at AWS helping build <strong>Amazon Q</strong>, the company's premiere agentic offering for developers and businesses.
                 </p>
                 <a href="https://www.linkedin.com/in/adi-singhal/" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   className="linkedin-button">
+                  Connect on LinkedIn
+                </a>
+              </div>
+              <div className="instructor-info">
+                <h3>Luca Chang</h3>
+                <p className="instructor-bio">
+                  Works in the <strong>AWS Agentic AI organization</strong> and has contributed code to the official <strong>MCP Python SDK</strong> as part of his role. Expert in building production-ready agentic systems.
+                </p>
+                <a href="https://www.linkedin.com/in/luca-chang/" 
                    target="_blank" 
                    rel="noopener noreferrer" 
                    className="linkedin-button">
