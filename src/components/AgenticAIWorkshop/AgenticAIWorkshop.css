@@ -1,3 +1,200 @@
+/* Intro Section */
+.intro-section {
+  margin-bottom: 100px;
+  margin-top: 50px;
+}
+
+.intro-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 50px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.intro-card h2 {
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+}
+
+.intro-text {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.intro-highlight {
+  font-size: 1.1rem;
+  color: #4ecdc4;
+  font-weight: 500;
+  background: rgba(78, 205, 196, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid #4ecdc4;
+}
+
+/* Tech Benefits Grid */
+.tech-benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  margin-top: 40px;
+  align-items: stretch;
+}
+
+.tech-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .tech-benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+.tech-column h3 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: #4ecdc4;
+  text-align: center;
+}
+
+.applications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.application-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 500;
+}
+
+.app-icon {
+  font-size: 1.5rem;
+}
+
+/* Learning Outcomes Section */
+.learning-outcomes-section {
+  margin-bottom: 100px;
+}
+
+.outcomes-intro {
+  text-align: center;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  margin-bottom: 40px;
+}
+
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .outcomes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.outcome-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 40px 30px;
+  border-radius: 15px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.outcome-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.outcome-icon {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.outcome-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #4ecdc4;
+}
+
+/* Instructor Section */
+.instructor-section {
+  margin-bottom: 100px;
+}
+
+.instructor-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 50px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.instructor-card h2 {
+  margin-bottom: 40px;
+  font-size: 2.2rem;
+}
+
+.instructor-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.instructor-info h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #4ecdc4;
+}
+
+.instructor-bio {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.linkedin-button {
+  display: inline-block;
+  background: linear-gradient(45deg, #0077b5, #00a0dc);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 119, 181, 0.3);
+}
+
+.linkedin-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 119, 181, 0.4);
+  color: white;
+}
+
 /* Base Styles */
 .workshop-container {
   min-height: 100vh;
@@ -424,8 +621,9 @@
 
 .tech-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  flex: 1;
 }
 
 @media (max-width: 768px) {
@@ -447,6 +645,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  flex: 1;
 }
 
 .tech-item:hover {
