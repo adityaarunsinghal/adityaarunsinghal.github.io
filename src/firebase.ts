@@ -19,6 +19,9 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+// Debug: Log API key to console
+console.log('Firebase API Key:', import.meta.env.VITE_FIREBASE_API_KEY);
+
 // Validate required config
 if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
   throw new Error('Missing required Firebase configuration');
