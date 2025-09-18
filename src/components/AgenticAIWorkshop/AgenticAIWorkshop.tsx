@@ -105,7 +105,7 @@ const AgenticAIWorkshop = () => {
             </div>
           </div>
           <div className="hero-cta">
-            <Link to="/agentic-ai-workshop/intake-form" className="primary-button">
+            <Link to="/agentic-ai-workshop/registration-form" className="primary-button">
               Join the Workshop
             </Link>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -357,7 +357,7 @@ const AgenticAIWorkshop = () => {
             <h2>Ready to Build the Future?</h2>
             <p>Join the CDS community in mastering agentic AI and position yourself at the forefront of the AI revolution.</p>
             <div className="cta-buttons">
-              <Link to="/agentic-ai-workshop/intake-form" className="primary-button large">
+              <Link to="/agentic-ai-workshop/registration-form" className="primary-button large">
                 Join the Workshop
               </Link>
             </div>

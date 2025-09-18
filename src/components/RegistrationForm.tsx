@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const IntakeForm = () => {
+const RegistrationForm = () => {
   const [countdown, setCountdown] = useState(3);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSdEf_CwwL0LCzbEc85b_FuPosDsZTTru0ntOFU7Mn48pevHVw/viewform?usp=sharing&ouid=108983163737349704776';
+          window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSe2V4WGW1P2sNSJ06s_ydU16H7LF6vcP0tYkTopYuhUyO3XjQ/viewform';
           return 0;
         }
         return prev - 1;
@@ -56,7 +56,7 @@ const IntakeForm = () => {
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text'
         }}>
-          Workshop Intake Form
+          Workshop Registration Form
         </h1>
         
         <p style={{ 
@@ -65,12 +65,12 @@ const IntakeForm = () => {
           opacity: '0.9',
           lineHeight: '1.6'
         }}>
-          Redirecting to the intake form in <strong style={{ color: '#4ecdc4' }}>{countdown}</strong> seconds...
+          Redirecting to the registration form in <strong style={{ color: '#4ecdc4' }}>{countdown}</strong> seconds...
         </p>
         
         <div style={{ marginBottom: '30px' }}>
           <a 
-            href="https://docs.google.com/forms/d/e/1FAIpQLSdEf_CwwL0LCzbEc85b_FuPosDsZTTru0ntOFU7Mn48pevHVw/viewform?usp=sharing&ouid=108983163737349704776" 
+            href="https://docs.google.com/forms/d/e/1FAIpQLSe2V4WGW1P2sNSJ06s_ydU16H7LF6vcP0tYkTopYuhUyO3XjQ/viewform" 
             style={{ 
               display: 'inline-block',
               background: 'linear-gradient(45deg, #4ecdc4, #45b7d1)',
@@ -127,7 +127,7 @@ const IntakeForm = () => {
           border: '1px solid rgba(255, 193, 7, 0.3)',
           fontSize: '0.9rem'
         }}>
-          <strong style={{ color: '#ffc107' }}>Note:</strong> Please include whether you're an undergraduate, graduate student, or alumni in your intake form.
+          <strong style={{ color: '#ffc107' }}>Note:</strong> Please include whether you're an undergraduate, graduate student, or alumni in your registration form.
         </div>
       </div>
       
@@ -147,4 +147,4 @@ const IntakeForm = () => {
   );
 };
 
-export default IntakeForm;
+export default RegistrationForm;
