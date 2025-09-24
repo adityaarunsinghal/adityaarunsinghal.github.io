@@ -22,17 +22,18 @@ interface HypeData {
   y: number;
   vx: number;
   vy: number;
+  isFront: boolean;
 }
 
-const AnimatedQuote = ({ item, allItems, index, onUpdate }: { 
+const AnimatedQuote = ({ item, allItems, index, onUpdate, onBringToFront }: { 
   item: HypeData; 
   allItems: HypeData[]; 
   index: number;
   onUpdate: (index: number, x: number, y: number, vx: number, vy: number) => void;
+  onBringToFront: (index: number) => void;
 }) => {
   const animationRef = useRef<number>();
   const frameCount = useRef<number>(0);
-  const [isFront, setIsFront] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
@@ -115,9 +116,9 @@ const AnimatedQuote = ({ item, allItems, index, onUpdate }: {
   const handleTouch = (e: React.TouchEvent, url: string) => {
     e.preventDefault();
     
-    if (!isFront) {
-      // First touch: bring to front
-      setIsFront(true);
+    if (!item.isFront) {
+      // First touch: bring to front and reset others
+      onBringToFront(index);
     } else if (isValidUrl(url)) {
       // Second touch: navigate
       window.open(url, '_blank', 'noopener,noreferrer');
@@ -129,7 +130,7 @@ const AnimatedQuote = ({ item, allItems, index, onUpdate }: {
       href={isValidUrl(item.url) ? item.url : undefined}
       target={isValidUrl(item.url) ? "_blank" : undefined}
       rel={isValidUrl(item.url) ? "noopener noreferrer" : undefined}
-      className="word-cloud-item animated"
+      className={`word-cloud-item animated ${item.isFront ? 'front' : ''}`}
       style={{
         fontSize: `${item.size}px`,
         color: item.color,
@@ -137,7 +138,7 @@ const AnimatedQuote = ({ item, allItems, index, onUpdate }: {
         top: `${item.y}px`,
         position: 'absolute',
         cursor: isValidUrl(item.url) ? 'pointer' : 'default',
-        zIndex: (isFront || isHovered) ? 100 : 1
+        zIndex: (item.isFront || isHovered) ? 100 : 1
       }}
       onClick={(e) => handleClick(e, item.url)}
       onTouchEnd={(e) => handleTouch(e, item.url)}
@@ -159,6 +160,12 @@ const AgenticAIWorkshop = () => {
   const updateItem = (index: number, x: number, y: number, vx: number, vy: number) => {
     setHypeData(prev => prev.map((item, i) => 
       i === index ? { ...item, x, y, vx, vy } : item
+    ));
+  };
+
+  const bringToFront = (index: number) => {
+    setHypeData(prev => prev.map((item, i) => 
+      ({ ...item, isFront: i === index })
     ));
   };
 
@@ -203,7 +210,8 @@ const AgenticAIWorkshop = () => {
                   x,
                   y,
                   vx: distance > 0 ? (dx / distance) * pushForce : (Math.random() - 0.5) * 2,
-                  vy: distance > 0 ? (dy / distance) * pushForce : (Math.random() - 0.5) * 2
+                  vy: distance > 0 ? (dy / distance) * pushForce : (Math.random() - 0.5) * 2,
+                  isFront: false
                 };
               });
             
@@ -224,7 +232,8 @@ const AgenticAIWorkshop = () => {
             x: 450,
             y: 400,
             vx: 1,
-            vy: 1
+            vy: 1,
+            isFront: false
           }
         ]);
       });
@@ -595,6 +604,7 @@ const AgenticAIWorkshop = () => {
                 allItems={hypeData}
                 index={index} 
                 onUpdate={updateItem}
+                onBringToFront={bringToFront}
               />
             ))}
           </div>

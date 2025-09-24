@@ -991,6 +991,14 @@
   position: absolute;
 }
 
+.word-cloud-item.front {
+  transform: scale(1.05);
+  text-shadow: 0 0 15px currentColor;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-color: currentColor;
+}
+
 .word-cloud-item:hover {
   transform: scale(1.05);
   text-shadow: 0 0 15px currentColor;
