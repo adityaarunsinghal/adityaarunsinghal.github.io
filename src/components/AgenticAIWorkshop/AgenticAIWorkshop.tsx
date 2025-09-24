@@ -1,12 +1,233 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { animated } from '@react-spring/web';
+import Papa from 'papaparse';
 import './AgenticAIWorkshop.css';
+
+interface CSVRow {
+  Quote_Description?: string;
+  Person_Organization?: string;
+  Hype_Value?: string;
+  Direct_Link?: string;
+}
+
+interface HypeData {
+  quote: string;
+  speaker: string;
+  hype: number;
+  url: string;
+  color: string;
+  size: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+}
+
+const AnimatedQuote = ({ item, allItems, index, onUpdate }: { 
+  item: HypeData; 
+  allItems: HypeData[]; 
+  index: number;
+  onUpdate: (index: number, x: number, y: number, vx: number, vy: number) => void;
+}) => {
+  const animationRef = useRef<number>();
+  const frameCount = useRef<number>(0);
+  const [isFront, setIsFront] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const animate = () => {
+      let { x, y, vx, vy } = item;
+      
+      // Only calculate forces every 10 frames
+      if (frameCount.current % 10 === 0) {
+        // Simple repulsion from other items (use current positions)
+        allItems.forEach((other, i) => {
+          if (i !== index) {
+            const dx = x - other.x;
+            const dy = y - other.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance > 0 && distance < 150) {
+              const force = 2.0 / distance;
+              vx += (dx / distance) * force;
+              vy += (dy / distance) * force;
+            }
+          }
+        });
+      }
+      
+      frameCount.current++;
+      
+      // Always apply velocity (momentum)
+      x += vx;
+      y += vy;
+      
+      // Bounce off walls (responsive bounds)
+      const isMobile = window.innerWidth <= 768;
+      const maxX = isMobile ? 300 : 900;
+      const maxY = isMobile ? 500 : 800;
+      
+      if (x < 0 || x > maxX) vx *= -0.8;
+      if (y < 0 || y > maxY) vy *= -0.8;
+      
+      // Keep in bounds (responsive)
+      x = Math.max(0, Math.min(maxX, x));
+      y = Math.max(0, Math.min(maxY, y));
+      
+      // Limit max speed
+      const maxSpeed = 2;
+      const speed = Math.sqrt(vx * vx + vy * vy);
+      if (speed > maxSpeed) {
+        vx = (vx / speed) * maxSpeed;
+        vy = (vy / speed) * maxSpeed;
+      }
+      
+      // Light damping
+      vx *= 0.995;
+      vy *= 0.995;
+      
+      onUpdate(index, x, y, vx, vy);
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, [item, allItems, index, onUpdate]); // allItems dependency ensures fresh data
+
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return url.startsWith('http://') || url.startsWith('https://');
+    } catch {
+      return false;
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent, url: string) => {
+    if (!isValidUrl(url)) {
+      e.preventDefault();
+    }
+  };
+
+  const handleTouch = (e: React.TouchEvent, url: string) => {
+    e.preventDefault();
+    
+    if (!isFront) {
+      // First touch: bring to front
+      setIsFront(true);
+    } else if (isValidUrl(url)) {
+      // Second touch: navigate
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  return (
+    <animated.a
+      href={isValidUrl(item.url) ? item.url : undefined}
+      target={isValidUrl(item.url) ? "_blank" : undefined}
+      rel={isValidUrl(item.url) ? "noopener noreferrer" : undefined}
+      className="word-cloud-item animated"
+      style={{
+        fontSize: `${item.size}px`,
+        color: item.color,
+        left: `${item.x}px`,
+        top: `${item.y}px`,
+        position: 'absolute',
+        cursor: isValidUrl(item.url) ? 'pointer' : 'default',
+        zIndex: (isFront || isHovered) ? 100 : 1
+      }}
+      onClick={(e) => handleClick(e, item.url)}
+      onTouchEnd={(e) => handleTouch(e, item.url)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="quote-content">
+        <div className="quote-text">"{item.quote}"</div>
+        <div className="quote-speaker">— {item.speaker}</div>
+      </div>
+    </animated.a>
+  );
+};
 
 const AgenticAIWorkshop = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [hypeData, setHypeData] = useState<HypeData[]>([]);
+
+  const updateItem = (index: number, x: number, y: number, vx: number, vy: number) => {
+    setHypeData(prev => prev.map((item, i) => 
+      i === index ? { ...item, x, y, vx, vy } : item
+    ));
+  };
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Load CSV data using papaparse
+    fetch('/src/components/AgenticAIWorkshop/hype.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff', '#00d2d3', '#ff6348', '#2ed573', '#ffa502', '#e17055', '#74b9ff', '#fd79a8', '#fdcb6e', '#00b894', '#e84393', '#55a3ff', '#26de81', '#fc5c65'];
+        
+        Papa.parse(csvText, {
+          header: true,
+          complete: (results) => {
+            const data = (results.data as CSVRow[])
+              .filter((row: CSVRow) => row.Quote_Description && row.Hype_Value)
+              .map((row: CSVRow, index: number) => {
+                const hype = parseInt(row.Hype_Value || '0') || 0;
+                const size = 12 + (hype / 100) * 20;
+                const isMobile = window.innerWidth <= 768;
+                const maxX = isMobile ? 300 : 900;
+                const maxY = isMobile ? 500 : 800;
+                const centerX = maxX / 2;
+                const centerY = maxY / 2;
+                const x = Math.random() * maxX;
+                const y = Math.random() * maxY;
+                
+                // Initial outward push from center
+                const dx = x - centerX;
+                const dy = y - centerY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const pushForce = 3;
+                
+                return {
+                  quote: (row.Quote_Description || '').replace(/"/g, ''),
+                  speaker: row.Person_Organization || 'Unknown',
+                  hype,
+                  url: row.Direct_Link || '#',
+                  color: colors[index % colors.length],
+                  size,
+                  x,
+                  y,
+                  vx: distance > 0 ? (dx / distance) * pushForce : (Math.random() - 0.5) * 2,
+                  vy: distance > 0 ? (dy / distance) * pushForce : (Math.random() - 0.5) * 2
+                };
+              });
+            
+            setHypeData(data);
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error loading CSV:', error);
+        setHypeData([
+          { 
+            quote: 'AI agents will transform the workforce', 
+            speaker: 'Tech Leader',
+            hype: 100, 
+            color: '#ff6b6b', 
+            url: '#',
+            size: 32,
+            x: 450,
+            y: 400,
+            vx: 1,
+            vy: 1
+          }
+        ]);
+      });
   }, []);
 
   const sessions = [
@@ -361,6 +582,21 @@ const AgenticAIWorkshop = () => {
                 Join the Workshop
               </Link>
             </div>
+          </div>
+        </div>
+
+        <div className="word-cloud-section">
+          <h2>Inspect the Hype</h2>
+          <div className="word-cloud">
+            {hypeData.map((item, index) => (
+              <AnimatedQuote 
+                key={index} 
+                item={item} 
+                allItems={hypeData}
+                index={index} 
+                onUpdate={updateItem}
+              />
+            ))}
           </div>
         </div>
       </div>
