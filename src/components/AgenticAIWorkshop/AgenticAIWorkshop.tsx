@@ -166,7 +166,7 @@ const AgenticAIWorkshop = () => {
     setIsVisible(true);
     
     // Load CSV data using papaparse
-    fetch('/src/components/AgenticAIWorkshop/hype.csv')
+    fetch('/hype.csv')
       .then(response => response.text())
       .then(csvText => {
         const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff', '#00d2d3', '#ff6348', '#2ed573', '#ffa502', '#e17055', '#74b9ff', '#fd79a8', '#fdcb6e', '#00b894', '#e84393', '#55a3ff', '#26de81', '#fc5c65'];
