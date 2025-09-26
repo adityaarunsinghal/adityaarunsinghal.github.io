@@ -8,6 +8,7 @@ import RegistrationForm from '@/components/RegistrationForm';
 import { OldStaticWebsite } from '@/components/OldStaticWebsite/OldStaticWebsite';
 import PrivateRoute from '@/components/PrivateRoute';
 import Login from '@/components/Login/Login';
+import ResumeRedirect from '@/components/ResumeRedirect';
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
         <RegistrationForm />
       </ErrorBoundary>
     ),
+  },
+  {
+    path: '/latest-resume',
+    element: <ResumeRedirect />,
   },
   {
     path: '/*',
