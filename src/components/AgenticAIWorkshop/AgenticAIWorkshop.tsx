@@ -243,53 +243,53 @@ const AgenticAIWorkshop = () => {
     {
       date: 'Oct 1',
       title: 'Building the Foundation',
-      subtitle: 'Basic Tools & Time-Awareness',
-      topics: ['MCP fundamentals & tool creation', 'Time-aware agent behavior', 'Live Claude Desktop integration'],
-      highlight: 'Build your first intelligent news agent'
+      subtitle: 'From LLM Calls to MCP Tools',
+      topics: ['LLM evolution & tool use fundamentals', 'MCP introduction & server setup', 'Building your first newspaper agent', 'Anti-patterns and teaching moments'],
+      highlight: 'Watch agents come to life through live demonstrations'
     },
     {
       date: 'Oct 8', 
-      title: 'Adding Memory',
-      subtitle: 'Contextual Memory & User Interaction',
-      topics: ['Vector memory systems', 'User elicitation patterns', 'Interest tracking & connections'],
-      highlight: 'Create agents that learn and remember'
+      title: 'Adding Memory & Context',
+      subtitle: 'Vector Storage & Conversation Management',
+      topics: ['Context bursting problems & solutions', 'ChromaDB for vector memory', 'MCP sampling and elicitation features', 'Conversation compaction strategies'],
+      highlight: 'Solve real context management challenges'
     },
     {
       date: 'Oct 15',
-      title: 'Multi-Agent Systems', 
-      subtitle: 'Predictive Multi-Agent Collaboration',
-      topics: ['Multi-agent orchestration', 'Predictive intelligence', 'Agent collaboration patterns'],
-      highlight: 'Build collaborative agent ecosystems'
+      title: 'Multi-Agent Collaboration', 
+      subtitle: 'Predictive Intelligence & Agent Orchestration',
+      topics: ['Multi-agent newspaper personalization', 'Predictive intelligence patterns', 'Production hosting options survey', 'Agent collaboration workflows'],
+      highlight: 'Build collaborative newspaper creation system'
     },
     {
       date: 'Oct 22',
       title: 'Student Showcases',
       subtitle: 'Demo Your Creations',
-      topics: ['Student presentations', 'Peer feedback', 'Advanced patterns & next steps'],
-      highlight: 'Show off what you built'
+      topics: ['Student presentations', 'Peer feedback sessions', 'Advanced patterns & next steps', 'Production deployment strategies'],
+      highlight: 'Present your personalized agents'
     }
   ];
 
   const features = [
     {
       icon: '🧠',
-      title: 'Intelligence Amplification',
-      description: 'Build agents that make you smarter, not just faster'
+      title: 'Live Demonstrations',
+      description: 'Watch real agents built through pre-written Jupyter notebooks that run with one click'
     },
     {
       icon: '🔧',
       title: 'Model Context Protocol',
-      description: 'Master the cutting-edge standard for AI tool integration'
+      description: 'Master MCP through FastAgent, Copilot, and Cursor integrations'
     },
     {
       icon: '⚡',
-      title: 'Live Coding',
-      description: 'Watch real agents come to life in interactive sessions'
+      title: 'Technical Story-telling',
+      description: 'Laptops closed - observe, discuss, and learn through guided demonstrations'
     },
     {
       icon: '🎯',
-      title: 'Personal Projects',
-      description: 'Build agents for your actual needs, not toy examples'
+      title: 'Newspaper Agent Project',
+      description: 'Build a personalized news application with collaborative agents'
     }
   ];
 
@@ -304,20 +304,20 @@ const AgenticAIWorkshop = () => {
             <span className="gradient-text">Agentic AI Workshop</span>
           </h1>
           <p className="workshop-subtitle">
-            The Future of AI Interaction. Master cutting-edge Model Context Protocol to build intelligent agents that adapt, remember, and collaborate.
+            Master cutting-edge Model Context Protocol through live demonstrations. Build a personalized newspaper creation application using two collaborative agents.
           </p>
           <div className="hero-stats">
             <div className="stat">
-              <span className="stat-number">4</span>
-              <span className="stat-label">Sessions</span>
+              <span className="stat-number">3+1</span>
+              <span className="stat-label">Sessions + Showcase</span>
             </div>
             <div className="stat">
               <span className="stat-number">90</span>
               <span className="stat-label">Minutes Each</span>
             </div>
             <div className="stat">
-              <span className="stat-number">2</span>
-              <span className="stat-label">Personal Agents</span>
+              <span className="stat-number">1</span>
+              <span className="stat-label">News Agent Project</span>
             </div>
           </div>
           <div className="workshop-details">
@@ -359,7 +359,7 @@ const AgenticAIWorkshop = () => {
               Agentic AI is all the buzz in 2025, both for businesses and employers. It refers to AI systems that can autonomously accomplish specific goals with limited supervision. These AI agents use tools, maintain memory, and mimic human decision-making to solve problems in real time, adapting their behavior based on context.
             </p>
             <p className="intro-highlight">
-              Unlike traditional coding bootcamps, this is a laptops-closed <strong>"technical story-telling"</strong> experience where you'll watch agents come to life through live demonstrations—then create your own as homework each week.
+              This is a <strong>"technical story-telling"</strong> experience where you'll watch agents come to life through live demonstrations using pre-written Jupyter notebooks—then build your own newspaper agent as optional homework each week.
             </p>
           </div>
         </div>
@@ -426,11 +426,11 @@ const AgenticAIWorkshop = () => {
         </div>
 
         <div className="tech-stack-section">
-          <h2>Tech Stack & Benefits</h2>
-          <p className="tech-intro">Modern tools for building production-ready agents</p>
+          <h2>Tech Stack & Development Environment</h2>
+          <p className="tech-intro">Pre-written Jupyter notebooks and modern MCP tools</p>
           <div className="tech-benefits-grid">
             <div className="tech-column">
-              <h3>Tools You'll Learn</h3>
+              <h3>Tools & Platforms</h3>
               <div className="tech-grid">
                 <div className="tech-item">
                   <span className="tech-icon">🔧</span>
@@ -441,6 +441,10 @@ const AgenticAIWorkshop = () => {
                   <span>FastAgent</span>
                 </div>
                 <div className="tech-item">
+                  <span className="tech-icon">💻</span>
+                  <span>Copilot & Cursor</span>
+                </div>
+                <div className="tech-item">
                   <span className="tech-icon">🧠</span>
                   <span>ChromaDB</span>
                 </div>
@@ -448,22 +452,34 @@ const AgenticAIWorkshop = () => {
                   <span className="tech-icon">⚡</span>
                   <span>Free OpenRouter Credits</span>
                 </div>
+                <div className="tech-item">
+                  <span className="tech-icon">📓</span>
+                  <span>Jupyter Notebooks</span>
+                </div>
               </div>
             </div>
             <div className="tech-column">
-              <h3>Real-World Applications</h3>
+              <h3>Key Learning Areas</h3>
               <div className="applications-list">
                 <div className="application-item">
-                  <span className="app-icon">🔬</span>
-                  <span>Research automation</span>
+                  <span className="app-icon">🔧</span>
+                  <span>Context bursting solutions</span>
                 </div>
                 <div className="application-item">
-                  <span className="app-icon">💼</span>
-                  <span>Job application workflows</span>
+                  <span className="app-icon">🧠</span>
+                  <span>Conversation management</span>
                 </div>
                 <div className="application-item">
                   <span className="app-icon">⚡</span>
-                  <span>Personal productivity systems</span>
+                  <span>MCP sampling & elicitation</span>
+                </div>
+                <div className="application-item">
+                  <span className="app-icon">🏗️</span>
+                  <span>Production hosting patterns</span>
+                </div>
+                <div className="application-item">
+                  <span className="app-icon">⚠️</span>
+                  <span>Anti-patterns & debugging</span>
                 </div>
               </div>
             </div>
@@ -474,24 +490,24 @@ const AgenticAIWorkshop = () => {
           <h2>Workshop Structure</h2>
           <div className="format-grid">
             <div className="format-card">
+              <div className="format-icon">🎬</div>
+              <h3>15 Minutes Pre-Discussion</h3>
+              <p>Session kickoff with community discussion and context setting.</p>
+            </div>
+            <div className="format-card">
               <div className="format-icon">📚</div>
-              <h3>60 Minutes Course Material</h3>
-              <p>Technical story-telling with live demonstrations and agent building.</p>
+              <h3>60 Minutes Live Demo</h3>
+              <p>Technical story-telling with live Jupyter notebook demonstrations.</p>
             </div>
             <div className="format-card">
               <div className="format-icon">❓</div>
-              <h3>30 Minutes Q&A</h3>
-              <p>Deep dive discussions and personalized guidance for your projects.</p>
+              <h3>15 Minutes Q&A</h3>
+              <p>Interactive discussion and personalized guidance for your projects.</p>
             </div>
             <div className="format-card">
               <div className="format-icon">🏠</div>
-              <h3>1-2 Hours Homework</h3>
-              <p>Weekly development time to build your personal news agent.</p>
-            </div>
-            <div className="format-card">
-              <div className="format-icon">🕐</div>
-              <h3>Friday Office Hours</h3>
-              <p>Personalized help and support for your agent development.</p>
+              <h3>Optional Homework</h3>
+              <p>Build your own newspaper agent using provided notebooks as foundation.</p>
             </div>
           </div>
         </div>
@@ -542,7 +558,7 @@ const AgenticAIWorkshop = () => {
               <div className="instructor-info">
                 <h3>Luca Chang</h3>
                 <p className="instructor-bio">
-                  Works in the <strong>AWS Agentic AI organization</strong> and has contributed code to the official <strong>MCP Python SDK</strong> as part of his role. Expert in building production-ready agentic systems.
+                  Works in the <strong>AWS Agentic AI organization</strong> and is a regular contributor to the <strong>MCP specification and SDKs</strong>. Expert in building production-ready agentic systems.
                 </p>
                 <a href="https://www.linkedin.com/in/luca-chang/" 
                    target="_blank" 
@@ -561,11 +577,11 @@ const AgenticAIWorkshop = () => {
             <div className="commitment-grid">
               <div className="commitment-item">
                 <span className="commitment-icon">✅</span>
-                <span>Attend all 4 sessions</span>
+                <span>Attend sessions</span>
               </div>
               <div className="commitment-item">
                 <span className="commitment-icon">💻</span>
-                <span>Complete homework projects</span>
+                <span>Engage with optional homework</span>
               </div>
               <div className="commitment-item">
                 <span className="commitment-icon">🤝</span>
@@ -573,19 +589,19 @@ const AgenticAIWorkshop = () => {
               </div>
               <div className="commitment-item">
                 <span className="commitment-icon">🚀</span>
-                <span>Present your final agent</span>
+                <span>Share your learnings</span>
               </div>
             </div>
             <p className="commitment-note">
-              This isn't a casual overview — it's an intensive workshop for serious builders.
+              A collaborative learning experience for builders interested in agentic AI.
             </p>
           </div>
         </div>
 
         <div className="cta-section">
           <div className="cta-content">
-            <h2>Ready to Build the Future?</h2>
-            <p>Join the CDS community in mastering agentic AI and position yourself at the forefront of the AI revolution.</p>
+            <h2>Ready to Explore Agentic AI?</h2>
+            <p>Join the CDS community in learning about agentic AI through hands-on demonstrations and collaborative exploration.</p>
             <div className="cta-buttons">
               <Link to="/agentic-ai-workshop/registration-form" className="primary-button large">
                 Join the Workshop
