@@ -339,13 +339,13 @@ const AgenticAIWorkshop = () => {
               Join the Workshop
             </Link>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <a href="https://github.com/adityaarunsinghal/news-agent/" 
+              <a href="https://github.com/adityaarunsinghal/agentic-ai-workshop-2025" 
                  target="_blank" 
                  rel="noopener noreferrer" 
                  className="secondary-button">
                 View Repository
               </a>
-              <span style={{ fontSize: '0.8rem', opacity: '0.6', marginTop: '5px' }}>(temporarily locked)</span>
+              {/* <span style={{ fontSize: '0.8rem', opacity: '0.6', marginTop: '5px' }}>(temporarily locked)</span> */}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
               <a href="mailto:adityaarunsinghal@gmail.com?subject=Planning to come to office hours - <your name>&body=Hey Adi,%0D%0A%0D%0APlanning to come to office hours this Friday at 4:30pm ET (or asking if possible to talk at a different time for a bit).%0D%0A%0D%0AHere is a bit about me: <fill this>"
