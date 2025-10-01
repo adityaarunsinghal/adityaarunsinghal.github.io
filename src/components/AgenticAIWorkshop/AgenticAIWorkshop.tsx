@@ -354,6 +354,9 @@ const AgenticAIWorkshop = () => {
               </a>
               <span style={{ fontSize: '0.8rem', opacity: '0.6', marginTop: '5px' }}>(Fridays 4:30pm ET)</span>
             </div>
+            <Link to="/agentic-ai-workshop/feedback" className="secondary-button">
+              Workshop Feedback
+            </Link>
           </div>
         </div>
       </div>

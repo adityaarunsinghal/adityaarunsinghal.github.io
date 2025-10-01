@@ -9,6 +9,7 @@ import { OldStaticWebsite } from '@/components/OldStaticWebsite/OldStaticWebsite
 import PrivateRoute from '@/components/PrivateRoute';
 import Login from '@/components/Login/Login';
 import ResumeRedirect from '@/components/ResumeRedirect';
+import FeedbackForm from '@/components/FeedbackForm';
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,14 @@ const router = createBrowserRouter([
     element: (
       <ErrorBoundary>
         <RegistrationForm />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: '/agentic-ai-workshop/feedback',
+    element: (
+      <ErrorBoundary>
+        <FeedbackForm />
       </ErrorBoundary>
     ),
   },
