@@ -81,7 +81,7 @@ const LovesIngy = () => {
   };
 
   const triggerHeartShower = () => {
-    const heart = confetti.shapeFromText({ text: '💖', scalar: 2 });
+    const heart = confetti.shapeFromText({ text: '💩', scalar: 2 });
     
     confetti({
       shapes: [heart],
@@ -116,9 +116,9 @@ const LovesIngy = () => {
       <button 
         className="heart-button"
         onClick={triggerHeartShower}
-        title="💖"
+        title="💩"
       >
-        💖
+        💩
       </button>
       <div className="container">
         {error && <div style={{ color: 'red', marginBottom: '20px' }}>{error}</div>}
