@@ -91,10 +91,10 @@ const router = createBrowserRouter([
     path: '/latest-resume',
     element: <ResumeRedirect />,
   },
-  {
-    path: '/linkedin',
+  ...['linkedin', 'LinkedIn', 'LINKEDIN'].map(path => ({
+    path: `/${path}`,
     element: <LinkedInRedirect />,
-  },
+  })),
   {
     path: '/*',
     element: <Navigate to='/404' replace />,
