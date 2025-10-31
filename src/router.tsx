@@ -9,6 +9,7 @@ import { OldStaticWebsite } from '@/components/OldStaticWebsite/OldStaticWebsite
 import PrivateRoute from '@/components/PrivateRoute';
 import Login from '@/components/Login/Login';
 import ResumeRedirect from '@/components/ResumeRedirect';
+import LinkedInRedirect from '@/components/LinkedInRedirect';
 import FeedbackForm from '@/components/FeedbackForm';
 
 const router = createBrowserRouter([
@@ -89,6 +90,10 @@ const router = createBrowserRouter([
   {
     path: '/latest-resume',
     element: <ResumeRedirect />,
+  },
+  {
+    path: '/linkedin',
+    element: <LinkedInRedirect />,
   },
   {
     path: '/*',
