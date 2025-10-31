@@ -10,6 +10,9 @@ import PrivateRoute from '@/components/PrivateRoute';
 import Login from '@/components/Login/Login';
 import ResumeRedirect from '@/components/ResumeRedirect';
 import LinkedInRedirect from '@/components/LinkedInRedirect';
+import InstagramRedirect from '@/components/InstagramRedirect';
+import FacebookRedirect from '@/components/FacebookRedirect';
+import YouTubeRedirect from '@/components/YouTubeRedirect';
 import FeedbackForm from '@/components/FeedbackForm';
 
 const router = createBrowserRouter([
@@ -21,14 +24,14 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     ),
   },
-  {
-    path: '/login',
+  ...['login', 'Login', 'LOGIN'].map(path => ({
+    path: `/${path}`,
     element: (
       <ErrorBoundary>
         <Login />
       </ErrorBoundary>
     ),
-  },
+  })),
   {
     path: '/private',
     element: (
@@ -87,13 +90,25 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     ),
   },
-  {
-    path: '/latest-resume',
+  ...['latest-resume', 'Latest-Resume', 'LATEST-RESUME'].map(path => ({
+    path: `/${path}`,
     element: <ResumeRedirect />,
-  },
+  })),
   ...['linkedin', 'LinkedIn', 'LINKEDIN'].map(path => ({
     path: `/${path}`,
     element: <LinkedInRedirect />,
+  })),
+  ...['instagram', 'Instagram', 'INSTAGRAM'].map(path => ({
+    path: `/${path}`,
+    element: <InstagramRedirect />,
+  })),
+  ...['facebook', 'Facebook', 'FACEBOOK'].map(path => ({
+    path: `/${path}`,
+    element: <FacebookRedirect />,
+  })),
+  ...['youtube', 'YouTube', 'YOUTUBE'].map(path => ({
+    path: `/${path}`,
+    element: <YouTubeRedirect />,
   })),
   {
     path: '/*',
