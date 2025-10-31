@@ -343,7 +343,7 @@ const AgenticAIWorkshop = () => {
                  target="_blank" 
                  rel="noopener noreferrer" 
                  className="secondary-button">
-                View Repository
+                View Public Repository
               </a>
               {/* <span style={{ fontSize: '0.8rem', opacity: '0.6', marginTop: '5px' }}>(temporarily locked)</span> */}
             </div>
