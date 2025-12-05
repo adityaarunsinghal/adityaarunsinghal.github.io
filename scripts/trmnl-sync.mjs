@@ -2,6 +2,13 @@
 import admin from 'firebase-admin';
 
 // Initialize Firebase Admin with service account from environment
+if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+  throw new Error('FIREBASE_SERVICE_ACCOUNT environment variable is required');
+}
+if (!process.env.TRMNL_WEBHOOK_URL) {
+  throw new Error('TRMNL_WEBHOOK_URL environment variable is required');
+}
+
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 const TRMNL_WEBHOOK_URL = process.env.TRMNL_WEBHOOK_URL;
 
@@ -39,6 +46,7 @@ async function main() {
     console.log(`📊 Total messages: ${messageCount}`);
     
     // 2. Fetch countdown config
+    const now = new Date();
     const configDoc = await db.collection('trmnl-config').doc('countdowns').get();
     
     let countdowns = [];
@@ -78,13 +86,19 @@ async function main() {
       }
     };
     
-    // Check payload size
-    const payloadSize = JSON.stringify(payload).length;
+    // Check payload size and truncate if needed
+    let payloadSize = JSON.stringify(payload).length;
     console.log(`📦 Payload size: ${payloadSize} bytes (limit: 2048)`);
     
     if (payloadSize > 2048) {
       console.warn('⚠️ Payload exceeds 2KB limit, truncating message...');
       payload.merge_variables.love_message = latestMessage.substring(0, 150) + '...';
+      payloadSize = JSON.stringify(payload).length;
+      console.log(`📦 New payload size: ${payloadSize} bytes`);
+      
+      if (payloadSize > 2048) {
+        throw new Error(`Payload still too large after truncation: ${payloadSize} bytes`);
+      }
     }
     
     // 4. POST to TRMNL webhook
