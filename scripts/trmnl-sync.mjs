@@ -42,7 +42,7 @@ async function main() {
       messageCount = countSnapshot.data().count;
     }
     
-    console.log(`📝 Latest message: "${latestMessage.substring(0, 50)}${latestMessage.length > 50 ? '...' : ''}"`);
+    console.log(`📝 Latest message: [fetched]`);
     console.log(`📊 Total messages: ${messageCount}`);
     
     // 2. Fetch countdown config
@@ -73,7 +73,7 @@ async function main() {
         .slice(0, 4);  // Max 4 countdowns to fit on screen
     }
     
-    console.log('📅 Countdowns:', JSON.stringify(countdowns, null, 2));
+    console.log(`📅 Countdowns: [${countdowns.length} events]`);
     
     // 3. Build payload for TRMNL (must be under 2KB)
     const payload = {
