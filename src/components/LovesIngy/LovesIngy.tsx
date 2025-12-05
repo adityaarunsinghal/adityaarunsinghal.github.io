@@ -15,6 +15,8 @@ const LovesIngy = () => {
   const [newLoveMessage, setNewLoveMessage] = useState('');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [shake, setShake] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     const loveMessagesRef = collection(db, 'love-ingy-messages');
@@ -42,34 +44,45 @@ const LovesIngy = () => {
   }, []);
 
   const handleAddLoveMessage = async () => {
-    if (newLoveMessage.trim() !== '') {
+    if (newLoveMessage.trim() === '') {
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+      return;
+    }
+    
+    try {
+      const loveMessagesRef = collection(db, 'love-ingy-messages');
+      let messageData = {
+        message: newLoveMessage,
+        timestamp: serverTimestamp(),
+      };
+
+      // Check if newLoveMessage is a valid JSON
       try {
-        const loveMessagesRef = collection(db, 'love-ingy-messages');
-        let messageData = {
-          message: newLoveMessage,
-          timestamp: serverTimestamp(),
-        };
-
-        // Check if newLoveMessage is a valid JSON
-        try {
-          const parsedMessage = JSON.parse(newLoveMessage);
-          if (parsedMessage && typeof parsedMessage === 'object') {
-            messageData = {
-              message: parsedMessage.text,
-              timestamp: new Timestamp(parsedMessage.timestamp / 1000, parsedMessage.timestamp % 1000),
-            };
-          }
-        } catch (e) {
-          // Not a JSON, proceed with original message
+        const parsedMessage = JSON.parse(newLoveMessage);
+        if (parsedMessage && typeof parsedMessage === 'object') {
+          messageData = {
+            message: parsedMessage.text,
+            timestamp: new Timestamp(parsedMessage.timestamp / 1000, parsedMessage.timestamp % 1000),
+          };
         }
+      } catch (e) {
+        // Not a JSON, proceed with original message
+      }
 
-        await addDoc(loveMessagesRef, messageData);
-        setNewLoveMessage('');
-      } catch (error: unknown) {
-        console.error('Error adding message:', error);
-        if (error && typeof error === 'object' && 'code' in error && error.code === 'permission-denied') {
-          alert('Access denied. You do not have permission to add messages.');
-        }
+      await addDoc(loveMessagesRef, messageData);
+      setNewLoveMessage('');
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2000);
+      
+      // Milestone celebration
+      if ((loveMessages.length + 1) % 10 === 0) {
+        triggerMilestoneCelebration();
+      }
+    } catch (error: unknown) {
+      console.error('Error adding message:', error);
+      if (error && typeof error === 'object' && 'code' in error && error.code === 'permission-denied') {
+        alert('Access denied. You do not have permission to add messages.');
       }
     }
   };
@@ -81,7 +94,7 @@ const LovesIngy = () => {
   };
 
   const triggerHeartShower = () => {
-    const heart = confetti.shapeFromText({ text: '💩', scalar: 2 });
+    const heart = confetti.shapeFromText({ text: '💛', scalar: 2 });
     
     confetti({
       shapes: [heart],
@@ -110,23 +123,39 @@ const LovesIngy = () => {
     }, 200);
   };
 
+  const triggerMilestoneCelebration = () => {
+    const heart = confetti.shapeFromText({ text: '💛', scalar: 2 });
+    confetti({
+      shapes: [heart],
+      particleCount: 50,
+      spread: 360,
+      origin: { y: 0.5 },
+      scalar: 2,
+      gravity: 1,
+      ticks: 300
+    });
+  };
+
   return (
     <>
       <div className='love-ingy-body'></div>
       <button 
         className="heart-button"
         onClick={triggerHeartShower}
-        title="💩"
+        title="💛"
       >
-        💩
+        💛
       </button>
       <div className="container">
         {error && <div style={{ color: 'red', marginBottom: '20px' }}>{error}</div>}
+        <div className="message-counter">
+          💌 {loveMessages.length} {loveMessages.length === 1 ? 'message' : 'messages'}
+        </div>
         <div>
           {loveMessages.map(({ id, message, timestamp }, index) => (
             <div
               key={id}
-              className="love-message-container"
+              className="love-message-container slide-in"
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
@@ -137,7 +166,7 @@ const LovesIngy = () => {
             </div>
           ))}
         </div>
-        <div className="add-message-container">
+        <div className={`add-message-container ${shake ? 'shake' : ''}`}>
           <input
             className='love-ingy-input'
             type="text"
@@ -146,7 +175,9 @@ const LovesIngy = () => {
             onChange={(e) => setNewLoveMessage(e.target.value)}
             onKeyPress={handleKeyPress}
           />
-          <button className='love-ingy-button' onClick={handleAddLoveMessage}>Add Love Message</button>
+          <button className='love-ingy-button' onClick={handleAddLoveMessage}>
+            {showSuccess ? '✓' : 'Add Love Message'}
+          </button>
         </div>
       </div>
     </>
