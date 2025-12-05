@@ -28,7 +28,12 @@ interface CountdownEvent {
   date: string; // YYYY-MM-DD format
 }
 
-const EMOJI_OPTIONS = ['🎄', '🎂', '💍', '✈️', '🎉', '💝', '🌴', '🎓', '👶', '🏠', '💐', '🎁', '🏖️', '💒', '🎪', '🎭'];
+const EMOJI_OPTIONS = [
+  '🎄', '🎂', '💍', '✈️', '🎉', '💝', '🌴', '🎓', '👶', '🏠', '💐', '🎁', 
+  '🏖️', '💒', '🎪', '🎭', '🎸', '⚽', '🎮', '📚', '🍕', '☕', '🌟', '🔥',
+  '💻', '🎨', '🎬', '🎵', '🏆', '🎯', '🚀', '⭐', '💎', '🌈', '🦄', '🐶',
+  '🐱', '🦋', '🌸', '🌺', '🌻', '🌹', '🍰', '🧁', '🍾', '🥂', '🎊', '🎈'
+];
 
 const LovesIngy = () => {
   const [loveMessages, setLoveMessages] = useState<LoveMessage[]>([]);
@@ -246,7 +251,7 @@ const LovesIngy = () => {
         onClick={() => setShowCountdowns(!showCountdowns)}
         title="Countdowns"
       >
-        📅
+        🗓️
       </button>
       
       <div className="container">
