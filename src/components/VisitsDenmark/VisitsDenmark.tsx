@@ -48,40 +48,55 @@ interface TranslationEntry {
   timestamp: number;
 }
 
+// Constants
 const MAX_TRANSLATIONS = 50;
-const TRANSLATION_TIMEOUT = 10000;
-const TOKEN_CACHE_DURATION = 3500000; // 58 minutes
+const TRANSLATION_TIMEOUT_MS = 10000;
+const TOKEN_CACHE_DURATION_MS = 58 * 60 * 1000; // 58 minutes
+const QUEUE_DELAY_MS = 500;
+const FAST_MODE_INTERVAL_MS = 5000;
+const RATE_LIMIT_WINDOW_SEC = 60;
 
 export default function VisitsDenmark() {
   const [translations, setTranslations] = useState<TranslationEntry[]>([]);
   const [isListening, setIsListening] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
   const [error, setError] = useState('');
+  const [notification, setNotification] = useState('');
   const [language, setLanguage] = useState<'da-DK' | 'hi-IN'>('da-DK');
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [speechMode, setSpeechMode] = useState<'fast' | 'phrase'>('phrase');
+  const [pendingText, setPendingText] = useState('');
   
   const pendingTextRef = useRef('');
-  const fastModeTimerRef = useRef<NodeJS.Timeout>();
+  const lastSentTextRef = useRef('');
   const translationQueueRef = useRef<Array<{ text: string; timestamp: number }>>([]);
   const isProcessingRef = useRef(false);
-  const recognitionRef = useRef<{ recognition: SpeechRecognition; isListeningRef: { current: boolean } } | null>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const isListeningRef = useRef(false);
   const tokenCacheRef = useRef<{ token: string; expiry: number } | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const lastTranslationRef = useRef('');
   const historyEndRef = useRef<HTMLDivElement>(null);
-  const translateRef = useRef<(text: string) => Promise<void>>();
+  const speechModeRef = useRef(speechMode);
+  const languageRef = useRef(language);
   
   const { user } = useAuth();
+
+  // Keep refs in sync
+  useEffect(() => { speechModeRef.current = speechMode; }, [speechMode]);
+  useEffect(() => { languageRef.current = language; }, [language]);
+
+  // Show notification helper
+  const showNotification = useCallback((msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(''), 2500);
+  }, []);
 
   // Online/offline detection
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
-    
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-    
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
@@ -95,19 +110,13 @@ export default function VisitsDenmark() {
 
   const getAuthToken = useCallback(async () => {
     const now = Date.now();
-    
     if (tokenCacheRef.current && tokenCacheRef.current.expiry > now) {
       return tokenCacheRef.current.token;
     }
-    
     const token = await user?.getIdToken();
     if (token) {
-      tokenCacheRef.current = {
-        token,
-        expiry: now + TOKEN_CACHE_DURATION
-      };
+      tokenCacheRef.current = { token, expiry: now + TOKEN_CACHE_DURATION_MS };
     }
-    
     return token;
   }, [user]);
 
@@ -117,22 +126,16 @@ export default function VisitsDenmark() {
     isProcessingRef.current = true;
     const item = translationQueueRef.current.shift()!;
     
-    lastTranslationRef.current = item.text;
     setIsTranslating(true);
     setError('');
-    console.log('[VisitsDenmark] Processing queue item, remaining:', translationQueueRef.current.length);
 
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
 
-    const timeoutId = setTimeout(() => {
-      abortControllerRef.current?.abort();
-    }, TRANSLATION_TIMEOUT);
+    const timeoutId = setTimeout(() => abortControllerRef.current?.abort(), TRANSLATION_TIMEOUT_MS);
 
     try {
       const token = await getAuthToken();
-      console.log('[VisitsDenmark] Got auth token, making API request');
-
       const response = await fetch(
         'https://us-central1-aditya-singhal-website.cloudfunctions.net/translateText',
         {
@@ -141,25 +144,20 @@ export default function VisitsDenmark() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ text: item.text, sourceLanguage: language.split('-')[0] }),
+          body: JSON.stringify({ text: item.text, sourceLanguage: languageRef.current.split('-')[0] }),
           signal: abortControllerRef.current.signal
         }
       );
 
-      console.log('[VisitsDenmark] API response status:', response.status);
-      
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('[VisitsDenmark] API error:', response.status, errorData);
         if (response.status === 429) {
-          throw new Error('Rate limit exceeded. Please wait a moment.');
+          throw new Error(`Rate limit exceeded. Please wait ${RATE_LIMIT_WINDOW_SEC}s before trying again.`);
         }
         throw new Error(errorData.error || 'Translation failed');
       }
 
       const data = await response.json();
-      console.log('[VisitsDenmark] Translation successful:', data.translatedText);
-
       setTranslations(prev => {
         const updated = [...prev, {
           original: item.text,
@@ -169,14 +167,8 @@ export default function VisitsDenmark() {
         return updated.slice(-MAX_TRANSLATIONS);
       });
       
-      pendingTextRef.current = '';
-      lastTranslationRef.current = '';
-      console.log('[VisitsDenmark] Translation added to history');
-      
-      // Wait 500ms before processing next item
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, QUEUE_DELAY_MS));
     } catch (err) {
-      console.error('[VisitsDenmark] Translation error:', err);
       if (err instanceof Error) {
         if (err.name === 'AbortError') {
           setError('Translation timed out. Please try again.');
@@ -186,77 +178,76 @@ export default function VisitsDenmark() {
       } else {
         setError('Translation error. Please try again.');
       }
-      lastTranslationRef.current = '';
+      // Re-queue failed item to not lose text
+      translationQueueRef.current.unshift(item);
     } finally {
       clearTimeout(timeoutId);
       setIsTranslating(false);
       isProcessingRef.current = false;
       
-      // Process next item if queue not empty
       if (translationQueueRef.current.length > 0) {
         processQueue();
       }
     }
-  }, [getAuthToken, language]);
+  }, [getAuthToken]);
 
-  const translate = useCallback(async (text: string) => {
-    console.log('[VisitsDenmark] translate() called with text:', text);
+  const queueTranslation = useCallback((text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
     
-    if (!text.trim() || text === lastTranslationRef.current) {
-      console.log('[VisitsDenmark] Skipping translation - empty or duplicate');
-      return;
-    }
+    // Avoid duplicate sends
+    if (trimmed === lastSentTextRef.current) return;
+    lastSentTextRef.current = trimmed;
+    
     if (!isOnline) {
-      console.log('[VisitsDenmark] Offline - cannot translate');
-      setError('No internet connection');
+      setError('No internet connection. Text saved, will retry when online.');
       return;
     }
 
-    // Add to queue with timestamp
-    const timestamp = Date.now();
-    translationQueueRef.current.push({ text, timestamp });
-    console.log('[VisitsDenmark] Added to queue, position:', translationQueueRef.current.length);
-
-    // Process queue if not already processing
+    translationQueueRef.current.push({ text: trimmed, timestamp: Date.now() });
+    
+    // Clear pending since we've queued it
+    pendingTextRef.current = '';
+    setPendingText('');
+    
     if (!isProcessingRef.current) {
       processQueue();
     }
   }, [isOnline, processQueue]);
 
-  // Keep translate ref updated
-  useEffect(() => {
-    translateRef.current = translate;
-  }, [translate]);
-
   // Fast mode timer
   useEffect(() => {
-    if (speechMode === 'fast' && isListening) {
-      const interval = setInterval(() => {
-        if (pendingTextRef.current && pendingTextRef.current.trim()) {
-          console.log('[VisitsDenmark] Fast mode: auto-sending after 2 seconds');
-          translateRef.current?.(pendingTextRef.current);
-          pendingTextRef.current = '';
-        }
-      }, 2000);
-      
-      fastModeTimerRef.current = interval as unknown as NodeJS.Timeout;
-      return () => clearInterval(interval);
-    }
-  }, [speechMode, isListening]);
+    if (speechMode !== 'fast' || !isListening) return;
+    
+    const interval = setInterval(() => {
+      const text = pendingTextRef.current;
+      if (text && text.trim() && text.trim() !== lastSentTextRef.current) {
+        queueTranslation(text);
+      }
+    }, FAST_MODE_INTERVAL_MS);
+    
+    return () => clearInterval(interval);
+  }, [speechMode, isListening, queueTranslation]);
 
-  // Test translation on mount and language change
+  // Retry queue when coming back online
+  useEffect(() => {
+    if (isOnline && translationQueueRef.current.length > 0 && !isProcessingRef.current) {
+      processQueue();
+    }
+  }, [isOnline, processQueue]);
+
+  // Test translation on mount
   useEffect(() => {
     const testText = language === 'da-DK' ? 'Hej' : 'नमस्ते';
-    translate(testText);
-  }, [language, translate]);
+    queueTranslation(testText);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Speech recognition setup
   useEffect(() => {
-    console.log('[VisitsDenmark] Setting up speech recognition, language:', language);
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (!SpeechRecognition) {
-      console.error('[VisitsDenmark] Speech recognition not supported');
       setError('Speech recognition not supported. Please use Chrome on Android.');
       return;
     }
@@ -265,31 +256,22 @@ export default function VisitsDenmark() {
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = language;
-    const isListeningRef = { current: false };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const result = event.results[event.results.length - 1];
       const text = result[0].transcript;
-      console.log('[VisitsDenmark] Speech result:', text, 'isFinal:', result.isFinal, 'mode:', speechMode);
 
+      // Update pending text display
+      pendingTextRef.current = text;
+      setPendingText(text);
+
+      // Always translate on final (both modes)
       if (result.isFinal) {
-        console.log('[VisitsDenmark] Final result');
-        // In phrase mode, translate immediately
-        if (speechMode === 'phrase') {
-          translateRef.current?.(text);
-          pendingTextRef.current = '';
-        } else {
-          // In fast mode, store for timer but don't translate here
-          pendingTextRef.current = text;
-        }
-      } else {
-        console.log('[VisitsDenmark] Interim result, storing as pending');
-        pendingTextRef.current = text;
+        queueTranslation(text);
       }
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.error('[VisitsDenmark] Speech recognition error:', event.error);
       if (event.error === 'no-speech') return;
       setError(`Speech recognition error: ${event.error}`);
       setIsListening(false);
@@ -297,91 +279,88 @@ export default function VisitsDenmark() {
     };
 
     recognition.onend = () => {
-      console.log('[VisitsDenmark] Speech recognition ended, isListening:', isListeningRef.current);
       if (isListeningRef.current) {
         try {
-          console.log('[VisitsDenmark] Restarting speech recognition');
+          recognition.lang = languageRef.current; // Use latest language
           recognition.start();
-        } catch (err) {
-          console.error('[VisitsDenmark] Failed to restart recognition:', err);
+        } catch {
           setIsListening(false);
           isListeningRef.current = false;
         }
       }
     };
 
-    recognitionRef.current = { recognition, isListeningRef };
-    console.log('[VisitsDenmark] Speech recognition setup complete');
+    recognitionRef.current = recognition;
 
-    return () => {
-      console.log('[VisitsDenmark] Cleaning up speech recognition');
-      isListeningRef.current = false;
-      recognition.stop();
-      if (fastModeTimerRef.current) {
-        clearInterval(fastModeTimerRef.current as unknown as number);
-      }
-      recognitionRef.current = null;
-    };
-  }, [language, speechMode]);
-
-  const toggleListening = () => {
-    console.log('[VisitsDenmark] toggleListening() called, current state:', isListening);
-    if (!recognitionRef.current) {
-      console.error('[VisitsDenmark] No recognition object available');
-      return;
+    // If already listening, restart with new language
+    if (isListeningRef.current) {
+      recognition.start();
     }
 
-    const { recognition, isListeningRef } = recognitionRef.current;
+    return () => {
+      recognition.stop();
+      recognitionRef.current = null;
+    };
+  }, [language, queueTranslation]);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) return;
 
     if (isListening) {
-      console.log('[VisitsDenmark] Stopping listening');
+      // Send any pending text before stopping
+      if (pendingTextRef.current.trim()) {
+        queueTranslation(pendingTextRef.current);
+      }
       isListeningRef.current = false;
-      recognition.stop();
+      recognitionRef.current.stop();
       setIsListening(false);
     } else {
       try {
-        console.log('[VisitsDenmark] Starting listening');
-        recognition.start();
+        recognitionRef.current.start();
         isListeningRef.current = true;
         setIsListening(true);
         setError('');
-        pendingTextRef.current = '';
-      } catch (err) {
-        console.error('[VisitsDenmark] Failed to start listening:', err);
+        lastSentTextRef.current = ''; // Reset duplicate detection on new session
+      } catch {
         setError('Failed to start listening');
       }
     }
   };
 
-  const forceTranslate = () => {
-    console.log('[VisitsDenmark] forceTranslate() called, pending text:', pendingTextRef.current);
-    if (pendingTextRef.current) {
-      translate(pendingTextRef.current);
+  const handleLanguageChange = (newLang: 'da-DK' | 'hi-IN') => {
+    // Save pending text before switch
+    if (pendingTextRef.current.trim()) {
+      queueTranslation(pendingTextRef.current);
     }
+    
+    setLanguage(newLang);
+    lastSentTextRef.current = ''; // Reset duplicate detection for new language
+    showNotification(`Switched to ${newLang === 'da-DK' ? 'Danish 🇩🇰' : 'Hindi 🇮🇳'}`);
+  };
+
+  const handleModeChange = (newMode: 'fast' | 'phrase') => {
+    // Save pending text before switch
+    if (pendingTextRef.current.trim()) {
+      queueTranslation(pendingTextRef.current);
+    }
+    
+    setSpeechMode(newMode);
+    showNotification(`Switched to ${newMode === 'phrase' ? 'Full-turn' : 'Fast Speech'} mode`);
   };
 
   const clearHistory = () => {
-    console.log('[VisitsDenmark] Clearing translation history');
     setTranslations([]);
-    lastTranslationRef.current = '';
+    lastSentTextRef.current = '';
   };
 
   return (
     <div className="visits-denmark-container">
+      {notification && <div className="notification-toast">{notification}</div>}
+      
       <div className="controls">
         <select 
           value={language} 
-          onChange={(e) => {
-            if (isListening) {
-              if (recognitionRef.current) {
-                recognitionRef.current.isListeningRef.current = false;
-                recognitionRef.current.recognition.stop();
-              }
-              setIsListening(false);
-            }
-            setLanguage(e.target.value as 'da-DK' | 'hi-IN');
-          }}
-          disabled={isListening}
+          onChange={(e) => handleLanguageChange(e.target.value as 'da-DK' | 'hi-IN')}
           className="language-select"
         >
           <option value="da-DK">🇩🇰 Danish</option>
@@ -397,14 +376,6 @@ export default function VisitsDenmark() {
         
         <button 
           className="btn-secondary"
-          onClick={forceTranslate}
-          disabled={!pendingTextRef.current || !isListening}
-        >
-          Force
-        </button>
-        
-        <button 
-          className="btn-secondary"
           onClick={clearHistory}
           disabled={translations.length === 0}
         >
@@ -412,33 +383,38 @@ export default function VisitsDenmark() {
         </button>
       </div>
 
-      <div className="force-word-control">
-        <label>
-          <span className="force-label">Speech mode:</span>
-          <div className="mode-toggle">
-            <button 
-              className={`mode-button ${speechMode === 'phrase' ? 'active' : ''}`}
-              onClick={() => setSpeechMode('phrase')}
-            >
-              Full-turn
-            </button>
-            <button 
-              className={`mode-button ${speechMode === 'fast' ? 'active' : ''}`}
-              onClick={() => setSpeechMode('fast')}
-            >
-              Fast Speech
-            </button>
-          </div>
-        </label>
+      <div className="speech-mode-control">
+        <span className="mode-label">Speech mode:</span>
+        <div className="mode-toggle">
+          <button 
+            className={`mode-button ${speechMode === 'phrase' ? 'active' : ''}`}
+            onClick={() => handleModeChange('phrase')}
+          >
+            Full-turn
+          </button>
+          <button 
+            className={`mode-button ${speechMode === 'fast' ? 'active' : ''}`}
+            onClick={() => handleModeChange('fast')}
+          >
+            Fast Speech
+          </button>
+        </div>
         <p className="mode-description">
           {speechMode === 'phrase' 
-            ? 'Waits for complete turn (any length)' 
-            : 'Sends every 2 seconds (any length)'}
+            ? 'Translates when speaker pauses' 
+            : `Sends every ${FAST_MODE_INTERVAL_MS / 1000}s automatically`}
         </p>
       </div>
 
       {!isOnline && <div className="error-message">⚠️ No internet connection</div>}
       {error && <div className="error-message">{error}</div>}
+
+      {/* Pending text preview */}
+      {pendingText && isListening && (
+        <div className="pending-preview">
+          <span className="pending-label">Hearing:</span> {pendingText}
+        </div>
+      )}
 
       <div className="subtitle-display">
         {isTranslating && <div className="translating-indicator">Translating...</div>}

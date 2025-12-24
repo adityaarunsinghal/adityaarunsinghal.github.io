@@ -17,7 +17,7 @@ const translateApiKey = defineString('TRANSLATE_API_KEY');
 // Rate limiter: Map<uid, timestamp[]>
 const rateLimiter = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW = 60000; // 1 minute
-const RATE_LIMIT_MAX = 10; // 10 requests per minute
+const RATE_LIMIT_MAX = 30; // 30 requests per minute
 
 export const translateText = functions.https.onRequest(async (req, res) => {
   const startTime = Date.now();
