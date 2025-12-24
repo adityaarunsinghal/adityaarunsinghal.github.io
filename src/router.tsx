@@ -60,7 +60,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/visitsDenmark",
+    path: "/translate",
     element: (
       <ErrorBoundary>
         <PrivateRoute>

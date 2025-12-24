@@ -46,6 +46,7 @@ export default function VisitsDenmark() {
   const [subtitle, setSubtitle] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState('');
+  const [language, setLanguage] = useState<'da-DK' | 'hi-IN'>('da-DK');
   const pendingTextRef = useRef('');
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const { user } = useAuth();
@@ -113,7 +114,7 @@ export default function VisitsDenmark() {
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = 'da-DK';
+    recognition.lang = language;
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const result = event.results[event.results.length - 1];
@@ -153,7 +154,7 @@ export default function VisitsDenmark() {
         recognitionRef.current.stop();
       }
     };
-  }, [isListening, translate]);
+  }, [isListening, translate, language]);
 
   const toggleListening = () => {
     if (!recognitionRef.current) return;
@@ -182,6 +183,16 @@ export default function VisitsDenmark() {
   return (
     <div className="visits-denmark-container">
       <div className="controls">
+        <select 
+          value={language} 
+          onChange={(e) => setLanguage(e.target.value as 'da-DK' | 'hi-IN')}
+          disabled={isListening}
+          className="language-select"
+        >
+          <option value="da-DK">🇩🇰 Danish</option>
+          <option value="hi-IN">🇮🇳 Hindi</option>
+        </select>
+        
         <button 
           className={`btn-primary ${isListening ? 'listening' : ''}`}
           onClick={toggleListening}
@@ -204,7 +215,7 @@ export default function VisitsDenmark() {
       </div>
 
       <div className="info">
-        <p>🇩🇰 Speak in Danish → 🇬🇧 See English subtitles</p>
+        <p>{language === 'da-DK' ? '🇩🇰' : '🇮🇳'} Speak in {language === 'da-DK' ? 'Danish' : 'Hindi'} → 🇬🇧 See English subtitles</p>
         <p className="note">Works best on Android Chrome with HTTPS</p>
       </div>
     </div>
