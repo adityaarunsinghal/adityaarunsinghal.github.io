@@ -3,6 +3,262 @@
 ## ✅ Completed
 - [x] Code written and committed to repository
 - [x] GitHub Actions workflow updated
+- [x] Google Cloud Translation API enabled
+- [x] API key created and restricted to domain
+- [x] Firebase CLI installed
+- [x] Logged into Firebase
+- [x] API key set in Firebase config (migrated to env params)
+- [x] Project ID updated in code
+- [x] Code committed and pushed
+- [x] Firebase CI token generated and added to GitHub Secrets
+- [x] Functions deployed with Node 22 runtime
+- [x] Firestore rules deployed
+- [x] App tested at adityasinghal.com/translate
+- [x] Language selector added (Danish/Hindi)
+- [x] Route changed to /translate
+- [x] Upgraded to firebase-functions v6
+- [x] Migrated from functions.config() to environment parameters
+- [x] Rate limiting implemented (10 req/min per user)
+- [x] CORS restricted to adityasinghal.com
+
+## 🔧 Remaining Setup Tasks
+
+### High Priority
+
+#### 1. Add TRANSLATE_API_KEY to GitHub Secrets ✅ DONE
+**Status:** ✅ Completed
+
+#### 2. Set Up Budget Alerts ✅ DONE
+**Status:** ✅ Completed
+
+Budget: "Shut down after $5 in a month"
+- Pub/Sub topic: `billing-shut-down`
+- Auto-shutdown function: `disable-billing-on-budget`
+
+#### 3. Verify Auto-Shutdown Function
+**Status:** ⚠️ Function created but needs permission verification
+
+1. Go to: https://console.cloud.google.com/iam-admin/iam
+2. Find: `476753482582-compute@developer.gserviceaccount.com`
+3. Verify it has: **Project Billing Manager** role
+4. Test by temporarily setting budget to $0.01
+
+### Medium Priority
+
+#### 4. Migrate GitHub Actions from FIREBASE_TOKEN to Service Account
+**Status:** 🟡 FIREBASE_TOKEN is deprecated but still works
+
+**Current:** Using `FIREBASE_TOKEN` (deprecated, shows warning)
+**Target:** Use service account with proper IAM roles
+
+**Steps:**
+1. Go to: https://console.cloud.google.com/iam-admin/iam
+2. Find: `trmnl-sync-readonly@aditya-singhal-website.iam.gserviceaccount.com`
+3. Add roles:
+   - Cloud Functions Admin
+   - Service Account User
+   - Firebase Admin
+4. Update workflow to use `FIREBASE_SERVICE_ACCOUNT` instead of `FIREBASE_TOKEN`
+
+**Why not done yet:** Requires IAM configuration, `FIREBASE_TOKEN` works fine for now
+
+#### 5. Verify Firebase Console Settings
+**Status:** 🟡 Should verify but likely already correct
+
+1. Go to: https://console.firebase.google.com
+2. Select: **aditya-singhal-website**
+3. Navigate to: **Authentication** → **Settings** → **Authorized domains**
+4. Verify these are listed:
+   - `adityasinghal.com`
+   - `localhost` (optional for local testing)
+
+### Low Priority
+
+#### 6. Code-Split Frontend Bundle
+**Status:** 🟢 Performance optimization, not critical
+
+**Current:** 765 kB bundle (large)
+**Target:** Split into smaller chunks for faster loading
+
+**Why not done yet:** Requires refactoring, site works fine as-is
+
+---
+
+## 🔒 Security & Configuration TODOs
+
+### High Priority
+
+#### 1. Restrict CORS to Your Domain ✅ DONE
+**File:** `functions/src/index.ts` (line 19)
+
+**Current:**
+```typescript
+res.set('Access-Control-Allow-Origin', 'https://adityasinghal.com');
+```
+
+✅ Already restricted
+
+#### 2. Firebase Console - Restrict Authorized Domains
+**Status:** ⚠️ Should verify
+
+1. Go to: https://console.firebase.google.com
+2. Select your project
+3. Navigate to: **Authentication** → **Settings** → **Authorized domains**
+4. Ensure only these domains are listed:
+   - `adityasinghal.com`
+   - `localhost` (for development)
+5. Remove any other domains
+
+#### 3. Google Cloud Console - Restrict API Key ✅ DONE
+**Status:** ✅ Completed
+
+- ✅ HTTP referrer: `https://adityasinghal.com/*`
+- ✅ API restriction: Cloud Translation API only
+
+### Medium Priority
+
+#### 4. Monitor Firebase Usage ✅ DONE
+**Status:** ✅ Budget alert configured at $5/month
+
+Budget: "Shut down after $5 in a month"
+- Pub/Sub topic: `billing-shut-down`
+- Auto-shutdown function: `disable-billing-on-budget`
+
+#### 5. Review Firestore Security Rules ✅ DONE
+**Status:** ✅ Rules deployed from codebase
+
+```bash
+# View current rules
+firebase firestore:rules:get
+
+# Rules are in: firestore.rules
+```
+
+### Low Priority
+
+#### 6. Add Environment-Specific Configs
+**Status:** 🟢 Nice to have
+
+Consider separating dev/prod Firebase configs:
+
+```typescript
+// src/firebase.ts
+const firebaseConfig = import.meta.env.PROD 
+  ? productionConfig 
+  : developmentConfig;
+```
+
+#### 7. Add Monitoring/Alerting
+**Status:** 🟢 Nice to have
+
+Set up Firebase Performance Monitoring:
+1. Firebase Console → Performance
+2. Enable monitoring
+3. Add custom traces for critical paths
+
+---
+
+## 📋 Deployment Checklist
+
+### Before Every Deploy
+
+- [ ] Test locally: `npm run dev`
+- [ ] Check for console errors
+- [ ] Verify auth still works
+- [ ] Review git diff: `git diff`
+
+### Deployment Options
+
+**Option 1: Local (Frontend Only)**
+```bash
+npm run deploy
+```
+- Deploys: React app to GitHub Pages
+- Does NOT deploy: Functions or Rules
+- Use for: Quick CSS/content changes
+
+**Option 2: Local (Functions Only)**
+```bash
+cd functions
+firebase deploy --only functions --project aditya-singhal-website
+# When prompted for TRANSLATE_API_KEY: AIzaSyDZzBIco6hS1zPh4f_hGU78Gz4APcT25_g
+```
+- Deploys: Cloud Functions
+- Use for: Function code changes
+
+**Option 3: GitHub Actions (Complete)**
+1. Ensure `TRANSLATE_API_KEY` is in GitHub Secrets
+2. Go to: https://github.com/adityaarunsinghal/adityaarunsinghal.github.io/actions
+3. Click "Deploy to GitHub Pages"
+4. Click "Run workflow" → "Run workflow"
+- Deploys: Frontend + Functions + Rules
+- Use for: Complete deployments
+
+### After Deploy
+
+- [ ] Visit https://adityasinghal.com
+- [ ] Test login flow
+- [ ] Check private routes work
+- [ ] Test /translate with Danish and Hindi
+- [ ] Verify TRMNL sync still running (check GitHub Actions)
+
+### After Function/Rules Changes
+
+- [ ] Test translation feature
+- [ ] Verify Firestore access
+- [ ] Check Firebase Functions logs: `firebase functions:log`
+- [ ] Verify rate limiting (make 11 requests in 1 minute)
+
+---
+
+## 🎉 Current Status
+
+### What's Working
+✅ Frontend deployed to GitHub Pages
+✅ Firebase Functions deployed with Node 22
+✅ Firestore Rules deployed
+✅ Rate limiting active (10 req/min per user)
+✅ Email whitelist enforced
+✅ API key stored server-side
+✅ Firebase Auth token validation
+✅ CORS restricted to adityasinghal.com
+✅ API key restricted to domain and Translation API only
+✅ Budget alert at $5/month
+✅ Auto-shutdown function configured
+✅ Language selector (Danish/Hindi)
+✅ Route: /translate
+
+### What Needs Attention
+⚠️ Verify Firebase authorized domains
+⚠️ Test auto-shutdown function
+🟡 Migrate GitHub Actions to service account (optional, FIREBASE_TOKEN works)
+🟢 Code-split frontend bundle (optional, performance only)
+
+---
+
+## 🚨 Important Notes
+
+### Cost Protection
+- **Rate limiting:** 10 requests/min per user
+- **Budget alert:** $5/month
+- **Auto-shutdown:** Disables billing when budget exceeded
+- **Expected cost:** $0-2/month for normal usage
+
+### Security
+- **Three-layer protection:** Client-side, Firestore rules, Cloud Function
+- **API key:** Server-side only, domain-restricted
+- **Whitelist:** 3 emails only
+- **HTTPS:** Enforced by GitHub Pages
+
+### Deprecation Warnings
+- ⚠️ `FIREBASE_TOKEN` deprecated but still works (migrate to service account when convenient)
+- ✅ `functions.config()` migrated to environment parameters (no longer deprecated)
+- ✅ Node 18 upgraded to Node 22
+
+---
+
+**Last Updated:** December 24, 2024  
+**Status:** Production ready, fully functional at adityasinghal.com/translate
 
 ## 🔧 Google Cloud Console Setup
 
