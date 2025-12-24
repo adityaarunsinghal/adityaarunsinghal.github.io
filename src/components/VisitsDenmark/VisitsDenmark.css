@@ -264,7 +264,8 @@
   justify-content: flex-start;
   box-sizing: border-box;
   overflow-y: auto;
-  min-height: 300px;
+  min-height: 200px;
+  max-height: 50vh;
   position: relative;
 }
 
