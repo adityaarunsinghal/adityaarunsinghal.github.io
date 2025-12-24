@@ -23,8 +23,12 @@ export const translateText = functions.https.onRequest(async (req, res) => {
   const startTime = Date.now();
   console.log('Translation request received', { method: req.method, origin: req.headers.origin });
 
-  // CORS headers
-  res.set('Access-Control-Allow-Origin', 'https://adityasinghal.com');
+  // CORS headers - allow production and localhost
+  const origin = req.headers.origin || '';
+  const allowedOrigins = ['https://adityasinghal.com', 'http://localhost:5173', 'http://localhost:5174'];
+  if (allowedOrigins.includes(origin)) {
+    res.set('Access-Control-Allow-Origin', origin);
+  }
   res.set('Access-Control-Allow-Methods', 'POST');
   res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 

@@ -102,6 +102,18 @@ export default function VisitsDenmark() {
     }
   }, [user]);
 
+  // Test translation on mount
+  useEffect(() => {
+    const testTranslation = async () => {
+      const testText = language === 'da-DK' ? 'Hej, test' : 'नमस्ते, परीक्षण';
+      console.log('[VisitsDenmark] Testing translation on load...', { language, testText });
+      await translate(testText);
+    };
+    
+    testTranslation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount
+
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
