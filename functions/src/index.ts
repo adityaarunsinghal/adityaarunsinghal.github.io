@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import fetch from 'node-fetch';
+import { defineString } from 'firebase-functions/params';
 
 admin.initializeApp();
 
@@ -9,6 +10,9 @@ const ALLOWED_EMAILS = [
   'johannefriedman@gmail.com',
   'johanne.friedman@gmail.com'
 ];
+
+// Define API key as environment parameter
+const translateApiKey = defineString('TRANSLATE_API_KEY');
 
 // Rate limiter: Map<uid, timestamp[]>
 const rateLimiter = new Map<string, number[]>();
@@ -92,8 +96,8 @@ export const translateText = functions.https.onRequest(async (req, res) => {
 
     console.log('Translation request', { textLength: text.length, preview: text.substring(0, 50) });
 
-    // Get API key from Firebase config
-    const apiKey = functions.config().translate?.api_key;
+    // Get API key from environment parameter
+    const apiKey = translateApiKey.value();
     if (!apiKey) {
       console.error('Translation API key not configured');
       res.status(500).json({ error: 'Translation API not configured' });
