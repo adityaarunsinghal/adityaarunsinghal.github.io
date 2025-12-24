@@ -59,8 +59,12 @@ export default function VisitsDenmark() {
   const [error, setError] = useState('');
   const [language, setLanguage] = useState<'da-DK' | 'hi-IN'>('da-DK');
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [speechMode, setSpeechMode] = useState<'fast' | 'phrase'>('phrase');
   
   const pendingTextRef = useRef('');
+  const fastModeTimerRef = useRef<NodeJS.Timeout>();
+  const translationQueueRef = useRef<Array<{ text: string; timestamp: number }>>([]);
+  const isProcessingRef = useRef(false);
   const recognitionRef = useRef<{ recognition: SpeechRecognition; isListeningRef: { current: boolean } } | null>(null);
   const tokenCacheRef = useRef<{ token: string; expiry: number } | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -107,23 +111,16 @@ export default function VisitsDenmark() {
     return token;
   }, [user]);
 
-  const translate = useCallback(async (text: string) => {
-    console.log('[VisitsDenmark] translate() called with text:', text);
+  const processQueue = useCallback(async () => {
+    if (isProcessingRef.current || translationQueueRef.current.length === 0) return;
     
-    if (!text.trim() || text === lastTranslationRef.current) {
-      console.log('[VisitsDenmark] Skipping translation - empty or duplicate');
-      return;
-    }
-    if (!isOnline) {
-      console.log('[VisitsDenmark] Offline - cannot translate');
-      setError('No internet connection');
-      return;
-    }
-
-    lastTranslationRef.current = text;
+    isProcessingRef.current = true;
+    const item = translationQueueRef.current.shift()!;
+    
+    lastTranslationRef.current = item.text;
     setIsTranslating(true);
     setError('');
-    console.log('[VisitsDenmark] Starting translation request...');
+    console.log('[VisitsDenmark] Processing queue item, remaining:', translationQueueRef.current.length);
 
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
@@ -144,7 +141,7 @@ export default function VisitsDenmark() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ text, sourceLanguage: language.split('-')[0] }),
+          body: JSON.stringify({ text: item.text, sourceLanguage: language.split('-')[0] }),
           signal: abortControllerRef.current.signal
         }
       );
@@ -165,9 +162,9 @@ export default function VisitsDenmark() {
 
       setTranslations(prev => {
         const updated = [...prev, {
-          original: text,
+          original: item.text,
           translated: data.translatedText,
-          timestamp: Date.now()
+          timestamp: item.timestamp
         }];
         return updated.slice(-MAX_TRANSLATIONS);
       });
@@ -175,6 +172,9 @@ export default function VisitsDenmark() {
       pendingTextRef.current = '';
       lastTranslationRef.current = '';
       console.log('[VisitsDenmark] Translation added to history');
+      
+      // Wait 500ms before processing next item
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (err) {
       console.error('[VisitsDenmark] Translation error:', err);
       if (err instanceof Error) {
@@ -190,13 +190,59 @@ export default function VisitsDenmark() {
     } finally {
       clearTimeout(timeoutId);
       setIsTranslating(false);
+      isProcessingRef.current = false;
+      
+      // Process next item if queue not empty
+      if (translationQueueRef.current.length > 0) {
+        processQueue();
+      }
     }
-  }, [isOnline, getAuthToken, language]);
+  }, [getAuthToken, language]);
+
+  const translate = useCallback(async (text: string) => {
+    console.log('[VisitsDenmark] translate() called with text:', text);
+    
+    if (!text.trim() || text === lastTranslationRef.current) {
+      console.log('[VisitsDenmark] Skipping translation - empty or duplicate');
+      return;
+    }
+    if (!isOnline) {
+      console.log('[VisitsDenmark] Offline - cannot translate');
+      setError('No internet connection');
+      return;
+    }
+
+    // Add to queue with timestamp
+    const timestamp = Date.now();
+    translationQueueRef.current.push({ text, timestamp });
+    console.log('[VisitsDenmark] Added to queue, position:', translationQueueRef.current.length);
+
+    // Process queue if not already processing
+    if (!isProcessingRef.current) {
+      processQueue();
+    }
+  }, [isOnline, processQueue]);
 
   // Keep translate ref updated
   useEffect(() => {
     translateRef.current = translate;
   }, [translate]);
+
+  // Fast mode timer
+  useEffect(() => {
+    if (speechMode === 'fast' && isListening) {
+      const interval = setInterval(() => {
+        if (pendingTextRef.current && pendingTextRef.current.trim()) {
+          console.log('[VisitsDenmark] Fast mode: auto-sending after 2 seconds');
+          translateRef.current?.(pendingTextRef.current);
+          pendingTextRef.current = '';
+        }
+      }, 2000);
+      
+      fastModeTimerRef.current = interval as unknown as NodeJS.Timeout;
+      return () => clearInterval(interval);
+    }
+  }, [speechMode, isListening]);
 
   // Test translation on mount and language change
   useEffect(() => {
@@ -224,11 +270,18 @@ export default function VisitsDenmark() {
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const result = event.results[event.results.length - 1];
       const text = result[0].transcript;
-      console.log('[VisitsDenmark] Speech result:', text, 'isFinal:', result.isFinal);
+      console.log('[VisitsDenmark] Speech result:', text, 'isFinal:', result.isFinal, 'mode:', speechMode);
 
       if (result.isFinal) {
-        console.log('[VisitsDenmark] Final result, triggering translation');
-        translateRef.current?.(text);
+        console.log('[VisitsDenmark] Final result');
+        // In phrase mode, translate immediately
+        if (speechMode === 'phrase') {
+          translateRef.current?.(text);
+          pendingTextRef.current = '';
+        } else {
+          // In fast mode, store for timer but don't translate here
+          pendingTextRef.current = text;
+        }
       } else {
         console.log('[VisitsDenmark] Interim result, storing as pending');
         pendingTextRef.current = text;
@@ -264,9 +317,12 @@ export default function VisitsDenmark() {
       console.log('[VisitsDenmark] Cleaning up speech recognition');
       isListeningRef.current = false;
       recognition.stop();
+      if (fastModeTimerRef.current) {
+        clearInterval(fastModeTimerRef.current as unknown as number);
+      }
       recognitionRef.current = null;
     };
-  }, [language]);
+  }, [language, speechMode]);
 
   const toggleListening = () => {
     console.log('[VisitsDenmark] toggleListening() called, current state:', isListening);
@@ -336,15 +392,15 @@ export default function VisitsDenmark() {
           className={`btn-primary ${isListening ? 'listening' : ''}`}
           onClick={toggleListening}
         >
-          {isListening ? '⏸ Stop' : '🎤 Start'}
+          {isListening ? 'Stop' : 'Start'}
         </button>
         
         <button 
           className="btn-secondary"
           onClick={forceTranslate}
-          disabled={!pendingTextRef.current}
+          disabled={!pendingTextRef.current || !isListening}
         >
-          ⚡ Force
+          Force
         </button>
         
         <button 
@@ -352,8 +408,33 @@ export default function VisitsDenmark() {
           onClick={clearHistory}
           disabled={translations.length === 0}
         >
-          🗑️ Clear
+          Clear
         </button>
+      </div>
+
+      <div className="force-word-control">
+        <label>
+          <span className="force-label">Speech mode:</span>
+          <div className="mode-toggle">
+            <button 
+              className={`mode-button ${speechMode === 'phrase' ? 'active' : ''}`}
+              onClick={() => setSpeechMode('phrase')}
+            >
+              Full-turn
+            </button>
+            <button 
+              className={`mode-button ${speechMode === 'fast' ? 'active' : ''}`}
+              onClick={() => setSpeechMode('fast')}
+            >
+              Fast Speech
+            </button>
+          </div>
+        </label>
+        <p className="mode-description">
+          {speechMode === 'phrase' 
+            ? 'Waits for complete turn (any length)' 
+            : 'Sends every 2 seconds (any length)'}
+        </p>
       </div>
 
       {!isOnline && <div className="error-message">⚠️ No internet connection</div>}
