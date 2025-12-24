@@ -358,9 +358,9 @@ export default function VisitsDenmark() {
 
       {!isOnline && <div className="error-message">⚠️ No internet connection</div>}
       {error && <div className="error-message">{error}</div>}
-      {isTranslating && <div className="info-message">Translating...</div>}
 
       <div className="subtitle-display">
+        {isTranslating && <div className="translating-indicator">Translating...</div>}
         {translations.length === 0 ? (
           isListening ? 'Listening...' : 'Press Start to begin'
         ) : (
