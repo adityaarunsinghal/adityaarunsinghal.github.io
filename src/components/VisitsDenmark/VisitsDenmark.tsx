@@ -154,10 +154,11 @@ export default function VisitsDenmark() {
     };
 
     recognition.onend = () => {
-      console.log('[VisitsDenmark] Speech recognition ended', { isListening });
       if (isListening) {
-        console.log('[VisitsDenmark] Restarting speech recognition');
+        console.log('[VisitsDenmark] Auto-restarting speech recognition');
         recognition.start();
+      } else {
+        console.log('[VisitsDenmark] Speech recognition stopped');
       }
     };
 
