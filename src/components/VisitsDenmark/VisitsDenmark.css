@@ -104,6 +104,19 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+.fast-mode-counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
 .mode-description {
   width: 100%;
   text-align: center;

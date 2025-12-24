@@ -66,6 +66,7 @@ export default function VisitsDenmark() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [speechMode, setSpeechMode] = useState<'fast' | 'phrase'>('phrase');
   const [pendingText, setPendingText] = useState('');
+  const [fastModeCounter, setFastModeCounter] = useState(0);
   
   const pendingTextRef = useRef('');
   const lastSentTextRef = useRef('');
@@ -217,14 +218,29 @@ export default function VisitsDenmark() {
 
   // Fast mode timer
   useEffect(() => {
-    if (speechMode !== 'fast' || !isListening) return;
+    if (speechMode !== 'fast' || !isListening) {
+      setFastModeCounter(0);
+      return;
+    }
     
     const interval = setInterval(() => {
-      const text = pendingTextRef.current;
-      if (text && text.trim() && text.trim() !== lastSentTextRef.current) {
-        queueTranslation(text);
-      }
-    }, FAST_MODE_INTERVAL_MS);
+      setFastModeCounter(prev => {
+        const next = prev + 1;
+        console.log(`[FastMode] ${next}`);
+        
+        if (next >= 5) {
+          const text = pendingTextRef.current;
+          if (text && text.trim() && text.trim() !== lastSentTextRef.current) {
+            console.log(`[FastMode] SEND: "${text.trim().substring(0, 30)}..."`);
+            queueTranslation(text);
+          } else {
+            console.log(`[FastMode] SKIP (no new text)`);
+          }
+          return 0;
+        }
+        return next;
+      });
+    }, 1000);
     
     return () => clearInterval(interval);
   }, [speechMode, isListening, queueTranslation]);
@@ -397,6 +413,9 @@ export default function VisitsDenmark() {
             onClick={() => handleModeChange('fast')}
           >
             Fast Speech
+            {speechMode === 'fast' && isListening && (
+              <span className="fast-mode-counter">{fastModeCounter}</span>
+            )}
           </button>
         </div>
         <p className="mode-description">
