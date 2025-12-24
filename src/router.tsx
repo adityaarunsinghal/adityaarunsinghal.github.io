@@ -14,6 +14,7 @@ import InstagramRedirect from '@/components/InstagramRedirect';
 import FacebookRedirect from '@/components/FacebookRedirect';
 import YouTubeRedirect from '@/components/YouTubeRedirect';
 import FeedbackForm from '@/components/FeedbackForm';
+import VisitsDenmark from '@/components/VisitsDenmark/VisitsDenmark';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,16 @@ const router = createBrowserRouter([
       <ErrorBoundary>
         <PrivateRoute>
           <LovesIngy />
+        </PrivateRoute>
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "/visitsDenmark",
+    element: (
+      <ErrorBoundary>
+        <PrivateRoute>
+          <VisitsDenmark />
         </PrivateRoute>
       </ErrorBoundary>
     ),
