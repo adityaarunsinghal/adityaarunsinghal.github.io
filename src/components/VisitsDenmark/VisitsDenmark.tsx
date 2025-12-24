@@ -47,6 +47,7 @@ export default function VisitsDenmark() {
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState('');
   const [language, setLanguage] = useState<'da-DK' | 'hi-IN'>('da-DK');
+  const [originalText, setOriginalText] = useState('');
   const pendingTextRef = useRef('');
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const { user } = useAuth();
@@ -124,6 +125,8 @@ export default function VisitsDenmark() {
         isFinal: result.isFinal, 
         textLength: danish.length 
       });
+
+      setOriginalText(danish);
 
       if (result.isFinal) {
         translate(danish);
@@ -213,6 +216,12 @@ export default function VisitsDenmark() {
       <div className="subtitle-display">
         {subtitle || (isListening ? 'Listening...' : 'Press Start to begin')}
       </div>
+
+      {originalText && (
+        <div className="original-text">
+          Original: {originalText}
+        </div>
+      )}
 
       <div className="info">
         <p>{language === 'da-DK' ? '🇩🇰' : '🇮🇳'} Speak in {language === 'da-DK' ? 'Danish' : 'Hindi'} → 🇬🇧 See English subtitles</p>
