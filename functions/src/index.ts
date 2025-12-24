@@ -89,6 +89,14 @@ export const translateText = functions.https.onRequest(async (req, res) => {
       res.status(400).json({ error: 'Missing text parameter' });
       return;
     }
+    
+    // Limit text length to prevent excessive API costs
+    const MAX_CHARS = 500; // ~$0.01 per request max
+    if (text.length > MAX_CHARS) {
+      console.warn('Text too long', { length: text.length, max: MAX_CHARS });
+      res.status(400).json({ error: `Text too long. Maximum ${MAX_CHARS} characters.` });
+      return;
+    }
 
     console.log('Translation request', { textLength: text.length, preview: text.substring(0, 50) });
 
