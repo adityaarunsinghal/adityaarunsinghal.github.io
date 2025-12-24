@@ -60,7 +60,7 @@ export default function VisitsDenmark() {
       console.log('[VisitsDenmark] Got auth token');
 
       const response = await fetch(
-        'https://us-central1-YOUR_PROJECT_ID.cloudfunctions.net/translateText',
+        'https://us-central1-aditya-singhal-website.cloudfunctions.net/translateText',
         {
           method: 'POST',
           headers: {

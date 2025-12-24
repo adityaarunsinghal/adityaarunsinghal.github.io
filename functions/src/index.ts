@@ -19,8 +19,8 @@ export const translateText = functions.https.onRequest(async (req, res) => {
   const startTime = Date.now();
   console.log('Translation request received', { method: req.method, origin: req.headers.origin });
 
-  // CORS headers - TODO: Restrict to adityasinghal.com only
-  res.set('Access-Control-Allow-Origin', '*');
+  // CORS headers
+  res.set('Access-Control-Allow-Origin', 'https://adityasinghal.com');
   res.set('Access-Control-Allow-Methods', 'POST');
   res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
