@@ -91,14 +91,14 @@ export const translateText = functions.https.onRequest(async (req, res) => {
     }
 
     // Get text to translate
-    const { text } = req.body;
+    const { text, sourceLanguage } = req.body;
     if (!text) {
       console.warn('Missing text parameter');
       res.status(400).json({ error: 'Missing text parameter' });
       return;
     }
 
-    console.log('Translation request', { textLength: text.length, preview: text.substring(0, 50) });
+    console.log('Translation request', { textLength: text.length, sourceLanguage, preview: text.substring(0, 50) });
 
     // Get API key from environment parameter
     const apiKey = translateApiKey.value();
@@ -117,7 +117,7 @@ export const translateText = functions.https.onRequest(async (req, res) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           q: text,
-          source: 'da',
+          source: sourceLanguage || 'da',
           target: 'en',
           format: 'text'
         })
