@@ -53,6 +53,7 @@ jobs:
       continue-on-error: true
       env:
         GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
       run: |
         echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud-key.json
         export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud-key.json
