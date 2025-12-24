@@ -42,12 +42,17 @@ interface SpeechRecognitionErrorEvent extends Event {
   error: string;
 }
 
+interface TranslationEntry {
+  original: string;
+  translated: string;
+  timestamp: number;
+}
+
 export default function VisitsDenmark() {
-  const [subtitle, setSubtitle] = useState('');
+  const [translations, setTranslations] = useState<TranslationEntry[]>([]);
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState('');
   const [language, setLanguage] = useState<'da-DK' | 'hi-IN'>('da-DK');
-  const [originalText, setOriginalText] = useState('');
   const pendingTextRef = useRef('');
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const { user } = useAuth();
@@ -92,7 +97,11 @@ export default function VisitsDenmark() {
         resultLength: data.translatedText.length 
       });
 
-      setSubtitle(data.translatedText);
+      setTranslations(prev => [...prev, {
+        original: text,
+        translated: data.translatedText,
+        timestamp: Date.now()
+      }]);
       pendingTextRef.current = '';
       setError('');
     } catch (err) {
@@ -131,19 +140,17 @@ export default function VisitsDenmark() {
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const result = event.results[event.results.length - 1];
-      const danish = result[0].transcript;
+      const text = result[0].transcript;
 
       console.log('[VisitsDenmark] Speech result', { 
         isFinal: result.isFinal, 
-        textLength: danish.length 
+        textLength: text.length 
       });
 
-      setOriginalText(danish);
-
       if (result.isFinal) {
-        translate(danish);
+        translate(text);
       } else {
-        pendingTextRef.current = danish;
+        pendingTextRef.current = text;
       }
     };
 
@@ -227,14 +234,19 @@ export default function VisitsDenmark() {
       {error && <div className="error-message">{error}</div>}
 
       <div className="subtitle-display">
-        {subtitle || (isListening ? 'Listening...' : 'Press Start to begin')}
+        {translations.length === 0 ? (
+          isListening ? 'Listening...' : 'Press Start to begin'
+        ) : (
+          <div className="translation-history">
+            {translations.map((entry) => (
+              <div key={entry.timestamp} className="translation-entry">
+                <div className="translated-text">{entry.translated}</div>
+                <div className="original-text">Original: {entry.original}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-
-      {originalText && (
-        <div className="original-text">
-          Original: {originalText}
-        </div>
-      )}
 
       <div className="info">
         <p>{language === 'da-DK' ? '🇩🇰' : '🇮🇳'} Speak in {language === 'da-DK' ? 'Danish' : 'Hindi'} → 🇬🇧 See English subtitles</p>
