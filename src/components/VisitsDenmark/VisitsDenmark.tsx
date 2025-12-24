@@ -366,7 +366,8 @@ export default function VisitsDenmark() {
     <div className="visits-denmark-container">
       {notification && <div className="notification-toast">{notification}</div>}
       
-      <div className="controls">
+      {/* Compact top bar */}
+      <div className="top-bar">
         <select 
           value={language} 
           onChange={(e) => handleLanguageChange(e.target.value as 'da-DK' | 'hi-IN')}
@@ -376,78 +377,85 @@ export default function VisitsDenmark() {
           <option value="hi-IN">🇮🇳 Hindi</option>
         </select>
         
-        <button 
-          className={`btn-primary ${isListening ? 'listening' : ''}`}
-          onClick={toggleListening}
-        >
-          {isListening ? 'Stop' : 'Start'}
-        </button>
-        
-        <button 
-          className="btn-secondary"
-          onClick={clearHistory}
-          disabled={translations.length === 0}
-        >
-          Clear
-        </button>
-      </div>
-
-      <div className="speech-mode-control">
-        <span className="mode-label">Speech mode:</span>
         <div className="mode-toggle">
           <button 
             className={`mode-button ${speechMode === 'phrase' ? 'active' : ''}`}
             onClick={() => handleModeChange('phrase')}
           >
-            Full-turn
+            Phrase
           </button>
           <button 
             className={`mode-button ${speechMode === 'fast' ? 'active' : ''}`}
             onClick={() => handleModeChange('fast')}
           >
-            Fast Speech
+            Fast
             {speechMode === 'fast' && isListening && fastModeWordCount > 0 && (
               <span className="fast-mode-counter">{fastModeWordCount}</span>
             )}
           </button>
         </div>
-        <p className="mode-description">
-          {speechMode === 'phrase' 
-            ? 'Translates when speaker pauses' 
-            : `Sends every ${FAST_MODE_WORD_THRESHOLD} words`}
-        </p>
+        
+        <div className="spacer" />
+        
+        <button 
+          className="btn-clear"
+          onClick={clearHistory}
+          disabled={translations.length === 0}
+        >
+          Clear
+        </button>
+        
+        <button 
+          className={`btn-mic ${isListening ? 'listening' : ''}`}
+          onClick={toggleListening}
+        >
+          {isListening ? '⏹' : '🎤'}
+        </button>
       </div>
 
-      {!isOnline && <div className="error-message">⚠️ No internet connection</div>}
-      {error && <div className="error-message">{error}</div>}
-
-      {/* Pending text preview */}
-      {pendingText && isListening && (
-        <div className="pending-preview">
-          <span className="pending-label">Hearing:</span> {pendingText}
+      {/* Error bar */}
+      {(!isOnline || error) && (
+        <div className="error-bar">
+          {!isOnline ? '⚠️ No internet connection' : error}
         </div>
       )}
 
-      <div className="subtitle-display">
+      {/* Main translation area */}
+      <div className="translation-area">
         {isTranslating && <div className="translating-indicator">Translating...</div>}
-        {translations.length === 0 ? (
-          isListening ? 'Listening...' : 'Press Start to begin'
-        ) : (
-          <div className="translation-history">
-            {translations.map((entry) => (
-              <div key={entry.timestamp} className="translation-entry">
-                <div className="translated-text">{entry.translated}</div>
-                <div className="original-text">Original: {entry.original}</div>
-              </div>
-            ))}
-            <div ref={historyEndRef} />
-          </div>
-        )}
+        
+        <div className="subtitle-display">
+          {translations.length === 0 ? (
+            <div className="empty-state">
+              <div className="mic-icon">🎤</div>
+              <p>{isListening ? 'Listening...' : 'Tap mic to start'}</p>
+            </div>
+          ) : (
+            <div className="translation-history">
+              {translations.map((entry) => (
+                <div key={entry.timestamp} className="translation-entry">
+                  <div className="translated-text">{entry.translated}</div>
+                  <div className="original-text">{entry.original}</div>
+                </div>
+              ))}
+              <div ref={historyEndRef} />
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="info">
-        <p>{language === 'da-DK' ? '🇩🇰' : '🇮🇳'} Speak in {language === 'da-DK' ? 'Danish' : 'Hindi'} → 🇬🇧 See English subtitles</p>
-        <p className="note">Works best on Android Chrome with HTTPS</p>
+      {/* Pending text bar at bottom */}
+      {pendingText && isListening && (
+        <div className="pending-bar">
+          <div className="pending-content">
+            <span className="pending-label">Hearing:</span>
+            <span className="pending-text">{pendingText}</span>
+          </div>
+        </div>
+      )}
+
+      <div className="info-footer">
+        {language === 'da-DK' ? '🇩🇰' : '🇮🇳'} → 🇬🇧 • Best on Chrome
       </div>
     </div>
   );
