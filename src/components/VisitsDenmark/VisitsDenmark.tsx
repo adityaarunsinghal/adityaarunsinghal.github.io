@@ -53,7 +53,7 @@ const MAX_TRANSLATIONS = 50;
 const TRANSLATION_TIMEOUT_MS = 10000;
 const TOKEN_CACHE_DURATION_MS = 58 * 60 * 1000; // 58 minutes
 const QUEUE_DELAY_MS = 500;
-const FAST_MODE_INTERVAL_MS = 5000;
+const FAST_MODE_WORD_THRESHOLD = 15;
 const RATE_LIMIT_WINDOW_SEC = 60;
 
 export default function VisitsDenmark() {
@@ -66,9 +66,10 @@ export default function VisitsDenmark() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [speechMode, setSpeechMode] = useState<'fast' | 'phrase'>('phrase');
   const [pendingText, setPendingText] = useState('');
-  const [fastModeCounter, setFastModeCounter] = useState(0);
+  const [fastModeWordCount, setFastModeWordCount] = useState(0);
   
   const pendingTextRef = useRef('');
+  const fastModeBufferRef = useRef('');
   const lastSentTextRef = useRef('');
   const translationQueueRef = useRef<Array<{ text: string; timestamp: number }>>([]);
   const isProcessingRef = useRef(false);
@@ -216,35 +217,6 @@ export default function VisitsDenmark() {
     }
   }, [isOnline, processQueue]);
 
-  // Fast mode timer
-  useEffect(() => {
-    if (speechMode !== 'fast' || !isListening) {
-      setFastModeCounter(0);
-      return;
-    }
-    
-    const interval = setInterval(() => {
-      setFastModeCounter(prev => {
-        const next = prev + 1;
-        console.log(`[FastMode] ${next}`);
-        
-        if (next >= 5) {
-          const text = pendingTextRef.current;
-          if (text && text.trim() && text.trim() !== lastSentTextRef.current) {
-            console.log(`[FastMode] SEND: "${text.trim().substring(0, 30)}..."`);
-            queueTranslation(text);
-          } else {
-            console.log(`[FastMode] SKIP (no new text)`);
-          }
-          return 0;
-        }
-        return next;
-      });
-    }, 1000);
-    
-    return () => clearInterval(interval);
-  }, [speechMode, isListening, queueTranslation]);
-
   // Retry queue when coming back online
   useEffect(() => {
     if (isOnline && translationQueueRef.current.length > 0 && !isProcessingRef.current) {
@@ -277,14 +249,35 @@ export default function VisitsDenmark() {
       const result = event.results[event.results.length - 1];
       const text = result[0].transcript;
 
-      // Update pending text display
-      pendingTextRef.current = text;
-      setPendingText(text);
-
-      // Always translate on final (both modes)
-      if (result.isFinal) {
-        queueTranslation(text);
+      if (speechModeRef.current === 'fast') {
+        // Fast mode: accumulate and send based on word count, ignore isFinal
+        if (result.isFinal) {
+          fastModeBufferRef.current += (fastModeBufferRef.current ? ' ' : '') + text;
+        }
+        
+        // Current text = buffer + current interim
+        const currentText = fastModeBufferRef.current + (fastModeBufferRef.current ? ' ' : '') + (result.isFinal ? '' : text);
+        pendingTextRef.current = currentText;
+        
+        // Check word count on every result
+        const wordCount = currentText.trim().split(/\s+/).filter(w => w).length;
+        setFastModeWordCount(wordCount);
+        
+        if (wordCount >= FAST_MODE_WORD_THRESHOLD) {
+          console.log(`[FastMode] SEND (${wordCount} words): "${currentText.substring(0, 40)}..."`);
+          queueTranslation(currentText);
+          fastModeBufferRef.current = '';
+          setFastModeWordCount(0);
+        }
+      } else {
+        // Phrase mode: just track current text
+        pendingTextRef.current = text;
+        if (result.isFinal) {
+          queueTranslation(text);
+        }
       }
+      
+      setPendingText(pendingTextRef.current);
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
@@ -413,15 +406,15 @@ export default function VisitsDenmark() {
             onClick={() => handleModeChange('fast')}
           >
             Fast Speech
-            {speechMode === 'fast' && isListening && (
-              <span className="fast-mode-counter">{fastModeCounter}</span>
+            {speechMode === 'fast' && isListening && fastModeWordCount > 0 && (
+              <span className="fast-mode-counter">{fastModeWordCount}</span>
             )}
           </button>
         </div>
         <p className="mode-description">
           {speechMode === 'phrase' 
             ? 'Translates when speaker pauses' 
-            : `Sends every ${FAST_MODE_INTERVAL_MS / 1000}s automatically`}
+            : `Sends every ${FAST_MODE_WORD_THRESHOLD} words`}
         </p>
       </div>
 
