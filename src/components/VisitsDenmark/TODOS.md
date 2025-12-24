@@ -43,6 +43,97 @@ Budget: "Shut down after $5 in a month"
 3. Verify it has: **Project Billing Manager** role
 4. Test by temporarily setting budget to $0.01
 
+---
+
+## 🧪 Google Cloud Setup Verification (2025-12-24)
+
+**All tests PASSED ✅** - Translation subapp infrastructure is correctly configured.
+
+### Test Results
+
+#### 1. Function Deployment ✅
+```bash
+firebase functions:list
+```
+**Result:** `translateText` function deployed
+- Version: v2
+- Runtime: nodejs22
+- Location: us-central1
+- Memory: 256MB
+- Trigger: HTTPS
+
+#### 2. API Key Configuration ✅
+```bash
+firebase functions:config:get
+```
+**Result:** API key configured
+```json
+{
+  "translate": {
+    "api_key": "AIzaSy*********************"
+  }
+}
+```
+**Note:** Deprecated but working. Already migrated to environment parameters.
+
+#### 3. Function Logs ✅
+```bash
+firebase functions:log
+```
+**Result:** Function deployed successfully
+- Deployment: 2025-12-24T18:30:26Z
+- Instance started: DEPLOYMENT_ROLLOUT
+- Health check: PASSED (TCP probe on port 8080)
+- State: ACTIVE
+- URL: https://us-central1-aditya-singhal-website.cloudfunctions.net/translateText
+
+#### 4. Cloud Translation API ✅
+```bash
+gcloud services list --enabled --filter="name:translate.googleapis.com"
+```
+**Result:** ENABLED
+```
+projects/476753482582/services/translate.googleapis.com  ENABLED
+```
+
+#### 5. Project ID Verification ✅
+**File:** `src/components/VisitsDenmark/VisitsDenmark.tsx` (line 65)
+**Result:** Correct project ID: `aditya-singhal-website`
+
+#### 6. Cloud Functions API ✅
+```bash
+gcloud services list --enabled --filter="name:cloudfunctions.googleapis.com"
+```
+**Result:** ENABLED
+```
+projects/476753482582/services/cloudfunctions.googleapis.com  ENABLED
+```
+
+#### 7. Rate Limiting Implementation ✅
+**File:** `functions/src/index.ts`
+**Result:** Rate limiting configured
+- Window: 60 seconds
+- Max requests: 10 per minute per user
+- Implementation: In-memory Map with timestamp tracking
+
+#### 8. API Key Restrictions ✅
+```bash
+gcloud services api-keys list
+```
+**Result:** "Adi Website Translation Key" properly restricted
+- **API Restriction:** Only `translate.googleapis.com`
+- **Referrer Restriction:** `https://adityasinghal.com/*`, `localhost:*`
+
+### Troubleshooting Guide
+
+If translation fails, check:
+1. Browser console for `[VisitsDenmark]` logs
+2. Logged in with whitelisted email
+3. Using Chrome on Android (best Web Speech API support)
+4. Network tab for failed Cloud Function requests
+
+---
+
 ### Medium Priority
 
 #### 4. Migrate GitHub Actions from FIREBASE_TOKEN to Service Account
