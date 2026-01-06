@@ -335,9 +335,15 @@ const AgenticAIWorkshop = () => {
             </div>
           </div>
           <div className="hero-cta">
-            <Link to="/agentic-ai-workshop/registration-form" className="primary-button">
+            {/* <Link to="/agentic-ai-workshop/registration-form" className="primary-button">
               Join the Workshop
-            </Link>
+            </Link> */}
+            <a href="https://www.youtube.com/playlist?list=PLgF7i4LH-YxYvhXK-yywN7eFRjRjQrq89" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               className="primary-button">
+              View Highlights
+            </a>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <a href="https://github.com/adityaarunsinghal/agentic-ai-workshop-2025" 
                  target="_blank" 
@@ -347,13 +353,13 @@ const AgenticAIWorkshop = () => {
               </a>
               {/* <span style={{ fontSize: '0.8rem', opacity: '0.6', marginTop: '5px' }}>(temporarily locked)</span> */}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
               <a href="mailto:adityaarunsinghal@gmail.com?subject=Planning to come to office hours - <your name>&body=Hey Adi,%0D%0A%0D%0APlanning to come to office hours this Friday at 4:30pm ET (or asking if possible to talk at a different time for a bit).%0D%0A%0D%0AHere is a bit about me: <fill this>"
                  className="secondary-button">
                 Come to Office Hours
               </a>
               <span style={{ fontSize: '0.8rem', opacity: '0.6', marginTop: '5px' }}>(Fridays 4:30pm ET)</span>
-            </div>
+            </div> */}
             <Link to="/agentic-ai-workshop/feedback" className="secondary-button">
               Workshop Feedback
             </Link>
@@ -613,9 +619,12 @@ const AgenticAIWorkshop = () => {
             <h2>Ready to Explore Agentic AI?</h2>
             <p>Join the CDS community in learning about agentic AI through hands-on demonstrations and collaborative exploration.</p>
             <div className="cta-buttons">
-              <Link to="/agentic-ai-workshop/registration-form" className="primary-button large">
-                Join the Workshop
-              </Link>
+              <a href="https://www.youtube.com/playlist?list=PLgF7i4LH-YxYvhXK-yywN7eFRjRjQrq89" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 className="primary-button large">
+                View Highlights
+              </a>
             </div>
           </div>
         </div>

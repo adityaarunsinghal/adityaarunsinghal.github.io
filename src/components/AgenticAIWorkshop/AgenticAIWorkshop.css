@@ -370,7 +370,9 @@
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 /* Buttons */
@@ -903,11 +905,13 @@
   .hero-cta {
     flex-direction: column;
     align-items: center;
+    gap: 15px;
   }
   
   .primary-button, .secondary-button {
     width: 100%;
     max-width: 280px;
+    text-align: center;
   }
   
   .cta-section {
