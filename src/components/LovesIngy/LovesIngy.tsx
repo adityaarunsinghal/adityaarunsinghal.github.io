@@ -271,12 +271,13 @@ const LovesIngy = () => {
               ) : countdownEvents.length === 0 ? (
                 <p className="no-events">No countdowns yet. Add one!</p>
               ) : (
-                countdownEvents.map((event, index) => {
-                  const days = getDaysUntil(event.date);
-                  const isPast = days < 0;
+                countdownEvents
+                  .filter(event => getDaysUntil(event.date) >= 0)
+                  .map((event, index) => {
+                    const days = getDaysUntil(event.date);
                   
                   return (
-                    <div key={index} className={`countdown-item ${isPast ? 'past' : ''}`}>
+                    <div key={index} className="countdown-item">
                       <span className="countdown-emoji">{event.emoji}</span>
                       <div className="countdown-info">
                         <span className="countdown-name">{event.name}</span>
@@ -288,8 +289,8 @@ const LovesIngy = () => {
                           })}
                         </span>
                       </div>
-                      <span className={`countdown-days ${isPast ? 'past' : ''}`}>
-                        {isPast ? 'Past' : `${days} days`}
+                      <span className="countdown-days">
+                        {`${days} days`}
                       </span>
                       <button 
                         className="countdown-delete"
