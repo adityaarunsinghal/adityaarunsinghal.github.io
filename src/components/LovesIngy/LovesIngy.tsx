@@ -282,7 +282,7 @@ const LovesIngy = () => {
                       <div className="countdown-info">
                         <span className="countdown-name">{event.name}</span>
                         <span className="countdown-date">
-                          {new Date(event.date).toLocaleDateString('en-US', { 
+                          {new Date(event.date + 'T00:00:00').toLocaleDateString('en-US', { 
                             month: 'short', 
                             day: 'numeric',
                             year: 'numeric'
