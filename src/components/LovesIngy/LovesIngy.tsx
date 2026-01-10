@@ -142,6 +142,8 @@ const LovesIngy = () => {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
+  const stripTrmnlPrefix = (msg: string) => msg.replace(/^>>>\s*/, '');
+
   const handleAddLoveMessage = async () => {
     if (newLoveMessage.trim() === '') {
       setShake(true);
@@ -368,7 +370,7 @@ const LovesIngy = () => {
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <p className="love-message">{message}</p>
+              <p className="love-message">{stripTrmnlPrefix(message)}</p>
               {hoveredIndex === index && (
                 <div className="tooltip">{new Date(timestamp).toLocaleString()}</div>
               )}

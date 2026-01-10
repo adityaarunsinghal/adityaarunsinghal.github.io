@@ -23,19 +23,29 @@ async function main() {
   console.log('🔄 Fetching data from Firestore...');
   
   try {
-    // 1. Fetch latest love message
+    // 1. Fetch latest love message with >>> prefix (for TRMNL display)
     const messagesSnapshot = await db
       .collection('love-ingy-messages')
       .orderBy('timestamp', 'desc')
-      .limit(1)
+      .limit(50)  // Fetch more to find one with >>> prefix
       .get();
     
-    let latestMessage = "I love you 💛";
+    let latestMessage = "I love you";
     let messageCount = 0;
     
     if (!messagesSnapshot.empty) {
-      const latestDoc = messagesSnapshot.docs[0];
-      latestMessage = latestDoc.data().message || latestMessage;
+      // Find the most recent message starting with >>>
+      const trmnlDoc = messagesSnapshot.docs.find(doc => 
+        doc.data().message?.startsWith('>>>')
+      );
+      
+      if (trmnlDoc) {
+        // Strip the >>> prefix and emojis for display
+        latestMessage = trmnlDoc.data().message
+          .replace(/^>>>\s*/, '')
+          .replace(/\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, '')
+          .trim();
+      }
       
       // Get total count
       const countSnapshot = await db.collection('love-ingy-messages').count().get();
