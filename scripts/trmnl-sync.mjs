@@ -34,17 +34,19 @@ async function main() {
     let messageCount = 0;
     
     if (!messagesSnapshot.empty) {
-      // Find the most recent message starting with >>>
-      const trmnlDoc = messagesSnapshot.docs.find(doc => 
+      // Find messages starting with >>>
+      const trmnlMessages = messagesSnapshot.docs.filter(doc => 
         doc.data().message?.startsWith('>>>')
       );
+      console.log(`📝 Found ${trmnlMessages.length} messages with >>> prefix (checked last 50)`);
       
-      if (trmnlDoc) {
+      if (trmnlMessages.length > 0) {
         // Strip the >>> prefix and emojis for display
-        latestMessage = trmnlDoc.data().message
+        latestMessage = trmnlMessages[0].data().message
           .replace(/^>>>\s*/, '')
           .replace(/\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, '')
           .trim();
+        console.log(`✂️ Stripped >>> prefix and emojis`);
       }
       
       // Get total count
@@ -52,7 +54,6 @@ async function main() {
       messageCount = countSnapshot.data().count;
     }
     
-    console.log(`📝 Latest message: [fetched]`);
     console.log(`📊 Total messages: ${messageCount}`);
     
     // 2. Fetch countdown config
@@ -91,7 +92,6 @@ async function main() {
         love_message: latestMessage.substring(0, 280), // Limit message length
         message_count: messageCount,
         countdowns: countdowns,
-        reply_url: "HTTPS://ADITYASINGHAL.COM/LOVESINGY", // Uppercase for smaller QR
         updated_at: now.toISOString()
       }
     };
@@ -129,7 +129,6 @@ async function main() {
     
     const responseData = await trmnlResponse.text();
     console.log('✅ Successfully synced to TRMNL!');
-    console.log('📬 Response:', responseData);
     
   } catch (error) {
     console.error('❌ Error:', error.message);
