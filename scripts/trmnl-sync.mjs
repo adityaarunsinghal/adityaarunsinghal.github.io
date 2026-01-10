@@ -37,7 +37,9 @@ async function main() {
     let throwbackDate = null;
     
     if (!messagesSnapshot.empty) {
-      const hour = new Date().getHours();
+      const now = new Date();
+      const eastern = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+      const hour = eastern.getHours();
       const isOddHour = hour % 2 === 1;
       
       // Find messages starting with >>>
@@ -50,8 +52,7 @@ async function main() {
       let selectedDoc;
       if (isOddHour) {
         // Deterministic "random" based on date+hour so same hour = same message
-        const now = new Date();
-        const seed = now.getFullYear() * 1000000 + (now.getMonth() + 1) * 10000 + now.getDate() * 100 + hour;
+        const seed = eastern.getFullYear() * 1000000 + (eastern.getMonth() + 1) * 10000 + eastern.getDate() * 100 + hour;
         const index = seed % messagesSnapshot.docs.length;
         selectedDoc = messagesSnapshot.docs[index];
         isThrowback = true;
