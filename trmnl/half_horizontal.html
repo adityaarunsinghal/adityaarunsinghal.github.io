@@ -8,7 +8,7 @@
       <!-- Love Message (Left Side) -->
       <div style="flex: 1; min-width: 0;">
         <div style="font-size: 9px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; margin-bottom: 6px;">
-          A message for you
+          {% if is_throwback %}Throwback: {{ throwback_date }}{% else %}A message for you{% endif %}
         </div>
         <div style="font-size: 22px; line-height: 1.3; font-weight: 500; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
           "{{ love_message }}"

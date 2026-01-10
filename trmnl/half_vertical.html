@@ -6,7 +6,7 @@
     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
       <div style="text-align: center; max-width: 100%;">
         <div style="font-size: 9px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; margin-bottom: 10px;">
-          A message for you
+          {% if is_throwback %}Throwback: {{ throwback_date }}{% else %}A message for you{% endif %}
         </div>
         <div style="font-size: 20px; line-height: 1.4; font-weight: 500;">
           "{{ love_message }}"

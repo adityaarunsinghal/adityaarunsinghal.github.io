@@ -263,7 +263,6 @@ const LovesIngy = () => {
         {showCountdowns && (
           <div className="countdown-manager">
             <h3>📅 Your Countdowns</h3>
-            <p className="countdown-subtitle">These show on your TRMNL display</p>
             
             <div className="countdown-list">
               {countdownLoading ? (

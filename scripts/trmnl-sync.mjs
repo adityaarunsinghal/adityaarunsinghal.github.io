@@ -27,27 +27,49 @@ async function main() {
     const messagesSnapshot = await db
       .collection('love-ingy-messages')
       .orderBy('timestamp', 'desc')
-      .limit(50)  // Fetch more to find one with >>> prefix
+      .limit(200)
       .get();
     
-    let latestMessage = "I love you";
+    let latestMessage = "I love you. Text me that your TRMNL is on Fallback Mode.";
     let messageCount = 0;
     
+    let isThrowback = false;
+    let throwbackDate = null;
+    
     if (!messagesSnapshot.empty) {
+      const hour = new Date().getHours();
+      const isOddHour = hour % 2 === 1;
+      
       // Find messages starting with >>>
-      const trmnlMessages = messagesSnapshot.docs.filter(doc => 
+      const trmnlIntendedMessages = messagesSnapshot.docs.filter(doc => 
         doc.data().message?.startsWith('>>>')
       );
-      console.log(`📝 Found ${trmnlMessages.length} messages with >>> prefix (checked last 50)`);
+      console.log(`📝 Found ${trmnlIntendedMessages.length} messages with >>> prefix (checked last 200)`);
+      console.log(`🕐 Hour ${hour} (${isOddHour ? 'odd - random from all' : 'even - latest >>>'})`);
       
-      if (trmnlMessages.length > 0) {
-        // Strip the >>> prefix and emojis for display
-        latestMessage = trmnlMessages[0].data().message
-          .replace(/^>>>\s*/, '')
-          .replace(/\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, '')
-          .trim();
-        console.log(`✂️ Stripped >>> prefix and emojis`);
+      let selectedDoc;
+      if (isOddHour) {
+        // Deterministic "random" based on date+hour so same hour = same message
+        const now = new Date();
+        const seed = now.getFullYear() * 1000000 + (now.getMonth() + 1) * 10000 + now.getDate() * 100 + hour;
+        const index = seed % messagesSnapshot.docs.length;
+        selectedDoc = messagesSnapshot.docs[index];
+        isThrowback = true;
+        const timestamp = selectedDoc.data().timestamp?.toDate();
+        if (timestamp) {
+          throwbackDate = timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+      } else {
+        // Latest >>> message
+        selectedDoc = trmnlIntendedMessages.length > 0 ? trmnlIntendedMessages[0] : messagesSnapshot.docs[0];
       }
+      
+      // Strip the >>> prefix and emojis for display
+      latestMessage = selectedDoc.data().message
+        .replace(/^>>>\s*/, '')
+        .replace(/\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, '')
+        .trim();
+      console.log(`✂️ Stripped >>> prefix and emojis`);
       
       // Get total count
       const countSnapshot = await db.collection('love-ingy-messages').count().get();
@@ -92,6 +114,8 @@ async function main() {
         love_message: latestMessage.substring(0, 280), // Limit message length
         message_count: messageCount,
         countdowns: countdowns,
+        is_throwback: isThrowback,
+        throwback_date: throwbackDate,
         updated_at: now.toISOString()
       }
     };
