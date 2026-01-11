@@ -15,6 +15,7 @@ import FacebookRedirect from '@/components/FacebookRedirect';
 import YouTubeRedirect from '@/components/YouTubeRedirect';
 import FeedbackForm from '@/components/FeedbackForm';
 import VisitsDenmark from '@/components/VisitsDenmark/VisitsDenmark';
+import WifeRedirect from '@/components/WifeRedirect';
 
 const router = createBrowserRouter([
   {
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
   ...['youtube', 'YouTube', 'YOUTUBE'].map(path => ({
     path: `/${path}`,
     element: <YouTubeRedirect />,
+  })),
+  ...['wife', 'Wife', 'WIFE'].map(path => ({
+    path: `/${path}`,
+    element: <WifeRedirect />,
   })),
   {
     path: '/*',
