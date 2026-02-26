@@ -37,9 +37,9 @@ const formatDateForDisplay = (date: Date = new Date()) => {
 const generateHeatmapData = (entries: Map<string, Entry>) => {
   const data: Array<{ date: string; count: number; level: number }> = [];
   const today = new Date();
-  const yearStart = new Date(today.getFullYear(), 0, 1);
+  const yearStart = new Date(today.getFullYear() - 1, 11, 1); // Dec 1 of previous year
 
-  // Generate data for every day from Jan 1 to today
+  // Generate data for every day from Dec 1 last year to today
   for (let d = new Date(yearStart); d <= today; d.setDate(d.getDate() + 1)) {
     const dateStr = getLocalDateString(d);
     const entry = entries.get(dateStr);
