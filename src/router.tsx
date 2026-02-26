@@ -16,6 +16,7 @@ import YouTubeRedirect from '@/components/YouTubeRedirect';
 import FeedbackForm from '@/components/FeedbackForm';
 import VisitsDenmark from '@/components/VisitsDenmark/VisitsDenmark';
 import WifeRedirect from '@/components/WifeRedirect';
+import Progress from '@/components/Progress/Progress';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,16 @@ const router = createBrowserRouter([
       <ErrorBoundary>
         <PrivateRoute>
           <LovesIngy />
+        </PrivateRoute>
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "/progress",
+    element: (
+      <ErrorBoundary>
+        <PrivateRoute>
+          <Progress />
         </PrivateRoute>
       </ErrorBoundary>
     ),
