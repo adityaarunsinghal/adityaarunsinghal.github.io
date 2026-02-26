@@ -532,6 +532,13 @@
   font-size: 12px;
 }
 
+/* Override react-activity-calendar HTML labels for dark theme */
+.progress-heatmap-container footer,
+.progress-heatmap-container span,
+.progress-heatmap-container div {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
 /* Inline Editor for Heatmap */
 .progress-inline-editor {
   margin-top: 2rem;
