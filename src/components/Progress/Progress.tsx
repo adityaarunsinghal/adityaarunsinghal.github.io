@@ -492,11 +492,9 @@ const Progress = () => {
           </p>
         )}
 
-        {currentStreak > 0 && (
-          <div className="progress-streak-display">
-            🔥 {currentStreak} day streak
-          </div>
-        )}
+        <div className="progress-streak-display">
+          {currentStreak > 0 ? `🔥 ${currentStreak} day streak` : '😔 0 day streak'}
+        </div>
 
         {error && (
           <div className="progress-error">{error}</div>
