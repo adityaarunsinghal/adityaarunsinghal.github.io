@@ -794,6 +794,8 @@ const Progress = () => {
               blockMargin={4}
               fontSize={12}
               showWeekdayLabels={false}
+              hideColorLegend
+              hideTotalCount
             />
           </div>
         </div>
