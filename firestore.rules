@@ -24,11 +24,7 @@ service cloud.firestore {
     // Element tracker daily entries
     match /element-tracker/{document} {
       allow read, write: if request.auth != null
-        && request.auth.token.email in [
-          'adityaarunsinghal@gmail.com',
-          'johannefriedman@gmail.com',
-          'johanne.friedman@gmail.com'
-        ];
+        && request.auth.token.email == 'adityaarunsinghal@gmail.com';
     }
   }
 }
