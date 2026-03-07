@@ -65,24 +65,69 @@ const generateHeatmapData = (entries: Map<string, Entry>) => {
 };
 
 const calculateStreak = (entries: Map<string, Entry>): number => {
-  let streak = 0;
-  let currentDate = new Date();
+  // Determine start date: today if logged, otherwise yesterday
+  const today = new Date();
+  const todayStr = getLocalDateString(today);
+  const startDate = entries.has(todayStr) ? new Date(today) : new Date(Date.now() - 86400000);
 
-  // Walk backwards from today through entries
+  const firstDateStr = getLocalDateString(startDate);
+  const firstEntry = entries.get(firstDateStr);
+
+  // No entry at start date -> streak is 0
+  if (!firstEntry) return 0;
+
+  const direction = firstEntry.inElement; // true = positive, false = negative
+  let streak = 0;
+  const current = new Date(startDate);
+
   while (true) {
-    const dateStr = getLocalDateString(currentDate);
+    const dateStr = getLocalDateString(current);
     const entry = entries.get(dateStr);
 
-    // Stop if we hit a day with no entry or an entry that's not "in element"
-    if (!entry || !entry.inElement) {
-      break;
-    }
+    if (!entry || entry.inElement !== direction) break;
 
     streak++;
-    currentDate.setDate(currentDate.getDate() - 1);
+    current.setDate(current.getDate() - 1);
   }
 
-  return streak;
+  return direction ? streak : -streak;
+};
+
+interface StreakTier {
+  emoji: string;
+  label: string;
+  className: string;
+}
+
+const getStreakTier = (streak: number): StreakTier => {
+  if (streak === 0) return { emoji: '\u{1F610}', label: 'no streak', className: 'streak-neutral' };
+
+  const abs = Math.abs(streak);
+  const capped = Math.min(abs, 7);
+
+  if (streak > 0) {
+    const positiveTiers: Record<number, StreakTier> = {
+      1: { emoji: '\u{1F331}', label: 'a start', className: 'streak-pos-1' },
+      2: { emoji: '\u{1F33F}', label: 'growing', className: 'streak-pos-2' },
+      3: { emoji: '\u2600\uFE0F', label: 'building', className: 'streak-pos-3' },
+      4: { emoji: '\u{1F525}', label: 'rolling', className: 'streak-pos-4' },
+      5: { emoji: '\u26A1', label: 'surging', className: 'streak-pos-5' },
+      6: { emoji: '\u{1F31F}', label: 'blazing', className: 'streak-pos-6' },
+      7: { emoji: '\u{1F451}', label: 'unstoppable', className: 'streak-pos-7' },
+    };
+    return positiveTiers[capped];
+  }
+
+  const negativeTiers: Record<number, StreakTier> = {
+    1: { emoji: '\u{1F615}', label: 'off track', className: 'streak-neg-1' },
+    2: { emoji: '\u{1F614}', label: 'drifting', className: 'streak-neg-2' },
+    3: { emoji: '\u{1F61F}', label: 'slipping', className: 'streak-neg-3' },
+    4: { emoji: '\u{1F630}', label: 'sinking', className: 'streak-neg-4' },
+    5: { emoji: '\u{1F628}', label: 'spiraling', className: 'streak-neg-5' },
+    6: { emoji: '\u{1F6A8}', label: 'in trouble', className: 'streak-neg-6' },
+    7: { emoji: '\u{1F198}', label: 'crisis', className: 'streak-neg-7' },
+  };
+  return negativeTiers[capped];
 };
 
 const STREAK_MILESTONES = [7, 14, 21, 30, 60, 90, 100, 365];
@@ -492,8 +537,8 @@ const Progress = () => {
           </p>
         )}
 
-        <div className="progress-streak-display">
-          {currentStreak > 0 ? `🔥 ${currentStreak} day streak` : '😔 0 day streak'}
+        <div className={`progress-streak-display ${getStreakTier(currentStreak).className}`}>
+          {`${getStreakTier(currentStreak).emoji} ${Math.abs(currentStreak)} day ${getStreakTier(currentStreak).label}`}
         </div>
 
         {error && (

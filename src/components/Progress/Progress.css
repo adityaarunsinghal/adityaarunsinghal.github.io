@@ -32,16 +32,107 @@
 }
 
 .progress-streak-display {
-  color: #f39c12;
   text-align: center;
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 2rem;
   padding: 0.75rem 1rem;
-  background: rgba(243, 156, 18, 0.1);
-  border: 1px solid rgba(243, 156, 18, 0.3);
   border-radius: 8px;
   animation: slideUp 0.3s ease;
+  transition: background 0.4s ease, color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Neutral */
+.streak-neutral {
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Positive tiers */
+.streak-pos-1 {
+  color: #81c784;
+  background: rgba(129, 199, 132, 0.08);
+  border: 1px solid rgba(129, 199, 132, 0.2);
+}
+.streak-pos-2 {
+  color: #66bb6a;
+  background: rgba(102, 187, 106, 0.1);
+  border: 1px solid rgba(102, 187, 106, 0.25);
+}
+.streak-pos-3 {
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.12);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+.streak-pos-4 {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid rgba(46, 204, 113, 0.35);
+}
+.streak-pos-5 {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.18);
+  border: 1px solid rgba(46, 204, 113, 0.4);
+  box-shadow: 0 0 12px rgba(46, 204, 113, 0.15);
+}
+.streak-pos-6 {
+  color: #f1c40f;
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(241, 196, 15, 0.15));
+  border: 1px solid rgba(241, 196, 15, 0.4);
+  box-shadow: 0 0 18px rgba(241, 196, 15, 0.2);
+}
+.streak-pos-7 {
+  color: #f1c40f;
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.18), rgba(241, 196, 15, 0.2));
+  border: 1px solid rgba(241, 196, 15, 0.5);
+  box-shadow: 0 0 24px rgba(241, 196, 15, 0.25);
+  animation: slideUp 0.3s ease, streakPulse 2s ease-in-out infinite;
+}
+
+/* Negative tiers */
+.streak-neg-1 {
+  color: #ffb74d;
+  background: rgba(255, 183, 77, 0.08);
+  border: 1px solid rgba(255, 183, 77, 0.2);
+}
+.streak-neg-2 {
+  color: #ffa726;
+  background: rgba(255, 167, 38, 0.1);
+  border: 1px solid rgba(255, 167, 38, 0.25);
+}
+.streak-neg-3 {
+  color: #ff9800;
+  background: rgba(255, 152, 0, 0.12);
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+.streak-neg-4 {
+  color: #f57c00;
+  background: rgba(245, 124, 0, 0.14);
+  border: 1px solid rgba(245, 124, 0, 0.35);
+}
+.streak-neg-5 {
+  color: #e65100;
+  background: rgba(230, 81, 0, 0.15);
+  border: 1px solid rgba(230, 81, 0, 0.35);
+  box-shadow: inset 0 0 12px rgba(230, 81, 0, 0.1);
+}
+.streak-neg-6 {
+  color: #f44336;
+  background: rgba(244, 67, 54, 0.15);
+  border: 1px solid rgba(244, 67, 54, 0.4);
+  box-shadow: inset 0 0 18px rgba(244, 67, 54, 0.12);
+}
+.streak-neg-7 {
+  color: #d32f2f;
+  background: rgba(211, 47, 47, 0.18);
+  border: 1px solid rgba(211, 47, 47, 0.5);
+  box-shadow: inset 0 0 24px rgba(211, 47, 47, 0.15);
+}
+
+@keyframes streakPulse {
+  0%, 100% { box-shadow: 0 0 24px rgba(241, 196, 15, 0.25); }
+  50% { box-shadow: 0 0 32px rgba(241, 196, 15, 0.4); }
 }
 
 .progress-error {
