@@ -22,8 +22,13 @@ jobs:
           node-version: '22'
       
       - name: Install dependencies
-        run: npm install --registry https://registry.npmjs.org firebase-admin
-      
+        run: |
+          mkdir -p /tmp/trmnl-deps
+          cd /tmp/trmnl-deps
+          npm init -y > /dev/null
+          npm install firebase-admin
+          echo "NODE_PATH=/tmp/trmnl-deps/node_modules" >> $GITHUB_ENV
+
       - name: Sync to TRMNL
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
