@@ -22,12 +22,7 @@ jobs:
           node-version: '22'
       
       - name: Install dependencies
-        run: |
-          mkdir -p /tmp/trmnl-deps
-          cd /tmp/trmnl-deps
-          npm init -y > /dev/null
-          npm install firebase-admin
-          echo "NODE_PATH=/tmp/trmnl-deps/node_modules" >> $GITHUB_ENV
+        run: npm install firebase-admin
 
       - name: Sync to TRMNL
         env:
