@@ -22,7 +22,7 @@ jobs:
           node-version: '22'
       
       - name: Install dependencies
-        run: npm install firebase-admin
+        run: npm install --registry https://registry.npmjs.org firebase-admin
       
       - name: Sync to TRMNL
         env:
