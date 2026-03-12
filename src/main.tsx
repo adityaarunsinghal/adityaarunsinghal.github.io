@@ -12,3 +12,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </AuthProvider>
   </React.StrictMode>
 );
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
