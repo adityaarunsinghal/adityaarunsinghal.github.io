@@ -14,13 +14,13 @@ Last verified: 2026-02-26
 ## Commands
 - `pnpm dev` - Start development server
 - `pnpm build` - Production build (tsc + vite build)
-- `pnpm deploy` - Build and deploy to GitHub Pages (gh-pages -d dist)
+- `pnpm run deploy` - Build and deploy to GitHub Pages (gh-pages -d dist) (must use `run` — `pnpm deploy` is reserved)
 - `pnpm lint` - Run ESLint
 - `pnpm preview` - Preview production build locally
 
 ## Deployment
 1. Code lives on `master` branch
-2. `pnpm deploy` builds to `dist/` and pushes to `gh-pages` branch
+2. `pnpm run deploy` builds to `dist/` and pushes to `gh-pages` branch
 3. GitHub Pages serves from `gh-pages` branch
 4. Custom domain: adityasinghal.com (redirects from adityaarunsinghal.github.io)
 5. SPA routing handled by `public/404.html` redirect trick
