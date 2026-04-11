@@ -35,9 +35,9 @@ const db = initializeFirestore(firebaseapp, {
 
 // Expose db and Firestore functions on window in dev mode for seeding/testing
 if (import.meta.env.DEV) {
-  (window as any).__FIREBASE_DB__ = db;
+  (window as unknown as Record<string, unknown>).__FIREBASE_DB__ = db;
   import('firebase/firestore').then(mod => {
-    (window as any).__FIRESTORE__ = mod;
+    (window as unknown as Record<string, unknown>).__FIRESTORE__ = mod;
   });
 }
 

@@ -1,6 +1,6 @@
 # Progress Component
 
-Last verified: 2026-03-06
+Last verified: 2026-04-11
 
 ## Purpose
 Tracks daily "element" status to build awareness of when you're aligned with your best self. Provides visual feedback through heatmaps and celebrates consistency with streak animations.
@@ -18,7 +18,7 @@ Tracks daily "element" status to build awareness of when you're aligned with you
 
 ## Dependencies
 - **Uses**:
-  - Firebase (Firestore, serverTimestamp)
+  - Firebase (Firestore, serverTimestamp, deleteDoc)
   - react-activity-calendar (heatmap visualization)
   - canvas-confetti (celebrations)
   - useAuth hook (authentication)
@@ -41,10 +41,12 @@ interface Entry {
 - sessionStorage for streak state: Prevents confetti re-firing on reload
 - Real-time listener: Immediate sync across devices
 - Yesterday nudge: Encourages consistent tracking
+- Donut chart period toggle: Defaults to 2W, toggles to 1M/3M/All — client-side filtering using YYYY-MM-DD string comparison
+- Entry deletion via heatmap editor: Uses confirmation dialog to prevent accidental deletes
 
 ## Invariants
 - Every entry has exactly one boolean choice (inElement true/false)
-- Past entries can be edited by clicking calendar dates
+- Past entries can be edited or deleted by clicking calendar dates
 - Today's entry always shows at top
 - Streak is bidirectional: positive for consecutive "in element", negative for consecutive "not in element"
 - Streak skips today if unlogged (counts from yesterday)

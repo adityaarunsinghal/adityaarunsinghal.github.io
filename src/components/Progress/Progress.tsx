@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { useAuth } from '@/hooks/useAuth';
 import { db } from '@/firebase';
-import { collection, onSnapshot, QuerySnapshot, DocumentData, setDoc, doc, serverTimestamp, FirestoreError } from 'firebase/firestore';
+import { collection, onSnapshot, QuerySnapshot, DocumentData, setDoc, deleteDoc, doc, serverTimestamp, FirestoreError } from 'firebase/firestore';
 import { ActivityCalendar } from 'react-activity-calendar';
 import type { Activity, BlockElement } from 'react-activity-calendar';
 import Loading from '@/components/Loading';
@@ -32,6 +32,25 @@ const getLocalDateString = (date: Date = new Date()) => {
 const formatDateForDisplay = (date: Date = new Date()) => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   return date.toLocaleDateString('en-US', options);
+};
+
+type ChartPeriod = '2w' | '1m' | '3m' | 'all';
+
+const getDateNDaysAgo = (n: number): string => {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return getLocalDateString(d);
+};
+
+const filterEntriesByPeriod = (
+  entries: Map<string, Entry>,
+  period: ChartPeriod
+): Entry[] => {
+  const all = Array.from(entries.values());
+  if (period === 'all') return all;
+  const days = period === '2w' ? 14 : period === '1m' ? 30 : 90;
+  const cutoff = getDateNDaysAgo(days);
+  return all.filter(e => e.date >= cutoff);
 };
 
 const generateHeatmapData = (entries: Map<string, Entry>) => {
@@ -80,14 +99,12 @@ const calculateStreak = (entries: Map<string, Entry>): number => {
   let streak = 0;
   const current = new Date(startDate);
 
-  while (true) {
-    const dateStr = getLocalDateString(current);
-    const entry = entries.get(dateStr);
-
-    if (!entry || entry.inElement !== direction) break;
-
+  for (
+    let dateStr = getLocalDateString(current), entry = entries.get(dateStr);
+    entry && entry.inElement === direction;
+    current.setDate(current.getDate() - 1), dateStr = getLocalDateString(current), entry = entries.get(dateStr)
+  ) {
     streak++;
-    current.setDate(current.getDate() - 1);
   }
 
   return direction ? streak : -streak;
@@ -163,6 +180,7 @@ const Progress = () => {
 
   // Confirmation dialog state for past entries
   const [pendingSave, setPendingSave] = useState<PendingSave | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null); // date string to delete
 
   // Heatmap editor state
   const [editingDate, setEditingDate] = useState<string | null>(null);
@@ -171,6 +189,9 @@ const Progress = () => {
   const [heatmapShowSuccess, setHeatmapShowSuccess] = useState(false);
   const [heatmapSaveError, setHeatmapSaveError] = useState<string | null>(null);
   const [heatmapIsLoading, setHeatmapIsLoading] = useState(false);
+
+  // Chart period toggle state
+  const [chartPeriod, setChartPeriod] = useState<ChartPeriod>('2w');
 
   // Animation state for saved entries
   const [savedEntryDate, setSavedEntryDate] = useState<string | null>(null);
@@ -452,6 +473,44 @@ const Progress = () => {
     // Don't clear heatmap or yesterday state - let user re-submit if needed
   };
 
+  // Delete entry handlers
+  const handleDeleteEntry = (dateStr: string) => {
+    setPendingDelete(dateStr);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!user || !pendingDelete) return;
+    setHeatmapIsLoading(true);
+    try {
+      await deleteDoc(doc(db, 'element-tracker', pendingDelete));
+      // Optimistic local removal
+      setEntries((prev) => {
+        const next = new Map(prev);
+        next.delete(pendingDelete);
+        return next;
+      });
+      setEditingDate(null);
+      setHeatmapSelectedChoice(null);
+      setHeatmapReason('');
+      setPendingDelete(null);
+    } catch (err) {
+      setHeatmapSaveError(`Failed to delete: ${err instanceof Error ? err.message : String(err)}`);
+    } finally {
+      setHeatmapIsLoading(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setPendingDelete(null);
+  };
+
+  const getPendingDeleteDateForDisplay = () => {
+    if (!pendingDelete) return '';
+    const [year, month, day] = pendingDelete.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    return formatDateForDisplay(date);
+  };
+
   // Get the date to display in confirmation dialog
   const getPendingSaveDateForDisplay = () => {
     if (!pendingSave) return '';
@@ -509,9 +568,10 @@ const Progress = () => {
     setHeatmapReason('');
   };
 
-  // Calculate counts for donut chart
-  const inCount = Array.from(entries.values()).filter(entry => entry.inElement).length;
-  const totalCount = entries.size;
+  // Calculate counts for donut chart (filtered by selected period)
+  const filteredEntries = filterEntriesByPeriod(entries, chartPeriod);
+  const inCount = filteredEntries.filter(entry => entry.inElement).length;
+  const totalCount = filteredEntries.length;
 
   // Calculate current streak
   const currentStreak = calculateStreak(entries);
@@ -740,9 +800,22 @@ const Progress = () => {
         )}
 
         {/* Donut Chart Section */}
-        {totalCount > 0 ? (
+        {entries.size > 0 ? (
           <div className="progress-chart-section">
-            <h2 className="progress-section-title">Overall Progress</h2>
+            <h2 className="progress-section-title">Progress</h2>
+            <div className="progress-period-toggle">
+              {(['2w', '1m', '3m', 'all'] as const).map(p => (
+                <button
+                  key={p}
+                  className={`progress-period-btn ${chartPeriod === p ? 'active' : ''}`}
+                  onClick={() => setChartPeriod(p)}
+                >
+                  {p === '2w' ? '2W' : p === '1m' ? '1M' : p === '3m' ? '3M' : 'All'}
+                </button>
+              ))}
+            </div>
+            {totalCount > 0 ? (
+            <>
             <svg
               className="progress-donut"
               viewBox="0 0 150 150"
@@ -805,6 +878,12 @@ const Progress = () => {
                 <span>Not In My Element</span>
               </div>
             </div>
+            </>
+            ) : (
+              <p className="progress-chart-placeholder">
+                No entries in this period
+              </p>
+            )}
           </div>
         ) : (
           <div className="progress-chart-section">
@@ -897,6 +976,15 @@ const Progress = () => {
                   >
                     Cancel
                   </button>
+                  {editingDate && entries.has(editingDate) && (
+                    <button
+                      className="progress-delete-btn"
+                      onClick={() => handleDeleteEntry(editingDate)}
+                      disabled={heatmapIsLoading}
+                    >
+                      Remove Entry
+                    </button>
+                  )}
                 </div>
 
                 {heatmapSaveError && (
@@ -947,6 +1035,42 @@ const Progress = () => {
                   className="progress-confirm-btn progress-confirm-cancel"
                   onClick={handleConfirmCancel}
                   disabled={yesterdayIsLoading || heatmapIsLoading}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirmation Dialog */}
+        {pendingDelete && (
+          <div
+            className="progress-confirm-overlay"
+            onClick={handleCancelDelete}
+          >
+            <div
+              className="progress-confirm-dialog"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="progress-confirm-title">
+                Remove entry for {getPendingDeleteDateForDisplay()}?
+              </h2>
+              <p className="progress-confirm-warning">
+                This will permanently delete this entry. This cannot be undone.
+              </p>
+              <div className="progress-confirm-actions">
+                <button
+                  className="progress-confirm-btn progress-confirm-delete"
+                  onClick={handleConfirmDelete}
+                  disabled={heatmapIsLoading}
+                >
+                  {heatmapIsLoading ? 'Removing...' : 'Remove'}
+                </button>
+                <button
+                  className="progress-confirm-btn progress-confirm-cancel"
+                  onClick={handleCancelDelete}
+                  disabled={heatmapIsLoading}
                 >
                   Cancel
                 </button>

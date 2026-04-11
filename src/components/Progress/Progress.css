@@ -596,6 +596,49 @@
   cursor: not-allowed;
 }
 
+.progress-confirm-delete {
+  background-color: #c0392b;
+  color: #ffffff;
+}
+
+.progress-confirm-delete:hover:not(:disabled) {
+  background-color: #a93226;
+}
+
+.progress-confirm-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.progress-confirm-warning {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.progress-delete-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(192, 57, 43, 0.5);
+  background: transparent;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.progress-delete-btn:hover:not(:disabled) {
+  background: rgba(192, 57, 43, 0.15);
+}
+
+.progress-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Heatmap Section */
 .progress-heatmap-section {
   margin-top: 3rem;
@@ -660,6 +703,34 @@
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+}
+
+.progress-period-toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.progress-period-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.progress-period-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.progress-period-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .progress-donut {

@@ -6,7 +6,7 @@ import { auth } from '../../firebase';
 import { ALLOWED_EMAILS } from '@/config';
 
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-  || (navigator as any).standalone === true;
+  || (navigator as unknown as { standalone?: boolean }).standalone === true;
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, []);
+  }, [from, navigate]);
 
   const handleLogin = async () => {
     setLoading(true);
