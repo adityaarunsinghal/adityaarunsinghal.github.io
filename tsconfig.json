@@ -15,14 +15,13 @@
     "jsx": "react-jsx",
 
     /* Path mapping */
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@/components/*": ["src/components/*"],
-      "@/hooks/*": ["src/hooks/*"],
-      "@/contexts/*": ["src/contexts/*"],
-      "@/images/*": ["src/images/*"],
-      "@/config": ["src/config"]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/contexts/*": ["./src/contexts/*"],
+      "@/images/*": ["./src/images/*"],
+      "@/config": ["./src/config"]
     },
 
     /* Linting */

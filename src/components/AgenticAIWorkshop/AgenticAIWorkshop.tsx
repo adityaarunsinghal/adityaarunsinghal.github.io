@@ -32,7 +32,7 @@ const AnimatedQuote = ({ item, allItems, index, onUpdate, onBringToFront }: {
   onUpdate: (index: number, x: number, y: number, vx: number, vy: number) => void;
   onBringToFront: (index: number) => void;
 }) => {
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number>(undefined);
   const frameCount = useRef<number>(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -170,8 +170,8 @@ const AgenticAIWorkshop = () => {
   };
 
   useEffect(() => {
-    setIsVisible(true);
-    
+    requestAnimationFrame(() => setIsVisible(true));
+
     // Load CSV data using papaparse
     fetch('/hype.csv')
       .then(response => response.text())
