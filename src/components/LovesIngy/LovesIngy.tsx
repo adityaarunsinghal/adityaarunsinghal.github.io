@@ -128,9 +128,14 @@ const LovesIngy = () => {
     setShowCountdownForm(false);
   };
 
-  const deleteCountdownEvent = async (index: number) => {
+  // Delete by object identity, not by index. The rendered list is filtered to
+  // future events, so a row's positional index does NOT match its index in the
+  // unfiltered countdownEvents array — using the index deleted the wrong event
+  // whenever any past event existed. Array.filter preserves the original object
+  // references, so reference inequality reliably removes exactly the clicked event.
+  const deleteCountdownEvent = async (eventToDelete: CountdownEvent) => {
     if (confirm('Delete this countdown?')) {
-      const updatedEvents = countdownEvents.filter((_, i) => i !== index);
+      const updatedEvents = countdownEvents.filter((e) => e !== eventToDelete);
       await saveCountdowns(updatedEvents);
     }
   };
@@ -158,17 +163,27 @@ const LovesIngy = () => {
         timestamp: serverTimestamp(),
       };
 
-      // Check if newLoveMessage is a valid JSON
+      // Optional import path: pasting a JSON object {text, timestamp} backfills a
+      // message at a specific time. Only take this path when BOTH fields are the
+      // right type. Previously any object was accepted, so JSON missing these
+      // fields wrote `message: undefined` and `new Timestamp(NaN, NaN)`. Also use
+      // Timestamp.fromMillis: the old `new Timestamp(ms/1000, ms%1000)` treated a
+      // millisecond remainder as nanoseconds, producing the wrong sub-second value.
       try {
         const parsedMessage = JSON.parse(newLoveMessage);
-        if (parsedMessage && typeof parsedMessage === 'object') {
+        if (
+          parsedMessage && typeof parsedMessage === 'object' &&
+          typeof parsedMessage.text === 'string' &&
+          typeof parsedMessage.timestamp === 'number' &&
+          Number.isFinite(parsedMessage.timestamp)
+        ) {
           messageData = {
             message: parsedMessage.text,
-            timestamp: new Timestamp(parsedMessage.timestamp / 1000, parsedMessage.timestamp % 1000),
+            timestamp: Timestamp.fromMillis(parsedMessage.timestamp),
           };
         }
       } catch {
-        // Not a JSON, proceed with original message
+        // Not JSON, proceed with the original message text
       }
 
       await addDoc(loveMessagesRef, messageData);
@@ -272,11 +287,11 @@ const LovesIngy = () => {
               ) : (
                 countdownEvents
                   .filter(event => getDaysUntil(event.date) >= 0)
-                  .map((event, index) => {
+                  .map((event) => {
                     const days = getDaysUntil(event.date);
-                  
+
                   return (
-                    <div key={index} className="countdown-item">
+                    <div key={`${event.date}-${event.name}`} className="countdown-item">
                       <span className="countdown-emoji">{event.emoji}</span>
                       <div className="countdown-info">
                         <span className="countdown-name">{event.name}</span>
@@ -289,11 +304,11 @@ const LovesIngy = () => {
                         </span>
                       </div>
                       <span className="countdown-days">
-                        {`${days} days`}
+                        {days === 0 ? 'Today!' : days === 1 ? '1 day' : `${days} days`}
                       </span>
-                      <button 
+                      <button
                         className="countdown-delete"
-                        onClick={() => deleteCountdownEvent(index)}
+                        onClick={() => deleteCountdownEvent(event)}
                         title="Delete"
                       >
                         ×
