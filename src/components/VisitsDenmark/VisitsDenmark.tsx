@@ -55,6 +55,7 @@ const TOKEN_CACHE_DURATION_MS = 58 * 60 * 1000; // 58 minutes
 const QUEUE_DELAY_MS = 500;
 const FAST_MODE_WORD_THRESHOLD = 15;
 const RATE_LIMIT_WINDOW_SEC = 60;
+const MAX_TRANSLATION_ATTEMPTS = 5;
 
 export default function VisitsDenmark() {
   const [translations, setTranslations] = useState<TranslationEntry[]>([]);
@@ -71,7 +72,7 @@ export default function VisitsDenmark() {
   const pendingTextRef = useRef('');
   const fastModeBufferRef = useRef('');
   const lastSentTextRef = useRef('');
-  const translationQueueRef = useRef<Array<{ text: string; timestamp: number }>>([]);
+  const translationQueueRef = useRef<Array<{ text: string; timestamp: number; attempts?: number }>>([]);
   const isProcessingRef = useRef(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const isListeningRef = useRef(false);
@@ -138,6 +139,12 @@ export default function VisitsDenmark() {
 
     try {
       const token = await getAuthToken();
+      // Don't send "Authorization: Bearer undefined" when the user/token isn't
+      // ready yet (e.g. the on-mount test translation racing auth). Re-queue and
+      // let a later run pick it up once a token exists.
+      if (!token) {
+        throw new Error('Not signed in yet. Please wait a moment and try again.');
+      }
       const response = await fetch(
         'https://us-central1-aditya-singhal-website.cloudfunctions.net/translateText',
         {
@@ -153,6 +160,11 @@ export default function VisitsDenmark() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        // A cached ID token can expire; on auth failure drop the cache so the next
+        // attempt mints a fresh token instead of looping forever on the stale one.
+        if (response.status === 401 || response.status === 403) {
+          tokenCacheRef.current = null;
+        }
         if (response.status === 429) {
           throw new Error(`Rate limit exceeded. Please wait ${RATE_LIMIT_WINDOW_SEC}s before trying again.`);
         }
@@ -180,8 +192,12 @@ export default function VisitsDenmark() {
       } else {
         setError('Translation error. Please try again.');
       }
-      // Re-queue failed item to not lose text
-      translationQueueRef.current.unshift(item);
+      // Re-queue the failed item so text isn't lost, but cap retries so a
+      // permanently-failing item (bad auth, malformed text) can't spin forever.
+      const attempts = (item.attempts ?? 0) + 1;
+      if (attempts < MAX_TRANSLATION_ATTEMPTS) {
+        translationQueueRef.current.unshift({ ...item, attempts });
+      }
     } finally {
       clearTimeout(timeoutId);
       setIsTranslating(false);
@@ -224,12 +240,16 @@ export default function VisitsDenmark() {
     }
   }, [isOnline, processQueue]);
 
-  // Test translation on mount
+  // Test translation on mount, but only once the user (and thus an auth token) is
+  // available — otherwise the request would go out with "Bearer undefined" and the
+  // backend would reject it before auth even settled.
+  const ranMountTestRef = useRef(false);
   useEffect(() => {
-    const testText = language === 'da-DK' ? 'Hej' : 'नमस्ते';
+    if (!user || ranMountTestRef.current) return;
+    ranMountTestRef.current = true;
+    const testText = languageRef.current === 'da-DK' ? 'Hej' : 'नमस्ते';
     queueTranslation(testText);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user, queueTranslation]);
 
   // Speech recognition setup
   useEffect(() => {
