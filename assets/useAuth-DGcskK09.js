@@ -1,6 +1,0 @@
-import{r as e,t}from"./jsx-runtime-DAs1UGHr.js";import{n}from"./preload-helper-BX-gUCTy.js";import{g as r,t as i}from"./firebase-PBa8I5rV.js";var a=e(n(),1),o=t(),s=({message:e=`Loading...`})=>(0,o.jsxs)(`div`,{style:{display:`flex`,justifyContent:`center`,alignItems:`center`,minHeight:`200px`,flexDirection:`column`,gap:`1rem`},children:[(0,o.jsx)(`div`,{style:{width:`40px`,height:`40px`,border:`4px solid #f3f3f3`,borderTop:`4px solid #3498db`,borderRadius:`50%`,animation:`spin 1s linear infinite`}}),(0,o.jsx)(`p`,{children:e}),(0,o.jsx)(`style`,{children:`
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    `})]}),c=(0,a.createContext)({user:null,loading:!0}),l=({children:e})=>{let[t,n]=(0,a.useState)(null),[l,u]=(0,a.useState)(!0);return(0,a.useEffect)(()=>r(i,e=>{n(e),u(!1)}),[]),l?(0,o.jsx)(s,{message:`Authenticating...`}):(0,o.jsx)(c.Provider,{value:{user:t,loading:l},children:e})},u=()=>(0,a.useContext)(c);export{l as n,s as r,u as t};
