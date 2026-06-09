@@ -1,6 +1,6 @@
 # Complete System Documentation
 
-**Last Updated:** December 2024  
+**Last Updated:** June 2026  
 **Project:** Personal Website (adityasinghal.com)  
 **Purpose:** If you're reading this years later, this document will help you understand everything about how this site works.
 
@@ -29,12 +29,12 @@
 - Various redirect routes (resume, LinkedIn, etc.)
 
 **Private Features (Auth Required):**
+- `/progress` - Daily element/habit tracker with streaks, heatmap, donut chart
 - `/lovesingy` - Message board with countdown manager
-- `/visitsDenmark` - Live Danish→English subtitle translator
-- `/private` - Private dashboard
+- `/translate` - Live Danish/Hindi→English subtitle translator (VisitsDenmark)
 
 **Background Services:**
-- TRMNL display sync (runs every 10 minutes via GitHub Actions)
+- TRMNL display sync (runs every 5 minutes via GitHub Actions)
 - Displays latest love message + upcoming countdowns on physical e-ink display
 
 ### Key Design Decisions
@@ -50,17 +50,17 @@
 ## Technology Stack
 
 ### Frontend
-- **React 18** - UI framework
+- **React 19** - UI framework
 - **TypeScript** - Type safety
 - **Vite** - Build tool (fast, modern)
-- **React Router** - Client-side routing
+- **React Router 7** - Client-side routing
 - **CSS** - Styling (no framework)
 
 ### Backend & Services
 - **Firebase Auth** - Google OAuth authentication
-- **Cloud Firestore** - NoSQL database (2 collections)
-- **Firebase Cloud Functions** - Serverless backend (1 function)
-- **Google Cloud Translation API** - Danish→English translation
+- **Cloud Firestore** - NoSQL database (3 collections: love-ingy-messages, trmnl-config, element-tracker)
+- **Firebase Cloud Functions** - Serverless backend (1 function: translateText)
+- **Google Cloud Translation API** - Danish/Hindi→English translation
 
 ### Hosting & CI/CD
 - **GitHub Pages** - Static site hosting
@@ -71,9 +71,9 @@
 - **TRMNL** - E-ink display (receives data via webhook)
 
 ### Development Tools
-- **Node.js 20+** - Runtime
-- **npm** - Package manager
-- **Firebase CLI** - Deployment tool
+- **Node.js 20.19+** - Runtime
+- **pnpm** - Package manager (frontend; `functions/` still uses npm)
+- **Firebase CLI** - Deployment tool (run via `pnpm dlx firebase-tools`)
 - **ESLint** - Code linting
 
 ---
@@ -141,9 +141,9 @@ TRMNL display updates
 
 ### Deployment Flow
 ```
-Developer runs: npm run deploy
+Developer runs: pnpm run deploy
   ↓
-1. npm run build (Vite builds React app)
+1. pnpm build (Vite builds React app)
   ↓
 2. gh-pages -d dist (pushes to gh-pages branch)
   ↓
@@ -272,11 +272,9 @@ This is the **most important section** - it tells you where every piece of confi
 
 **How to Set:**
 ```bash
-# Install Firebase CLI globally
-npm install -g firebase-tools
-
+# Run the Firebase CLI without a global install
 # Generate Firebase CI token
-firebase login:ci
+pnpm dlx firebase-tools login:ci
 # Copy the token that appears
 
 # Add to GitHub: 
@@ -437,7 +435,7 @@ firebase functions:config:get
 
 **Option 1: Local Deployment (Fastest)**
 ```bash
-npm run deploy
+pnpm run deploy
 ```
 - Builds site locally
 - Pushes to `gh-pages` branch
@@ -463,7 +461,7 @@ npm run deploy
 ### Deployment Checklist
 
 **Before Every Deploy:**
-- [ ] Test locally: `npm run dev`
+- [ ] Test locally: `pnpm dev`
 - [ ] Check for console errors
 - [ ] Verify auth still works
 - [ ] Review git diff: `git diff`
@@ -486,7 +484,7 @@ npm run deploy
 1. **Quick Fix (Frontend Only):**
    ```bash
    git revert HEAD
-   npm run deploy
+   pnpm run deploy
    ```
 
 2. **Full Rollback (Functions + Rules):**
@@ -501,7 +499,7 @@ npm run deploy
    git log --oneline  # Find last good commit
    git reset --hard <commit-hash>
    git push --force
-   npm run deploy
+   pnpm run deploy
    ```
 
 **If Functions Break:**
@@ -587,7 +585,7 @@ cd ..
 
 **Deploy:**
 ```bash
-npm run deploy
+pnpm run deploy
 ```
 
 #### 4. Changing TRMNL Sync Frequency
@@ -620,7 +618,7 @@ git push
 
 **Deploy:**
 ```bash
-npm run deploy  # Frontend only, fast
+pnpm run deploy  # Frontend only, fast
 ```
 
 ### Environment Variables
@@ -732,17 +730,17 @@ cd functions && npm run build && firebase deploy --only functions
 **Fix:**
 ```bash
 # Check build locally
-npm run build
+pnpm build
 
 # Check GitHub Actions logs
 # Go to: https://github.com/adityaarunsinghal/adityaarunsinghal.github.io/actions
 
 # Force redeploy
-npm run deploy
+pnpm run deploy
 
 # If gh-pages branch corrupted
 git push origin --delete gh-pages
-npm run deploy
+pnpm run deploy
 ```
 
 #### Login Not Working
@@ -778,7 +776,7 @@ firebase functions:log --limit 100
 firebase firestore:rules:get
 
 # Test build locally
-npm run build && npm run preview
+pnpm build && pnpm preview
 
 # Check git status
 git status
@@ -787,10 +785,10 @@ git log --oneline -10
 # Check Node version
 node --version  # Should be 20+
 
-# Clear npm cache
-npm cache clean --force
-rm -rf node_modules package-lock.json
-npm install
+# Clear the pnpm store / reinstall cleanly
+pnpm store prune
+rm -rf node_modules
+pnpm install
 ```
 
 ### Getting Help
@@ -827,13 +825,13 @@ npm install
 
 ```bash
 # Development
-npm run dev              # Start dev server
-npm run build            # Build for production
-npm run preview          # Preview production build
+pnpm dev                 # Start dev server
+pnpm build               # Build for production
+pnpm preview             # Preview production build
 
 # Deployment
-npm run deploy           # Deploy to GitHub Pages (frontend only)
-firebase deploy --only functions        # Deploy Cloud Functions
+pnpm run deploy          # Deploy to GitHub Pages (frontend only; use `run`)
+pnpm dlx firebase-tools deploy --only functions   # Deploy Cloud Functions
 firebase deploy --only firestore:rules  # Deploy Firestore Rules
 
 # Firebase
@@ -881,6 +879,6 @@ adityaarunsinghal.github.io/
 
 ---
 
-**Last Updated:** December 2024  
+**Last Updated:** June 2026  
 **Maintainer:** Aditya Singhal (adityaarunsinghal@gmail.com)  
 **Status:** Production, actively maintained
