@@ -81,12 +81,14 @@ export default function VisitsDenmark() {
   const historyEndRef = useRef<HTMLDivElement>(null);
   const speechModeRef = useRef(speechMode);
   const languageRef = useRef(language);
-  
+  const isOnlineRef = useRef(isOnline);
+
   const { user } = useAuth();
 
   // Keep refs in sync
   useEffect(() => { speechModeRef.current = speechMode; }, [speechMode]);
   useEffect(() => { languageRef.current = language; }, [language]);
+  useEffect(() => { isOnlineRef.current = isOnline; }, [isOnline]);
 
   // Show notification helper
   const showNotification = useCallback((msg: string) => {
@@ -216,22 +218,26 @@ export default function VisitsDenmark() {
     // Avoid duplicate sends
     if (trimmed === lastSentTextRef.current) return;
     lastSentTextRef.current = trimmed;
-    
-    if (!isOnline) {
+
+    // Read connectivity from a ref, not the isOnline state value. Closing over
+    // the state would make this callback (and thus the SpeechRecognition effect
+    // that depends on it) get recreated on every online/offline toggle, tearing
+    // down and rebuilding speech recognition mid-dictation.
+    if (!isOnlineRef.current) {
       setError('No internet connection. Text saved, will retry when online.');
       return;
     }
 
     translationQueueRef.current.push({ text: trimmed, timestamp: Date.now() });
-    
+
     // Clear pending since we've queued it
     pendingTextRef.current = '';
     setPendingText('');
-    
+
     if (!isProcessingRef.current) {
       processQueue();
     }
-  }, [isOnline, processQueue]);
+  }, [processQueue]);
 
   // Retry queue when coming back online
   useEffect(() => {
