@@ -39,7 +39,36 @@ broken" symptom was purely the stale eslint 8 — NOT a committed defect.
   deploy via `pnpm dlx firebase-tools` with FIREBASE_TOKEN moved to env:. TRMNL
   sync re-verified green on v5 (run 27233402636).
 
-### Still open (next batch)
+### Second batch applied, deployed & verified live (2026-06-09)
+- functions hardening (5a580e1): maxInstances:5 cap, text validation + 5000-char
+  limit, Translate API response-shape guard. PII trim (585d2df): log uid not email,
+  drop text/translation previews. (Committed; applies on next functions deploy.
+  Adi: translate feature kept but unused, fine to leave until then.)
+- Progress.tsx (4b258f9): DST-safe yesterday math, pure state updaters.
+- VisitsDenmark (38fba1c): no Bearer undefined, stale-token cache clear + retry cap.
+  (ce878a5): read isOnline via ref so speech recognition isn't rebuilt on
+  connectivity flips. NEEDS on-device speech verification.
+- CI (072a34a): actions v4->v5, deploy.yml pnpm consistency. TRMNL re-verified green.
+- perf+cleanup (1c2660d): React.lazy code-splitting (795KB monolith -> 186KB entry +
+  per-route chunks, firebase isolated to 408KB auth-only chunk); removed /private
+  Vite boilerplate route + unused react.svg/vite.svg.
+- docs (5f98578): README rewrite + TOMBSTONE.md for removed plan docs.
+  (79c4107): CONFIGURATION.md refreshed for pnpm/current routes/collections.
+
+**Verification:** build PASS, lint PASS, functions build PASS, `pnpm audit --prod`
+= "No known vulnerabilities found". Playwright smoke test of all routes on the
+built preview AND on live https://adityasinghal.com: zero console errors, lazy
+chunks load, auth redirects work, /private 404s correctly.
+
+**Deployed:** `pnpm run deploy` pushed to gh-pages (c4022243); live site serves the
+new code-split bundle (index-RKLIPVMR.js), HTTP 200, verified in-browser.
+
+### Still open (next batch / handed back to Adi)
+- VisitsDenmark speech-recognition fix wants on-device verification (can't test
+  speech headlessly).
+- functions/ remains on npm (intentional, isolated subdir).
+- 404.gif is 1.3MB (largest asset); could be optimized but it's lazy/not on hot path.
+- functions/ @types/node ^20 vs engines.node 22 (cosmetic; build passes).
 - functions/src/index.ts: add maxInstances cost cap (#15); validate text size (#16/#39);
   guard `data.data.translations[0]` API shape (#40). In-memory rate limiter is
   per-instance (#17/#38) — known Cloud Functions limitation, document or move to
