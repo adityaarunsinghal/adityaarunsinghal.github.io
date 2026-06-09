@@ -21,6 +21,11 @@
     "lint",
     "build"
   ],
+  "pnpm": {
+    "overrides": {
+      "protobufjs": ">=7.5.9"
+    }
+  },
   "dependencies": {
     "@react-spring/web": "^10.0.3",
     "@types/papaparse": "^5.3.16",
@@ -32,7 +37,7 @@
     "react": "^19.2.5",
     "react-activity-calendar": "^3.1.1",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.14.0"
+    "react-router-dom": "^7.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
