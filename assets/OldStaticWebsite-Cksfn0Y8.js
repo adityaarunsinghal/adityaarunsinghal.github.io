@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-DAs1UGHr.js";var t=e();function n(){return(0,t.jsx)(`div`,{style:{width:`100%`,height:`100vh`},children:(0,t.jsx)(`iframe`,{src:`/static/index.html`,title:`Aditya Singhal`,style:{width:`100%`,height:`100%`,border:`none`}})})}export{n as OldStaticWebsite};
