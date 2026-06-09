@@ -4,6 +4,56 @@ Append-only. Datetimed sections. Most recent at top within each session.
 
 ---
 
+## 2026-06-09 (cont.) — Audit findings & fixes applied
+
+Ran a 5-dimension adversarial audit workflow (security, react-bugs, deps-build,
+hygiene, functions-data). 59 agents, ~2.1M tokens, ~9 min. 54 findings survived
+verification, 0 rejected (several downgraded to "partial" with corrected
+severity). Full raw findings: docs/audit-findings-raw-2026-06-09.json. Harness:
+docs/audit-workflow.mjs.
+
+Key discovery: the on-disk node_modules was the OLD npm install (vite 6, react 18,
+eslint 8) and predated the pushed pnpm/major-dep migration. So my first
+"build passes / lint broken" reads were against stale deps. After a clean
+`pnpm install --frozen-lockfile`: build PASSES and `pnpm lint` PASSES against the
+real migrated tree (vite 8, react 19, router 7, TS 6, eslint 9). The "lint is
+broken" symptom was purely the stale eslint 8 — NOT a committed defect.
+
+### Fixed & pushed
+- **Security (commit b957260):** prod dependency CVEs cleared. Added pnpm override
+  `protobufjs: ">=7.5.9"` (resolves 8.6.1) to kill CVE-2026-41242 (CVSS 9.8 RCE)
+  + 4 high + 4 moderate via firebase>firestore>@grpc/proto-loader. Bumped
+  react-router-dom to ^7.17.0 (resolves react-router 7.17.0) to clear open-redirect
+  + 2 DoS highs. `pnpm audit --prod` => "No known vulnerabilities found".
+- **LovesIngy bugs (commit d255914):** (1) countdown delete used a filtered-list
+  index against the unfiltered array -> deleted wrong event; now deletes by object
+  identity. (2) JSON-import path wrote message:undefined + Timestamp(NaN); now
+  validates text:string + finite numeric ts and uses Timestamp.fromMillis. (3)
+  "0 days" -> "Today!"/"1 day". (4) list key index -> date+name.
+- **Hygiene (commit b45c304):** deleted dead components RedirectToExternal.tsx
+  (also had navigate-as-render-side-effect bug) and GivesIngy/ (never routed);
+  removed tracked deps/ Vite cache (12 files) + added /deps/ to .gitignore;
+  moved VisitsDenmark {REQUIREMENTS,SETUP,TODOS}.md out of src/ into docs/.
+- **CI (commit 072a34a):** checkout/setup-node v4->v5 in both workflows (v4 = Node
+  20, deprecated after 2026-06-16); deploy.yml Build step npm->pnpm; firebase
+  deploy via `pnpm dlx firebase-tools` with FIREBASE_TOKEN moved to env:. TRMNL
+  sync re-verified green on v5 (run 27233402636).
+
+### Still open (next batch)
+- functions/src/index.ts: add maxInstances cost cap (#15); validate text size (#16/#39);
+  guard `data.data.translations[0]` API shape (#40). In-memory rate limiter is
+  per-instance (#17/#38) — known Cloud Functions limitation, document or move to
+  Firestore. Verbose PII logging (#45).
+- Progress.tsx: DST-unsafe Date.now()-86400000 (#24); milestone side effects inside
+  setEntries updater double-fire in StrictMode (#25).
+- VisitsDenmark: rAF/SpeechRecognition recreated on online/offline (#5,#7); auth
+  token cached 58min no refresh on 401 (#8); test-translation on mount can send
+  Bearer undefined (#22).
+- /private route serves Vite starter boilerplate & isn't PrivateRoute-wrapped
+  (#37,#44) — product decision needed.
+- Docs: README.md stale (#14), CONFIGURATION.md stale (#31), obsolete plan docs (#32,#33).
+- Bundle: 795KB single chunk, no code-splitting (#30).
+
 ## 2026-06-09 — Fix failing GitHub workflow (TRMNL sync) + repo audit
 
 ### TRMNL sync failure — root cause & fix (DONE, verified in CI)
