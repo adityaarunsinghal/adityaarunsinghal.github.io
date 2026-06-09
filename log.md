@@ -63,6 +63,22 @@ chunks load, auth redirects work, /private 404s correctly.
 **Deployed:** `pnpm run deploy` pushed to gh-pages (c4022243); live site serves the
 new code-split bundle (index-RKLIPVMR.js), HTTP 200, verified in-browser.
 
+### 404 asset optimized & deployed (2026-06-09, commit 43e843d)
+Adi wanted the gif kept (likes it) — only imperceptible shrinking allowed, plus
+lazy-load. Findings from measurement:
+- Lossy WebP / palette reduction barely helped (it's 81 frames of motion, not
+  per-frame quality). Aggressive lossy would visibly degrade — rejected.
+- True LOSSLESS animated WebP (gif2webp default): 1315KB -> 1115KB (~15%),
+  bit-for-bit identical (640x440, 81 frames, loops). near_lossless/mixed were
+  actually larger for this content. Chose pure lossless.
+- Bigger win: the gif was STATICALLY imported by ErrorBoundary (wraps every
+  route), so it shipped in the main bundle to every visitor. Moved 404.webp to
+  public/ and referenced by URL in both NotFound + ErrorBoundary, and lazy-loaded
+  NotFound. Now the asset only downloads when error/404 renders.
+- Verified in-browser: 404 page renders the webp (naturalWidth 640, decoded);
+  home page makes ZERO requests for 404.webp. Deployed; live confirmed
+  (https://adityasinghal.com/404.webp = 200 image/webp; old gif path 404s).
+
 ### Still open (next batch / handed back to Adi)
 - VisitsDenmark speech-recognition fix wants on-device verification (can't test
   speech headlessly).
