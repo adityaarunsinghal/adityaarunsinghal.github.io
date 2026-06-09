@@ -1,5 +1,11 @@
 // scripts/trmnl-sync.mjs
-import admin from 'firebase-admin';
+// NOTE: Use the modular subpath imports (firebase-admin/app, firebase-admin/firestore).
+// The legacy default-export namespace (admin.credential.cert / admin.firestore())
+// was removed in firebase-admin v14, which silently broke this scheduled job once an
+// unpinned `npm install firebase-admin` picked up the new major. The modular API below
+// is stable across v12–v14+. The workflow also pins the major version as a second guard.
+import { initializeApp, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
 
 // Initialize Firebase Admin with service account from environment
 if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
@@ -12,11 +18,11 @@ if (!process.env.TRMNL_WEBHOOK_URL) {
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 const TRMNL_WEBHOOK_URL = process.env.TRMNL_WEBHOOK_URL;
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+initializeApp({
+  credential: cert(serviceAccount)
 });
 
-const db = admin.firestore();
+const db = getFirestore();
 
 async function main() {
   console.log('🔐 Authenticated with Firebase service account');

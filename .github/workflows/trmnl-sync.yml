@@ -22,7 +22,9 @@ jobs:
           node-version: '22'
       
       - name: Install dependencies
-        run: npm install firebase-admin
+        # Pin the major version. An unpinned install silently jumped to v14, whose
+        # ESM export shape change broke the sync script. Bump deliberately after testing.
+        run: npm install firebase-admin@^14
 
       - name: Sync to TRMNL
         env:
