@@ -14,12 +14,18 @@ const ALLOWED_EMAILS = [
 // Define API key as environment parameter
 const translateApiKey = defineString('TRANSLATE_API_KEY');
 
+// Cap the text we forward to the paid Translation API. Without a bound, a single
+// authenticated user could submit megabytes per request and inflate billing.
+const MAX_TEXT_LENGTH = 5000;
+
 // Rate limiter: Map<uid, timestamp[]>
 const rateLimiter = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW = 60000; // 1 minute
 const RATE_LIMIT_MAX = 30; // 30 requests per minute
 
-export const translateText = functions.https.onRequest(async (req, res) => {
+// maxInstances bounds the worst-case concurrent billing/runtime for this single
+// personal-use endpoint; it is a hard ceiling against runaway scale or abuse.
+export const translateText = functions.https.onRequest({ maxInstances: 5 }, async (req, res) => {
   const startTime = Date.now();
   console.log('Translation request received', { method: req.method, origin: req.headers.origin });
 
@@ -92,9 +98,14 @@ export const translateText = functions.https.onRequest(async (req, res) => {
 
     // Get text to translate
     const { text, sourceLanguage } = req.body;
-    if (!text) {
-      console.warn('Missing text parameter');
-      res.status(400).json({ error: 'Missing text parameter' });
+    if (typeof text !== 'string' || text.length === 0) {
+      console.warn('Missing or invalid text parameter');
+      res.status(400).json({ error: 'Missing or invalid text parameter' });
+      return;
+    }
+    if (text.length > MAX_TEXT_LENGTH) {
+      console.warn('Text too long', { length: text.length });
+      res.status(413).json({ error: `Text too long (max ${MAX_TEXT_LENGTH} characters)` });
       return;
     }
 
@@ -137,7 +148,16 @@ export const translateText = functions.https.onRequest(async (req, res) => {
       return;
     }
 
-    const translatedText = data.data.translations[0].translatedText;
+    // Guard the response shape. A 200 with an unexpected body would otherwise
+    // throw on data.data.translations[0] and surface as an opaque 500.
+    const translatedText = (data as {
+      data?: { translations?: Array<{ translatedText?: string }> };
+    })?.data?.translations?.[0]?.translatedText;
+    if (typeof translatedText !== 'string') {
+      console.error('Unexpected Translate API response shape', { data });
+      res.status(502).json({ error: 'Unexpected translation response' });
+      return;
+    }
     const totalDuration = Date.now() - startTime;
 
     console.log('Translation successful', { 
