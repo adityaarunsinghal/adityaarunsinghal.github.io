@@ -3,8 +3,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import PrivateRoute from '@/components/PrivateRoute';
 
-// Eager: tiny components on hot paths (login, simple redirects, 404).
-import NotFound from '@/components/NotFound';
+// Eager: tiny components on hot paths (login, simple redirects).
 import Login from '@/components/Login/Login';
 import ResumeRedirect from '@/components/ResumeRedirect';
 import LinkedInRedirect from '@/components/LinkedInRedirect';
@@ -25,6 +24,8 @@ const RegistrationForm = lazy(() => import('@/components/RegistrationForm'));
 const FeedbackForm = lazy(() => import('@/components/FeedbackForm'));
 const VisitsDenmark = lazy(() => import('@/components/VisitsDenmark/VisitsDenmark'));
 const Progress = lazy(() => import('@/components/Progress/Progress'));
+// Lazy so the 1.1MB animated 404 asset never loads as part of the initial bundle.
+const NotFound = lazy(() => import('@/components/NotFound'));
 
 const router = createBrowserRouter([
   {

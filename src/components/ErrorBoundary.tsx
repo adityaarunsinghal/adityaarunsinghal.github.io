@@ -1,5 +1,10 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import fourOHfour from '../images/404.gif';
+
+// Referenced by URL (served from public/), not a bundled import: ErrorBoundary
+// wraps every route, so a static import would pull the ~1.1MB animated asset into
+// the main chunk and ship it to every visitor. By URL it only loads if the error
+// UI actually renders.
+const fourOHfour = '/404.webp';
 
 interface Props {
   children?: ReactNode;

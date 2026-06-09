@@ -1,5 +1,10 @@
 import React from 'react';
-import fourOHfour from '../images/404.gif';
+
+// Lossless WebP re-encode of the original 404.gif: bit-for-bit identical frames
+// (640x440, 81 frames, loops forever) at ~15% smaller. Animated WebP renders in a
+// plain <img> in all current browsers. Served from public/ by URL (not a bundled
+// import) so the ~1.1MB asset only downloads when the 404 page actually renders.
+const fourOHfour = '/404.webp';
 
 const NotFound: React.FC = () => {
   const handleGoHome = () => {
