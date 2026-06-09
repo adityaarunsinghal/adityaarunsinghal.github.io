@@ -34,6 +34,10 @@ dist-ssr
 temp
 scripts/backfill-data.json
 
+# Stray Vite optimizer cache that was once committed at the repo root.
+# Root-scoped (/deps/) so it never shadows a legitimately-named source folder.
+/deps/
+
 # Worktrees
 .worktrees/
 .playwright-mcp/
