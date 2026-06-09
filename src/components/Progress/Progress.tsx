@@ -84,10 +84,15 @@ const generateHeatmapData = (entries: Map<string, Entry>) => {
 };
 
 const calculateStreak = (entries: Map<string, Entry>): number => {
-  // Determine start date: today if logged, otherwise yesterday
+  // Determine start date: today if logged, otherwise yesterday.
+  // Build "yesterday" via setDate (calendar-field math) rather than subtracting
+  // 86400000 ms: a DST-transition day is 23 or 25 hours long, so the millisecond
+  // subtraction lands on the wrong calendar date twice a year.
   const today = new Date();
   const todayStr = getLocalDateString(today);
-  const startDate = entries.has(todayStr) ? new Date(today) : new Date(Date.now() - 86400000);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const startDate = entries.has(todayStr) ? new Date(today) : yesterday;
 
   const firstDateStr = getLocalDateString(startDate);
   const firstEntry = entries.get(firstDateStr);
@@ -207,8 +212,9 @@ const Progress = () => {
   const todayDateString = getLocalDateString();
   const todayEntry = entries.get(todayDateString);
 
-  // Calculate yesterday's date
-  const yesterdayDate = new Date(Date.now() - 86400000);
+  // Calculate yesterday's date via calendar-field math (DST-safe; see calculateStreak)
+  const yesterdayDate = new Date();
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1);
   const yesterdayDateString = getLocalDateString(yesterdayDate);
   const yesterdayEntry = entries.get(yesterdayDateString);
 
@@ -289,33 +295,26 @@ const Progress = () => {
       // Clear success message after 2 seconds
       setTimeout(() => setShowSuccess(false), 2000);
 
-      // After successful save, check if we need to celebrate streak milestone
-      // Update entries map first to reflect the new save
-      setEntries((prevEntries) => {
-        const newEntries = new Map(prevEntries);
-        newEntries.set(todayDateString, {
-          id: todayDateString,
-          inElement: selectedChoice,
-          reason: reason.trim(),
-          date: todayDateString,
-          updatedAt: new Date(),
-        });
-
-        // Calculate new streak after this entry
-        const newStreak = calculateStreak(newEntries);
-
-        // Check if we hit a milestone and haven't celebrated it yet
-        if (
-          STREAK_MILESTONES.includes(newStreak) &&
-          lastCelebratedStreak !== newStreak
-        ) {
-          celebrateStreak();
-          setLastCelebratedStreak(newStreak);
-          sessionStorage.setItem('lastCelebratedStreak', newStreak.toString());
-        }
-
-        return newEntries;
+      // After a successful save, reflect the new entry locally and maybe celebrate.
+      // The state updater must stay PURE (React may run it twice under StrictMode /
+      // concurrent rendering), so it only builds the new map. The streak milestone
+      // side effects (confetti, sessionStorage, setState) run once, outside it.
+      const newEntries = new Map(entries);
+      newEntries.set(todayDateString, {
+        id: todayDateString,
+        inElement: selectedChoice,
+        reason: reason.trim(),
+        date: todayDateString,
+        updatedAt: new Date(),
       });
+      setEntries(newEntries);
+
+      const newStreak = calculateStreak(newEntries);
+      if (STREAK_MILESTONES.includes(newStreak) && lastCelebratedStreak !== newStreak) {
+        celebrateStreak();
+        setLastCelebratedStreak(newStreak);
+        sessionStorage.setItem('lastCelebratedStreak', newStreak.toString());
+      }
     } catch (err) {
       // Preserve form data and show inline error
       setSaveError(`Failed to save: ${err instanceof Error ? err.message : String(err)}`);
@@ -402,33 +401,24 @@ const Progress = () => {
       setSavedEntryDate(pendingSave.date);
       setTimeout(() => setSavedEntryDate(null), 600);
 
-      // After successful save, check if we need to celebrate streak milestone
-      // Update entries map first to reflect the new save
-      setEntries((prevEntries) => {
-        const newEntries = new Map(prevEntries);
-        newEntries.set(pendingSave.date, {
-          id: pendingSave.date,
-          inElement: pendingSave.inElement,
-          reason: pendingSave.reason,
-          date: pendingSave.date,
-          updatedAt: new Date(),
-        });
-
-        // Calculate new streak after this entry
-        const newStreak = calculateStreak(newEntries);
-
-        // Check if we hit a milestone and haven't celebrated it yet
-        if (
-          STREAK_MILESTONES.includes(newStreak) &&
-          lastCelebratedStreak !== newStreak
-        ) {
-          celebrateStreak();
-          setLastCelebratedStreak(newStreak);
-          sessionStorage.setItem('lastCelebratedStreak', newStreak.toString());
-        }
-
-        return newEntries;
+      // Reflect the saved entry locally, then run streak side effects once,
+      // OUTSIDE the (must-be-pure) state updater. See handleSubmit for rationale.
+      const newEntries = new Map(entries);
+      newEntries.set(pendingSave.date, {
+        id: pendingSave.date,
+        inElement: pendingSave.inElement,
+        reason: pendingSave.reason,
+        date: pendingSave.date,
+        updatedAt: new Date(),
       });
+      setEntries(newEntries);
+
+      const newStreak = calculateStreak(newEntries);
+      if (STREAK_MILESTONES.includes(newStreak) && lastCelebratedStreak !== newStreak) {
+        celebrateStreak();
+        setLastCelebratedStreak(newStreak);
+        sessionStorage.setItem('lastCelebratedStreak', newStreak.toString());
+      }
 
       // Clear heatmap editor if this was from heatmap
       if (editingDate) {
