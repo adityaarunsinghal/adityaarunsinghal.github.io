@@ -61,10 +61,12 @@ export const translateText = functions.https.onRequest({ maxInstances: 5 }, asyn
 
     const token = authHeader.split('Bearer ')[1];
     const decodedToken = await admin.auth().verifyIdToken(token);
-    console.log('Auth token verified', { email: decodedToken.email, uid: decodedToken.uid });
-    
+    // Log the opaque uid only, not the email (PII). uid is enough to correlate
+    // requests and rate-limit buckets in logs.
+    console.log('Auth token verified', { uid: decodedToken.uid });
+
     if (!ALLOWED_EMAILS.includes(decodedToken.email || '')) {
-      console.warn('Forbidden access attempt', { email: decodedToken.email });
+      console.warn('Forbidden access attempt', { uid: decodedToken.uid });
       res.status(403).json({ error: 'Forbidden' });
       return;
     }
@@ -109,7 +111,9 @@ export const translateText = functions.https.onRequest({ maxInstances: 5 }, asyn
       return;
     }
 
-    console.log('Translation request', { textLength: text.length, sourceLanguage, preview: text.substring(0, 50) });
+    // Log metadata only, not the text itself (the messages being translated are
+    // private content).
+    console.log('Translation request', { textLength: text.length, sourceLanguage });
 
     // Get API key from environment parameter
     const apiKey = translateApiKey.value();
@@ -160,11 +164,10 @@ export const translateText = functions.https.onRequest({ maxInstances: 5 }, asyn
     }
     const totalDuration = Date.now() - startTime;
 
-    console.log('Translation successful', { 
+    console.log('Translation successful', {
       translateDuration,
       totalDuration,
-      resultLength: translatedText.length,
-      preview: translatedText.substring(0, 50)
+      resultLength: translatedText.length
     });
 
     res.json({ translatedText });
