@@ -1,22 +1,30 @@
+import { lazy } from 'react';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
-import PrivateApp from '@/components/PrivateApp/PrivateApp';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import NotFound from '@/components/NotFound';
-import LovesIngy from '@/components/LovesIngy/LovesIngy';
-import AgenticAIWorkshop from '@/components/AgenticAIWorkshop/AgenticAIWorkshop';
-import RegistrationForm from '@/components/RegistrationForm';
-import { OldStaticWebsite } from '@/components/OldStaticWebsite/OldStaticWebsite';
 import PrivateRoute from '@/components/PrivateRoute';
+
+// Eager: tiny components on hot paths (login, simple redirects, 404).
+import NotFound from '@/components/NotFound';
 import Login from '@/components/Login/Login';
 import ResumeRedirect from '@/components/ResumeRedirect';
 import LinkedInRedirect from '@/components/LinkedInRedirect';
 import InstagramRedirect from '@/components/InstagramRedirect';
 import FacebookRedirect from '@/components/FacebookRedirect';
 import YouTubeRedirect from '@/components/YouTubeRedirect';
-import FeedbackForm from '@/components/FeedbackForm';
-import VisitsDenmark from '@/components/VisitsDenmark/VisitsDenmark';
 import WifeRedirect from '@/components/WifeRedirect';
-import Progress from '@/components/Progress/Progress';
+
+// Lazy: heavier feature routes get their own chunks so the initial bundle stays
+// small. Each only downloads when its route is visited. These carry the big deps
+// (firebase, charts, confetti, react-spring, jQuery landing page).
+const OldStaticWebsite = lazy(() =>
+  import('@/components/OldStaticWebsite/OldStaticWebsite').then(m => ({ default: m.OldStaticWebsite }))
+);
+const LovesIngy = lazy(() => import('@/components/LovesIngy/LovesIngy'));
+const AgenticAIWorkshop = lazy(() => import('@/components/AgenticAIWorkshop/AgenticAIWorkshop'));
+const RegistrationForm = lazy(() => import('@/components/RegistrationForm'));
+const FeedbackForm = lazy(() => import('@/components/FeedbackForm'));
+const VisitsDenmark = lazy(() => import('@/components/VisitsDenmark/VisitsDenmark'));
+const Progress = lazy(() => import('@/components/Progress/Progress'));
 
 const router = createBrowserRouter([
   {
@@ -35,14 +43,6 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     ),
   })),
-  {
-    path: '/private',
-    element: (
-      <ErrorBoundary>
-        <PrivateApp />
-      </ErrorBoundary>
-    ),
-  },
   {
     path: '/404',
     element: (

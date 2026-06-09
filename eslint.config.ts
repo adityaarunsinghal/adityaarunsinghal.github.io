@@ -28,4 +28,13 @@ export default [
       'react-refresh/only-export-components': 'warn',
     },
   },
+  {
+    // router.tsx intentionally defines lazy() route components next to the router
+    // export; the react-refresh "one component per file" rule doesn't apply to a
+    // routing module (it isn't hot-reloaded as a component). Silence it here only.
+    files: ['src/router.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ]
