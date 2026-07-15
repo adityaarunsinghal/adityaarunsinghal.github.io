@@ -67,7 +67,26 @@ confirmed: OK with all upgrades incl. safe majors; deploy both site + functions.
   Dependabot-flagged transitives at/above fix versions (node-forge removed),
   `tsc` compiles clean to `lib/index.js`.
 
-**Deploy + Dependabot reconciliation:** see follow-up entry after push.
+**Deploy + Dependabot reconciliation:**
+- Commit `1187444` pushed to origin/master. Confirmed on remote: pushed
+  `functions/package-lock.json` has 0 node-forge refs, resolves firebase-admin
+  13.10.0.
+- SPA deployed to gh-pages (`pnpm run deploy`). Verified LIVE: adityasinghal.com
+  serves split chunks (firebase-DhUUaBHs.js, HTTP 200, 408330 bytes) + react
+  chunk; browser render OK (only 3rd-party GTM/ads/IG/YT console errors, none
+  from our bundles).
+- Functions deployed (`firebase deploy --only functions --project
+  aditya-singhal-website`): translateText updated, Node 22 2nd Gen, now on the
+  patched tree. NOTE: Adi no longer uses TRANSLATE_API_KEY, so it was set to a
+  bogus placeholder via a gitignored `functions/.env.aditya-singhal-website`
+  (matches the `.env.*` ignore rule; never committed). If /translate ever needs
+  Google Translate again, a real key must be set.
+- GitHub dependency-graph SBOM already reflects the fix (firebase-admin 13.10.0,
+  uuid 14.0.1, vite 8.0.16, node-forge gone). The Dependabot ALERTS
+  (still 39 at last check, updated_at maxes 2026-07-08) lag behind the graph;
+  they re-evaluate on GitHub's own async schedule and should auto-close now that
+  the graph shows patched versions. Background poller left running to confirm.
+  Local proof is definitive: pnpm tree + `npm audit` (functions) both 0 vulns.
 
 ---
 
