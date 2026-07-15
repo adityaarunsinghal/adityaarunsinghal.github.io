@@ -4,6 +4,51 @@ Append-only. Datetimed sections. Most recent at top within each session.
 
 ---
 
+## 2026-07-15 — Fix "garbled on first load" (service worker) + resume update
+
+**Symptom (Adi):** Current Work page looked garbled on first open, only fixed
+after a couple of hard refreshes.
+
+**Root cause (systematic-debugging, confirmed with live evidence):** the PWA
+service worker `public/sw.js` (registered in `src/main.tsx:22`) cached the ENTIRE
+static landing page cache-first under a frozen `CACHE_NAME = 'element-v1'`.
+- Its `fetch` handler only treated `request.mode === 'navigate'` as network-first;
+  the iframe's `/static/index.html` + its CSS/JS came through the cache-first
+  `else` branch.
+- `activate` only deletes caches whose key `!== CACHE_NAME`, and the name never
+  changed across deploys, so stale assets were NEVER invalidated.
+- Live evidence: `caches` API showed `element-v1` holding
+  `static/assets/css/adi.css`, `main.css`, all the JS/images/fonts. A deploy
+  shipped new HTML/CSS but the SW kept serving the old cached copies -> mismatch
+  = garble; hard refresh bypasses SW until the cache repopulates.
+- This was latent all along (since the PWA commit 17739f4, "offline caching for
+  progress page" that over-broadly cached everything); my big static-page change
+  just made the stale mismatch visibly garbled.
+
+**Fix (network-first, Adi's chosen strategy):** rewrote `sw.js`:
+- Network-first for ALL same-origin requests (SPA shell, `/static/*` landing
+  page, manifest): fresh when online, cached copy as offline fallback.
+- Cache-first ONLY for immutable content-hashed `/assets/*` Vite bundles (new
+  deploy = new filename, so never stale).
+- Cross-origin embeds (YouTube/Instagram) bypass the SW entirely.
+- Bumped `CACHE_NAME` -> `element-v2` so the poisoned cache is purged on activate.
+- Only cache 200 + `type==='basic'` responses (skip opaque/206).
+
+**Verified LIVE (the exact broken scenario):** loaded adityasinghal.com while
+`controlledBySW: true`; only `element-v2` cache exists (v1 purged); served FRESH
+adi.css (`.term-card` border-radius 8px, meta monospace) with 2 cards + 4 SVG
+icons, no garble. `skipWaiting()` + `clients.claim()` made the new SW take over
+immediately (no waiting state).
+
+**Also (queued by Adi):** `/latest-resume` now serves
+`Aditya_Singhal_Resume_2026-06-09.pdf` (copied into `public/`, 231801 bytes,
+valid 2-page PDF). Updated `ResumeRedirect.tsx`; removed the old
+`Aditya_Singhal_Resume_Sept2025.pdf`. Live: new PDF 200, old PDF 404.
+
+Commit 250b7de, pushed + deployed (gh-pages).
+
+---
+
 ## 2026-07-15 — Showcase GitHub projects + rework contact section
 
 **Ask:** Adi: show off two repos "full blown awesome" in Current Work
