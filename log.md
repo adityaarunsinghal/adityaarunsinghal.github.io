@@ -4,6 +4,73 @@ Append-only. Datetimed sections. Most recent at top within each session.
 
 ---
 
+## 2026-07-15 — Dependabot remediation (39 alerts, two projects)
+
+**Ask:** Adi: "fix as much dependabot autonomously as you can and push." Later
+confirmed: OK with all upgrades incl. safe majors; deploy both site + functions.
+
+**Key discovery — the 39 alerts span TWO projects, not one:**
+- `pnpm-lock.yaml` (main SPA): **7** alerts
+- `functions/package-lock.json` (a Firebase Cloud Functions subproject, npm-based,
+  Node 22): **32** alerts. This subproject was easy to miss; it has its own
+  manifest + lockfile and is deployed separately via `firebase deploy --only
+  functions`.
+- Method: `pnpm audit`'s endpoint is retired (410); source of truth was the
+  GitHub Dependabot alerts API (`gh api .../dependabot/alerts`), parsed per
+  manifest. `pnpm why` / `npm ls` used to separate real in-tree vulns from noise.
+
+### Main site (pnpm) — 7 → 0, all via `package.json` `pnpm.overrides`
+- `@grpc/grpc-js` pinned `>=1.9.16 <1.10.0` (MUST stay on 1.9.x: firestore
+  requires `~1.9.0`, and the 1.14.x line has its OWN advisory — jumping there is
+  a trap).
+- `js-yaml >=4.2.0`, `postcss >=8.5.10`, `@babel/core >=7.29.6` (all transitive
+  under eslint/vite; resolved to v5 / 8.5.19 / 8.0.1 respectively — lint still
+  passes so the majors are fine here).
+- `vite`: pinned EXACT `8.0.16` (see regression note below).
+- protobufjs alerts were already moot (existing override resolves 8.6.1).
+
+**Vite regression caught + corrected (the non-obvious part):**
+- First bumped vite to latest `8.1.4`. Build still exited 0, but rolldown's
+  changed default chunking merged ALL vendor code into one ~700kB entry chunk,
+  collapsing the firebase/firestore code-split that recent `perf` commits
+  established. Eager gzip stayed ~216kB (modulepreload), so first-load was flat,
+  but firebase (123kB gz, near-static) would now bust cache on every app deploy.
+- Tried the "obvious" fix `manualChunks: node_modules -> 'vendor'`: MEASURED it,
+  it was WORSE — dragged lazy-only deps (firestore, confetti, react-spring,
+  charts) onto the eager path, growing first-load to ~258kB gz. Pushed back on
+  this with Adi (his pick), showed the numbers, he agreed to change course.
+- Landed: pin vite `8.0.16` (minimal CVE patch) + a TARGETED `manualChunks` that
+  splits only `firebase` and `react`. Result: firebase back in its own 408kB
+  (123kB gz) chunk, react in 189kB, firestore/confetti/charts confirmed still
+  lazy, eager total ~209kB gz (slightly better than original). Rationale + the
+  rejected options are documented inline in `vite.config.ts`.
+
+### Functions (npm) — 19 (npm audit) / 32 (Dependabot) → 0
+- `npm update` (in-range) alone: 19 → 8 (cleared both criticals + all 4 highs,
+  bumped firebase-functions 7.0.2 → 7.2.5).
+- Remaining 8 were all the `uuid` buffer-bounds advisory chained up through the
+  google-cloud stack.
+- **firebase-admin@14 is a trap:** installing it left 7 moderates AND is
+  peer-INVALID — `firebase-functions@7` (latest, incl. 7.3.0-rc) declares
+  `peer firebase-admin@"^11||^12||^13"`, i.e. no v14 support yet. Backed down to
+  `firebase-admin@^13.10.0` (newest peer-compatible).
+- Even admin@13's latest google-cloud deps still pin old `uuid`, so added
+  `overrides: { "uuid": ">=11.1.1" }` (safe: the stack uses `uuid.v4()`, stable
+  API; forced to 14.0.1). Clean reinstall (rm node_modules + lockfile).
+- Kept `node-fetch@2.7.0` (no open advisory; v3 is ESM-only and would need code
+  changes for no security gain).
+
+**Verified before commit:**
+- Main: `pnpm lint` exit 0, `pnpm build` exit 0, chunk layout + eager
+  modulepreload set inspected in `dist/`.
+- Functions: `npm audit` → 0 vulns, `npm ls` → no peer warnings, all 8
+  Dependabot-flagged transitives at/above fix versions (node-forge removed),
+  `tsc` compiles clean to `lib/index.js`.
+
+**Deploy + Dependabot reconciliation:** see follow-up entry after push.
+
+---
+
 ## 2026-07-15 — Add /github vanity redirect
 
 **Ask:** Adi asked whether `adityasinghal.com/github` worked. It didn't — no
