@@ -4,6 +4,31 @@ Append-only. Datetimed sections. Most recent at top within each session.
 
 ---
 
+## 2026-07-15 — Add /github vanity redirect
+
+**Ask:** Adi asked whether `adityasinghal.com/github` worked. It didn't — no
+route existed, so it fell through the `/*` catch-all to `<NotFound>`. (Note: every
+SPA route returns HTTP 404 from GitHub Pages by design; the spa-github-pages
+`404.html` trick rewrites the path and React Router resolves it client-side. So a
+raw 404 status is not proof a route is broken — what matters is whether the router
+has a matching entry. `/github` had none.)
+
+**Change:** Mirrored the existing redirect pattern (LinkedIn/YouTube/etc).
+- New `src/components/GitHubRedirect.tsx` → `window.location.href =
+  'https://github.com/adityaarunsinghal'` in a `useEffect`.
+- Wired into `src/router.tsx`: import + route variants
+  `github` / `GitHub` / `GITHUB` / `Github` (added the `Github` casing on top of
+  the usual three since it's the most common way people type it).
+
+**Provenance of the target URL:** username `adityaarunsinghal` confirmed from the
+git remote (`github.com/adityaarunsinghal/adityaarunsinghal.github.io.git`), not
+guessed.
+
+**Verified:** `pnpm build` (tsc + vite) passed clean in ~1.7s before commit.
+Live verification pending post-deploy (GitHub Pages CDN propagation).
+
+---
+
 ## 2026-06-09 (cont.) — Audit findings & fixes applied
 
 Ran a 5-dimension adversarial audit workflow (security, react-bugs, deps-build,

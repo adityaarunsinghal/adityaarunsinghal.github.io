@@ -10,6 +10,7 @@ import LinkedInRedirect from '@/components/LinkedInRedirect';
 import InstagramRedirect from '@/components/InstagramRedirect';
 import FacebookRedirect from '@/components/FacebookRedirect';
 import YouTubeRedirect from '@/components/YouTubeRedirect';
+import GitHubRedirect from '@/components/GitHubRedirect';
 import WifeRedirect from '@/components/WifeRedirect';
 
 // Lazy: heavier feature routes get their own chunks so the initial bundle stays
@@ -133,6 +134,10 @@ const router = createBrowserRouter([
   ...['youtube', 'YouTube', 'YOUTUBE'].map(path => ({
     path: `/${path}`,
     element: <YouTubeRedirect />,
+  })),
+  ...['github', 'GitHub', 'GITHUB', 'Github'].map(path => ({
+    path: `/${path}`,
+    element: <GitHubRedirect />,
   })),
   ...['wife', 'Wife', 'WIFE'].map(path => ({
     path: `/${path}`,
