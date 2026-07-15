@@ -4,6 +4,62 @@ Append-only. Datetimed sections. Most recent at top within each session.
 
 ---
 
+## 2026-07-15 — Showcase GitHub projects + rework contact section
+
+**Ask:** Adi: show off two repos "full blown awesome" in Current Work
+(cc-hindsight, LLM-As-A-Judge-Prompt-Improver); then remove the Instagram block;
+then replace the contact section's emails with proper social links + surface the
+vanity easy-routes; fix anything broken along the way.
+
+**Architecture reminder (non-obvious):** the landing page is NOT React. It's a
+static HTML5 UP "Dimension" template at `public/static/index.html` loaded in an
+iframe by the 11-line `OldStaticWebsite.tsx`. So all edits are hand-written
+HTML + the custom `public/static/assets/css/adi.css` (loads after the vendored
+`main.css`; never edit `main.css`). Articles are hash-driven modal panels inside
+a fixed 40rem column.
+
+**What changed:**
+- **Two terminal-window project cards** at the TOP of `<article id="current">`,
+  above the films (chosen aesthetic: mini-terminal, since both are CLI/dev
+  tools). Each: traffic-light title bar + repo path + GitHub icon, italic
+  tagline, description, `lang:` row with authentic GitHub language-color dots
+  (TS #3178c6, Py #3572A5) + framework chips, `#topic` tags, a `$` command line
+  with blinking cursor + copy-to-clipboard button, and a "VIEW ON GITHUB" CTA.
+  All content verbatim from the repos. No star counts (repos are new; would
+  undercut "awesome").
+- **Instagram block removed** from `#current` (the embed + "Instagram is updated
+  frequently" copy). Films/YouTube kept.
+- **Contact section reworked:** dropped both gmail addresses + the `<form>`.
+  Now 5 social icons (added GitHub + YouTube) all routed through vanity paths,
+  plus a monospace `.easy-routes` list surfacing adityasinghal.com/linkedin,
+  /github, /youtube, /instagram.
+- **Copy-to-clipboard**: tiny self-contained inline script, feature-detected
+  (navigator.clipboard w/ execCommand fallback), "Copied!" feedback.
+
+**Bugs caught during visual verification (this is why we drive the browser):**
+1. `.easy-routes` list styling was fully overridden by the template's
+   ID-scoped `#main article ul/li` rules (disc bullets, list-item display).
+   Fix: prefix my selectors with `#main` to match specificity. Documented inline.
+2. CTA GitHub glyph rendered DOUBLED (class `.fa-github` injected via ::before
+   AND a literal &#61595; entity). Then, worse, the entity/font approach showed
+   a TOFU BOX for Adi (fragile FontAwesome webfont dependency).
+   **Final fix: all 4 card GitHub marks are now INLINE SVG octocats**
+   (fill:currentColor), zero webfont dependency, can never tofu. The contact
+   social icons keep the template's `.icon fa-*` font mechanism (verified they
+   render 36x36; that's how the site has always drawn socials).
+
+**Verified before ship (browser-driven on dev server + build):**
+- All icons render at correct sizes; copy button works ("Copied!", correct cmd);
+  easy-routes table lays out with proper gap/no bullets; films still present;
+  contact has no emails/form.
+- `pnpm build` exit 0; dist/static/index.html contains showcase + 4 SVG icons,
+  0 gmail/instagram-embed, easy-routes present. firebase chunk still split 408kB.
+- Cleaned up after myself: removed all screenshots + .playwright-mcp/, killed the
+  dev server I spawned, removed /tmp logs. Only 2 files changed
+  (adi.css, index.html) + this log.
+
+---
+
 ## 2026-07-15 — Dependabot remediation (39 alerts, two projects)
 
 **Ask:** Adi: "fix as much dependabot autonomously as you can and push." Later
