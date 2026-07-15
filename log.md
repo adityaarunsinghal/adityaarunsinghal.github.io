@@ -24,8 +24,16 @@ has a matching entry. `/github` had none.)
 git remote (`github.com/adityaarunsinghal/adityaarunsinghal.github.io.git`), not
 guessed.
 
-**Verified:** `pnpm build` (tsc + vite) passed clean in ~1.7s before commit.
-Live verification pending post-deploy (GitHub Pages CDN propagation).
+**Verified:**
+- `pnpm build` (tsc + vite) passed clean in ~1.7s before commit.
+- Committed 82837df, pushed to origin/master, `pnpm run deploy` → gh-pages
+  ("Published").
+- Deployed main bundle (`index-tcf3jkEy.js`) confirmed to contain the redirect
+  target string.
+- End-to-end browser drive of `https://adityasinghal.com/github` landed on
+  `https://github.com/adityaarunsinghal` (title "adityaarunsinghal (Adi Singhal)
+  · GitHub"). Full chain works: 404.html rewrite → app reload → router match →
+  useEffect redirect.
 
 ---
 
