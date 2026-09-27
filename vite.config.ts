@@ -1,15 +1,83 @@
-import { defineConfig } from 'vite';
-import copy from 'rollup-plugin-copy';
-import react from '@vitejs/plugin-react';
-import { visualizer } from 'rollup-plugin-visualizer';
-import path from 'path';
+import { defineConfig } from "vite";
+import copy from "rollup-plugin-copy";
+import react from "@vitejs/plugin-react";
+import { visualizer } from "rollup-plugin-visualizer";
+import path from "path";
+import { readFile } from "node:fs/promises";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    {
+      name: "workshop-documents",
+      configureServer(server) {
+        server.middlewares.use(async (request, response, next) => {
+          const url = new URL(request.url || "/", "http://localhost");
+          if (request.method !== "GET" && request.method !== "HEAD")
+            return next();
+          try {
+            const stylesheet = url.pathname.match(
+              /^\/__workshop\/(2025|2026)\.css$/,
+            );
+            if (stylesheet) {
+              const component =
+                stylesheet[1] === "2025"
+                  ? "AgenticAIWorkshop2025"
+                  : "AgenticAIWorkshop";
+              const [base, css] = await Promise.all([
+                readFile(
+                  path.resolve(__dirname, "src/workshop/base.css"),
+                  "utf8",
+                ),
+                readFile(
+                  path.resolve(
+                    __dirname,
+                    `src/components/${component}/${component}.css`,
+                  ),
+                  "utf8",
+                ),
+              ]);
+              response.setHeader("Content-Type", "text/css; charset=utf-8");
+              response.end(base + "\n" + css);
+              return;
+            }
+            if (
+              !/^\/(?:agentic-ai-workshop(?:-2025)?(?:\/|$)|registration-form\/?$)/.test(
+                url.pathname,
+              )
+            )
+              return next();
+            const { renderWorkshop, pageDefinitions } =
+              await server.ssrLoadModule("/src/workshop/render.tsx");
+            const canonical = url.pathname.endsWith("/")
+              ? url.pathname
+              : url.pathname + "/";
+            const page = pageDefinitions.find(
+              (entry: { path: string }) => entry.path === canonical,
+            );
+            if (!page) return next();
+            if (url.pathname !== canonical) {
+              response.statusCode = 302;
+              response.setHeader("Location", canonical + url.search);
+              response.end();
+              return;
+            }
+            response.setHeader("Content-Type", "text/html; charset=utf-8");
+            response.end(
+              renderWorkshop(
+                canonical,
+                `/__workshop/${page.kind === "archive" ? 2025 : 2026}.css`,
+              ),
+            );
+          } catch (error) {
+            next(error as Error);
+          }
+        });
+      },
+    },
     visualizer({
-      filename: 'dist/stats.html',
+      filename: "dist/stats.html",
       open: false,
       gzipSize: true,
       brotliSize: true,
@@ -17,22 +85,28 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@/components': path.resolve(__dirname, './src/components'),
-      '@/hooks': path.resolve(__dirname, './src/hooks'),
-      '@/contexts': path.resolve(__dirname, './src/contexts'),
-      '@/images': path.resolve(__dirname, './src/images'),
-      '@/config': path.resolve(__dirname, './src/config'),
+      "@": path.resolve(__dirname, "./src"),
+      "@/components": path.resolve(__dirname, "./src/components"),
+      "@/hooks": path.resolve(__dirname, "./src/hooks"),
+      "@/contexts": path.resolve(__dirname, "./src/contexts"),
+      "@/images": path.resolve(__dirname, "./src/images"),
+      "@/config": path.resolve(__dirname, "./src/config"),
     },
   },
   server: {
     fs: {
       strict: false,
-      allow: ['..']
+      allow: [".."],
     },
     watch: {
-      ignored: ['**/node_modules/**', '**/.git/**', '**/.DS_Store', '**/Trash/**', '**/.Trash/**']
-    }
+      ignored: [
+        "**/node_modules/**",
+        "**/.git/**",
+        "**/.DS_Store",
+        "**/Trash/**",
+        "**/.Trash/**",
+      ],
+    },
   },
   build: {
     // NOTE: vite is pinned to an EXACT version (8.0.16) in package.json, not a
@@ -57,20 +131,23 @@ export default defineConfig({
     rollupOptions: {
       plugins: [
         copy({
-          targets: [{ src: 'public/CNAME', dest: 'dist' }],
+          targets: [{ src: "public/CNAME", dest: "dist" }],
         }),
       ],
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/@firebase') || id.includes('node_modules/firebase')) {
-            return 'firebase';
+          if (
+            id.includes("node_modules/@firebase") ||
+            id.includes("node_modules/firebase")
+          ) {
+            return "firebase";
           }
           if (
-            id.includes('node_modules/react/') ||
-            id.includes('node_modules/react-dom/') ||
-            id.includes('node_modules/scheduler/')
+            id.includes("node_modules/react/") ||
+            id.includes("node_modules/react-dom/") ||
+            id.includes("node_modules/scheduler/")
           ) {
-            return 'react';
+            return "react";
           }
         },
       },

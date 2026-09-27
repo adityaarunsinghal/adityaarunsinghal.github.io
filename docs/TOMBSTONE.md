@@ -30,3 +30,12 @@ Recover the whole element-tracker plan set:
 ```bash
 git checkout 38fba1c -- docs/implementation-plans/2026-02-25-element-tracker/
 ```
+
+## Removed 2026-09-27 (recovery commit: `b349c17`)
+
+| Path | Replacement |
+| --- | --- |
+| `src/components/RegistrationForm.tsx` | Shared year-aware information pages and `WorkshopRouteBridge.tsx` preserve both registration aliases. |
+| `src/components/FeedbackForm.tsx` | Shared 2025 feedback information pages retain the original form destination. |
+| `robots.txt` | `public/robots.txt` is copied into the published output. |
+| `sitemap.xml`, `sitemap.txt` | `scripts/build-workshop-pages.mjs` generates both from the public route registry. |
