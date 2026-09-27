@@ -13,7 +13,7 @@ A React + TypeScript personal website with Firebase authentication and several p
 
 ## Tech Stack
 
-- **Frontend**: React 19 + TypeScript 5
+- **Frontend**: React 19 + TypeScript 6
 - **Build Tool**: Vite
 - **Routing**: React Router DOM 7
 - **Authentication**: Firebase Auth (Google OAuth)
@@ -77,7 +77,8 @@ scripts/trmnl-sync.mjs         # scheduled TRMNL e-ink sync (GitHub Actions)
 
 ### Available Scripts
 - `pnpm dev` - Start development server
-- `pnpm build` - Build for production (`tsc && vite build`)
+- `pnpm build` - Type-check, build the SPA, and generate standalone workshop documents
+- `pnpm check:workshop` - Check generated workshop routes, content, metadata, assets, and registration states
 - `pnpm preview` - Preview the production build
 - `pnpm run deploy` - Build and deploy to GitHub Pages (use `run`; bare `pnpm deploy` is reserved)
 - `pnpm lint` - Run ESLint
@@ -129,10 +130,45 @@ match /element-tracker/{document} {
 - `/progress` - Element tracker (auth-gated)
 - `/lovesingy` - Private messages + countdowns (auth-gated)
 - `/translate` - Live speech translator (auth-gated)
-- `/agentic-ai-workshop` - Workshop pages (+ `/registration-form`, `/feedback`)
+- `/agentic-ai-workshop/` - 2026 course outline, registration, and materials status
+- `/agentic-ai-workshop-2025/` - 2025 archive, highlights, and code
+- `/registration-form/`, `/agentic-ai-workshop/registration-form/` - Current registration information
+- `/agentic-ai-workshop/feedback/`, `/agentic-ai-workshop-2025/feedback/` - 2025 feedback information
 - `/linkedin`, `/instagram`, `/facebook`, `/youtube`, `/wife`, `/latest-resume` - Redirects
 - `/404` - Not-found page
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+
+## Workshop development
+
+Course facts and resource destinations live in `src/workshop/pages.ts`. The page and archive render as complete HTML using `src/workshop/render.tsx`; native links and disclosures work without a client bundle. Vite development serves the same renderer.
+
+```bash
+pnpm lint
+pnpm build
+pnpm check:workshop
+pnpm preview --host 127.0.0.1 --port 4173 --strictPort
+```
+
+Open `http://127.0.0.1:4173/agentic-ai-workshop/` or the year-specific archive. Production output remains in ignored `dist/`; the isolated renderer is in ignored `dist-ssr/`. Run the full build when changing source before reviewing the production preview.
+
+The browser check captures screenshots and tests responsive layout, accessibility, native controls, legacy navigation, and returning service-worker clients:
+
+```bash
+uv run --with playwright==1.58.0 playwright install chromium
+uv run scripts/check-workshop-browser.py
+```
+
+Use `--browser-executable /absolute/path/to/chromium` for an existing compatible Chromium installation. Output defaults to ignored `temp/workshop-browser/`. The check permits local read requests only and does not authenticate or submit forms.
+
+To check physical directory routing independently of Vite:
+
+```bash
+uv run python -m http.server 4174 --bind 127.0.0.1 --directory dist
+```
+
+The 2026 public repository, slides, and starter code remain Coming Soon until their actual URLs are supplied. Registration state changes require coordination with the form owner and an approved publication. See [workshop release notes](docs/workshop-site-release-2026-09-27.md).
+
+Social cards are generated from a committed SVG template and bundled Lato fonts. The fonts retain their SIL Open Font License in `scripts/assets/fonts/OFL.txt`.

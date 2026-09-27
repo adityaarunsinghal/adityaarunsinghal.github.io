@@ -1,19 +1,20 @@
 # Aditya Singhal Website
 
-Last verified: 2026-02-26
+Workshop build and stack checked: 2026-09-27
 
 ## Tech Stack
-- Language: TypeScript 5.x
-- Framework: React 18 with Vite
+- Language: TypeScript 6.x
+- Framework: React 19 with Vite
 - Styling: Plain CSS (per-component .css files)
 - Database: Firebase Firestore
 - Auth: Firebase Auth (Google OAuth)
 - Hosting: GitHub Pages (gh-pages branch)
-- Testing: No automated test infrastructure — manual browser testing only
+- Testing: Workshop static-artifact and browser checks; manual verification for other application features
 
 ## Commands
 - `pnpm dev` - Start development server
-- `pnpm build` - Production build (tsc + vite build)
+- `pnpm build` - Type-check, build the SPA, and generate standalone workshop HTML
+- `pnpm check:workshop` - Check generated workshop routes, metadata, content, and assets
 - `pnpm run deploy` - Build and deploy to GitHub Pages (gh-pages -d dist) (must use `run` — `pnpm deploy` is reserved)
 - `pnpm lint` - Run ESLint
 - `pnpm preview` - Preview production build locally
@@ -44,6 +45,10 @@ Last verified: 2026-02-26
 - `/progress` - Element tracking dashboard (auth-gated, single user)
 - `/lovesingy` - Private app (auth-gated)
 - `/translate` - Translation tool (auth-gated)
+- `/agentic-ai-workshop/` - Current course, statically generated
+- `/agentic-ai-workshop-2025/` - Historical course archive
+
+Read `src/workshop/AGENTS.md` before changing workshop pages. The root SPA still handles other application routes. Workshop documents use a separate renderer and ordinary navigation.
 
 ## Firebase
 - Project: `aditya-singhal-website`

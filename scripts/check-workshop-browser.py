@@ -164,6 +164,34 @@ async def check(args):
         )
         assert "from=email" in page.url and page.url.endswith("#materials")
 
+        # The installed SPA router accepts case variants and repeated trailing slashes.
+        report["compatibility"] = []
+        for variant in [
+            "/Agentic-AI-Workshop?via=case#materials",
+            "/agentic-ai-workshop//?via=slashes#schedule",
+            "/?/Agentic-AI-Workshop&from=email~and~source=old#materials",
+            "/Agentic-AI-Workshop-2025?via=archive",
+            "/REGISTRATION-FORM?via=alias",
+        ]:
+            await page.goto(args.base_url + variant, wait_until="networkidle")
+            assert "/404" not in page.url
+            assert "Workshop" in await page.title()
+            assert "via=" in page.url or "from=email&source=old" in page.url
+            report["compatibility"].append({"input": variant, "output": page.url})
+
+        await page.set_viewport_size({"width": 1440, "height": 1000})
+        for route in ["/agentic-ai-workshop/", "/agentic-ai-workshop-2025/"]:
+            await page.goto(args.base_url + route)
+            await page.evaluate("""() => {
+                const elements = [...document.querySelectorAll('body *')];
+                const sizes = elements.map(e => parseFloat(getComputedStyle(e).fontSize));
+                elements.forEach((e,i) => e.style.fontSize = `${sizes[i]*2}px`);
+            }""")
+            assert await page.evaluate(
+                "document.documentElement.scrollWidth === innerWidth"
+            )
+        report["double_text_reflow"] = True
+
         await context.close()
         nojs = await browser.new_context(
             java_script_enabled=False,
@@ -177,6 +205,49 @@ async def check(args):
             assert await nojs_page.locator("h1").is_visible()
             assert await nojs_page.locator('a[href^="https://"]').count() > 0
         await nojs.close()
+
+        returning = await browser.new_context(service_workers="allow")
+        await returning.route("**/*", local_only)
+        page = await returning.new_page()
+        await page.goto(args.base_url + "/", wait_until="networkidle")
+        await (
+            page.frame_locator("iframe")
+            .locator('a[href="/agentic-ai-workshop/"]')
+            .click()
+        )
+        await page.wait_for_url("**/agentic-ai-workshop/")
+        assert await page.locator("#course-title").is_visible()
+        assert len(page.frames) == 1
+        report["homepage_iframe_escape"] = True
+        await page.evaluate("""async () => {
+            await navigator.serviceWorker.register('/sw.js');
+            await navigator.serviceWorker.ready;
+        }""")
+        await page.reload(wait_until="networkidle")
+        assert await page.evaluate("!!navigator.serviceWorker.controller")
+        # Only this isolated browser context is seeded; no live user cache is changed.
+        await page.evaluate("""async () => {
+            const cache = await caches.open('element-v2');
+            await cache.put('/agentic-ai-workshop/', new Response('STALE WORKSHOP'));
+            await cache.put('/unrelated-test-marker', new Response('PRESERVE'));
+        }""")
+        await page.reload(wait_until="networkidle")
+        assert await page.locator("#course-title").is_visible()
+        assert (
+            await page.evaluate("""async () =>
+            await (await caches.match('/unrelated-test-marker')).text()
+        """)
+            == "PRESERVE"
+        )
+        report["service_worker_network_first"] = True
+        report["signed_out_routes"] = []
+        for route in ["/login", "/progress", "/lovesingy", "/translate"]:
+            await page.goto(args.base_url + route, wait_until="networkidle")
+            await page.wait_for_url("**/login")
+            report["signed_out_routes"].append(
+                {"route": route, "destination": page.url}
+            )
+        await returning.close()
         await browser.close()
     report["errors"] = errors
     (output / "browser-checks.json").write_text(json.dumps(report, indent=2))

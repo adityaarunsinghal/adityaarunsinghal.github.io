@@ -372,3 +372,17 @@ migration + major dependency upgrade. Rebased cleanly. CLAUDE.md now reflects pn
   gitignored/removed.
 - `firebase-debug.log` (720 KB) present on disk, untracked — fine, but clutter.
 - `deploy.yml` still uses `npm ci` despite the pnpm migration — inconsistent.
+
+## 2026-09-27T21:31:19.908924+00:00: workshop refresh verification
+
+- Local branch workshop/2026-refresh preserves master at b349c17. Archive checkpoint c3d8d91; new page and static generation 1a716ba. Publication remains pending review.
+- Current page contains the October 2026 course outline, supplied registration link, Coming Soon resource rows, and historical code/highlight/archive links. Both years use full static HTML and native controls.
+- Baseline and new lint/typecheck/build passed. Static checker covers seven documents and all four registration states. Browser checks cover nine entry URLs, eight year/viewport combinations, keyboard controls, no-JavaScript access, doubled text sizes, homepage iframe escape, legacy URL variants, signed-out route redirects, and a returning service-worker client. No automated accessibility violations or workshop script errors.
+- Review found route-matching tolerance, system-font dependence, and open-registration-only assertions. Fixes use the matched canonical route, bundled licensed fonts, and state-aware assertions.
+- Archive text comparison preserved all course fragments; generation credit removed. Original CSV, CNAME, service worker, private application source, and backend source remain unchanged.
+- Real-device/browser diversity, assistive-technology use, authenticated application behavior, form login/submission, and public deployment remain unexercised.
+
+## 2026-09-27T21:33:27.770169+00:00: final local review
+
+- Focused review confirmed all three findings resolved. URL variants preserve canonical destinations, queries and fragments; font rendering repeats byte for byte without system fonts; the checker passes all four configured registration states.
+- Final browser regression run passed. Extra development/plain-static test servers stopped; production preview remains on 127.0.0.1:4173. No push or deployment.
