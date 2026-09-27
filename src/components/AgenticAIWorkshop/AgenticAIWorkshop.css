@@ -1,3 +1,17 @@
+@font-face {
+  font-family: "Workshop Display";
+  src: url("/workshops/2026/fonts/SourceSerif4Display-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Workshop Subhead";
+  src: url("/workshops/2026/fonts/SourceSerif4Subhead-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 .workshop-2026 {
   --paper: #f7f5f0;
   --ink: #111827;
@@ -23,8 +37,11 @@
   letter-spacing: -0.035em;
 }
 .workshop-2026 h2 {
+  font-family: "Workshop Subhead", Georgia, serif;
   font-size: clamp(30px, 3.1vw, 42px);
-  font-weight: 650;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 .workshop-2026 h3 {
   font-size: 24px;
@@ -106,14 +123,12 @@
   margin-bottom: 22px;
 }
 .workshop-2026 h1 {
+  font-family: "Workshop Display", Georgia, serif;
   font-size: clamp(42px, 4.7vw, 64px);
-  line-height: 1.04;
-  font-weight: 650;
-  letter-spacing: -0.055em;
-}
-.workshop-2026 h1 em {
-  font-style: normal;
-  color: var(--teal);
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 .workshop-2026 .hero-description {
   margin-top: 24px;
@@ -748,9 +763,6 @@
   .workshop-2026 .hero-description {
     font-size: 17px;
     margin-top: 20px;
-  }
-  .workshop-2026 .desktop-break {
-    display: none;
   }
   .workshop-2026 .hero-logistics {
     margin-top: 22px;

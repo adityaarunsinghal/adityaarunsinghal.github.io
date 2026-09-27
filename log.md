@@ -386,3 +386,9 @@ migration + major dependency upgrade. Rebased cleanly. CLAUDE.md now reflects pn
 
 - Focused review confirmed all three findings resolved. URL variants preserve canonical destinations, queries and fragments; font rendering repeats byte for byte without system fonts; the checker passes all four configured registration states.
 - Final browser regression run passed. Extra development/plain-static test servers stopped; production preview remains on 127.0.0.1:4173. No push or deployment.
+
+## 2026-09-27T23:23:54.447477+00:00: workshop typography and copy
+
+- Checkpoint 4b05176 preserves the previous review. Copy revision efbd846 replaces slogan fragments while preserving course details and the newspaper component.
+- Main and section headings use self-hosted Source Serif 4 Display/Subhead Regular. Source references and license are stored with the fonts. Interface text and the newspaper retain their existing font families.
+- Lint, production build, static checks, and the browser suite pass. Font requests return 200 and both faces load; fallback remains readable at 320px. No publication performed.

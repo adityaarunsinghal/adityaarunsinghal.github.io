@@ -46,6 +46,8 @@ Review fixes cover router matching tolerance, deterministic social-card fonts, a
 
 ### Updating the course
 
+The copy and typography revision is based on checkpoint `4b05176`. It replaces repeated slogan fragments with connected sentences and uses regular Source Serif 4 Display/Subhead for headings. The newspaper component and course data remain unchanged. Original fonts and their license are self-hosted under `public/workshops/2026/fonts/`.
+
 Change course facts, registration state, and released resource links in `src/workshop/pages.ts`. Keep absent resource URLs null. Coordinate the October 5 cutoff with the form owner; rebuilding alone does not close the form or publish the new copy.
 
 Regenerate and review the full distribution before any approved Pages release. The root SPA, service worker, CNAME, Firebase configuration, backend, and private application source retain their existing roles.
