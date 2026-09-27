@@ -105,14 +105,11 @@ export default function AgenticAIWorkshop({
             <p className="eyebrow">NYU CDS · FALL 2026</p>
             <p className="course-name">Agentic AI Workshop</p>
             <h1 id="course-title">
-              Build an agent
-              <br />
-              you can <em>explain.</em>
+              Build an agent you can explain.
             </h1>
             <p className="hero-description">
-              Watch agents come to life. Ask how they work.
-              <br className="desktop-break" /> Then build something useful of
-              your own.
+              Watch how agents work and ask questions along the way. You’ll
+              build something useful of your own.
             </p>
             <div className="hero-logistics">
               <strong>{course.dates}</strong>
@@ -148,9 +145,7 @@ export default function AgenticAIWorkshop({
             <div>
               <p className="eyebrow">THE COURSE</p>
               <h2 id="schedule-title">
-                Four Thursdays.
-                <br />
-                An agent of your own.
+                Build your own agent over four Thursdays.
               </h2>
             </div>
             <p>
@@ -196,13 +191,11 @@ export default function AgenticAIWorkshop({
             <div>
               <p className="eyebrow">HOW WE LEARN</p>
               <h2 id="format-title">
-                Laptops closed.
-                <br />
-                Questions welcome.
+                Keep your laptop closed and ask questions.
               </h2>
               <p className="format-lead">
-                In class, watch the result, predict the next step, and inspect
-                the mechanism together.
+                Watch the result in class and predict the next step. We’ll
+                inspect the mechanism together.
               </p>
               <p>
                 Build between sessions using slides and starter code. You’ll be
@@ -222,8 +215,8 @@ export default function AgenticAIWorkshop({
                 <span>BETWEEN SESSIONS</span>
                 <h3>About 1–2 hours of development each week</h3>
                 <p>
-                  Choose a useful task, extend your project, and bring back what
-                  you learned.
+                  Choose a useful task for your project. As you extend it,
+                  bring what you learned back to class.
                 </p>
               </div>
               <div>
@@ -247,9 +240,7 @@ export default function AgenticAIWorkshop({
             <div>
               <p className="eyebrow">YOUR BUILDING MATERIALS</p>
               <h2 id="materials-title">
-                A place to start.
-                <br />
-                Room to make it yours.
+                Starter materials for your own project.
               </h2>
             </div>
             <p>
@@ -288,8 +279,7 @@ export default function AgenticAIWorkshop({
           <div className="demo-copy">
             <p className="eyebrow">SHOW WHAT YOU BUILT</p>
             <h2 id="demo-title">
-              A project. A conversation.
-              <br />A new connection.
+              Meet other builders through your project.
             </h2>
             <p>
               Share your work with classmates and industry professionals from
@@ -406,9 +396,7 @@ export default function AgenticAIWorkshop({
             <div>
               <p className="eyebrow">NYU CDS · AGENTIC AI WORKSHOP 2026</p>
               <h2>
-                Bring your curiosity.
-                <br />
-                Leave with something you built.
+                Bring your curiosity and build an agent of your own.
               </h2>
               <p>{action.note}</p>
             </div>
