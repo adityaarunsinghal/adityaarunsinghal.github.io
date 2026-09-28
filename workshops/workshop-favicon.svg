@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <title>Agentic AI Workshop</title>
+  <rect width="32" height="32" rx="6" fill="#111827"/>
+  <path d="M7 5h15l4 4v18H7z" fill="#f7f5f0"/>
+  <path d="M22 5v5h4" fill="#b4bfb0"/>
+  <path d="M10 10h9v3h-9z" fill="#111827"/>
+  <path d="M10 16h6v8h-6z" fill="#0f766e"/>
+  <path d="M18 16h5v2h-5zm0 4h5v2h-5z" fill="#111827"/>
+</svg>
