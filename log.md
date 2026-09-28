@@ -405,3 +405,8 @@ migration + major dependency upgrade. Rebased cleanly. CLAUDE.md now reflects pn
 - Added a shared, hand-drawn newspaper SVG to both workshop years through the standalone renderer. Source: public/workshops/workshop-favicon.svg.
 - Lint, build, and workshop checks passed. Chromium decoded the icon at 32 x 32 on both local pages. Compared their HTML with the previous release: only the favicon link changed.
 - Adi authorized publication. Previous Pages release for recovery: 8855b9e42173a06009a3bb5bc95989396bf00b67. Publish with the additive static publisher.
+
+## 2026-09-28T16:48:38.913861+00:00: favicon publication verified
+
+- Pages release 20e5ba5 is live. Both course pages link and decode the shared SVG in Chromium; served bytes match source. Initial HTTP check ran before Pages finished and returned 404; repeated successfully after deployment run 36453509121 completed.
+- Publication record includes source, release, recovery, and verification details.

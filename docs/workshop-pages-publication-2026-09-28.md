@@ -35,3 +35,9 @@ GitHub's Pages build and deployment completed successfully in [run 36362000956](
 Actual desktop and mobile rendering shows the approved copy, Source Serif headings, and Coming Soon materials without horizontal overflow or script errors. The registration controls use the supplied 2026 form. Archive navigation and the year-specific feedback destination work. The homepage link escapes its iframe. A returning service-worker-controlled client receives the current page. Essential content and registration links remain available with JavaScript disabled.
 
 **Not exercised:** form authentication/submission, authenticated private application features, real-device Safari/Firefox, screen-reader use, or social-platform cache refresh. No backend deployment, domain-setting change, inference call, or external message was performed.
+
+### Workshop favicon
+
+A shared newspaper SVG serves both workshop years and their information pages. Editable source: `public/workshops/workshop-favicon.svg` in the website repository. Source commit: `51ee7da`. Pages release: `20e5ba5ab30efe24606e46f82b8ac0f90d5d19dd`; deployment run `36453509121` succeeded.
+
+Confirmed live: both course documents link the favicon and Chromium decodes it at 32 × 32. The live SVG bytes match the committed source. Lint, build, and existing workshop checks passed. The release changes only seven workshop document heads and adds the SVG. Browser-tab appearance in Safari/Firefox was not exercised. Previous Pages release for recovery: `8855b9e42173a06009a3bb5bc95989396bf00b67`.
