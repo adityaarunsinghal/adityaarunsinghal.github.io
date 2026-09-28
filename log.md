@@ -392,3 +392,10 @@ migration + major dependency upgrade. Rebased cleanly. CLAUDE.md now reflects pn
 - Checkpoint 4b05176 preserves the previous review. Copy revision efbd846 replaces slogan fragments while preserving course details and the newspaper component.
 - Main and section headings use self-hosted Source Serif 4 Display/Subhead Regular. Source references and license are stored with the fonts. Interface text and the newspaper retain their existing font families.
 - Lint, production build, static checks, and the browser suite pass. Font requests return 200 and both faces load; fallback remains readable at 320px. No publication performed.
+
+## 2026-09-28T00:27:24.967978+00:00: workshop Pages release
+
+- Adi approved deployment and requested commits/pushes. Integrated reviewed branch into master by fast-forward.
+- Published with gh-pages --add --nojekyll; Pages commit 8855b9e42173a06009a3bb5bc95989396bf00b67. GitHub Pages run 36362000956 succeeded.
+- Verified live course/archive HTML, fonts, social assets, sitemap, registration targets, homepage navigation, and returning clients. Retained prior assets; service worker and domain configuration unchanged. Backend services, rules, and form submissions were not modified.
+- Publication and recovery details are in docs/workshop-pages-publication-2026-09-28.md.

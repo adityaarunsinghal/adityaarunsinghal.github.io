@@ -16,7 +16,7 @@ The archive source checkpoint is `b349c17`. Its original component, stylesheet, 
 
 ### Release boundary
 
-Local review precedes publication. A course release uses the static Pages path only. The general deployment workflow also deploys backend services and database rules.
+Adi approved publication after local review. The course was published through Pages; see the [publication record](workshop-pages-publication-2026-09-28.md). The general deployment workflow also deploys backend services and database rules, so the course release used the static publisher directly.
 
 ### Local verification
 
@@ -40,9 +40,9 @@ The archive retains its original course wording, dates, instructor attribution, 
 
 Review fixes cover router matching tolerance, deterministic social-card fonts, and registration-state assertions. The fonts and license are bundled with their source provenance. Raster social cards and route HTML are generated outputs.
 
-**Inferred:** GitHub Pages will normalize the new physical directory routes as it does existing directories. A plain local static server confirms the directory layout; the host's actual responses require publication.
+**Confirmed after publication:** GitHub Pages normalizes both slashless workshop URLs to their physical directories. The publication record contains the live checks.
 
-**Not exercised:** deployment, live new-route behavior, Google sign-in or form submission, authenticated private-app features, screen-reader use, real-device Safari/Firefox, video playback, or external social-preview caches.
+**Not exercised:** Google sign-in or form submission, authenticated private-app features, screen-reader use, real-device Safari/Firefox, video playback, or external social-preview caches.
 
 ### Updating the course
 
