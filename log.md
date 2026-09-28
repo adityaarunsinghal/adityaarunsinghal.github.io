@@ -399,3 +399,9 @@ migration + major dependency upgrade. Rebased cleanly. CLAUDE.md now reflects pn
 - Published with gh-pages --add --nojekyll; Pages commit 8855b9e42173a06009a3bb5bc95989396bf00b67. GitHub Pages run 36362000956 succeeded.
 - Verified live course/archive HTML, fonts, social assets, sitemap, registration targets, homepage navigation, and returning clients. Retained prior assets; service worker and domain configuration unchanged. Backend services, rules, and form submissions were not modified.
 - Publication and recovery details are in docs/workshop-pages-publication-2026-09-28.md.
+
+## 2026-09-28T16:46:51.384170+00:00: workshop favicon
+
+- Added a shared, hand-drawn newspaper SVG to both workshop years through the standalone renderer. Source: public/workshops/workshop-favicon.svg.
+- Lint, build, and workshop checks passed. Chromium decoded the icon at 32 x 32 on both local pages. Compared their HTML with the previous release: only the favicon link changed.
+- Adi authorized publication. Previous Pages release for recovery: 8855b9e42173a06009a3bb5bc95989396bf00b67. Publish with the additive static publisher.

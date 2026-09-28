@@ -107,6 +107,12 @@ export function renderWorkshop(
           <title>{page.title}</title>
           <meta name="description" content={page.description} />
           <link rel="canonical" href={canonical} />
+          <link
+            rel="icon"
+            type="image/svg+xml"
+            sizes="any"
+            href="/workshops/workshop-favicon.svg"
+          />
           <meta
             name="robots"
             content={

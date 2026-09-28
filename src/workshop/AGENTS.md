@@ -9,5 +9,6 @@
 - Use Source Serif 4 Display for the main heading and Subhead for section headings, with regular weight and relaxed spacing. Keep the newspaper's Georgia treatment.
 - Avoid decorative rhetorical triples and repeated slogan fragments. Preserve actual curriculum lists, dates, and resource names.
 - CSS must remain scoped to the relevant year. The document reset is only for standalone workshop HTML.
+- Both years share the newspaper favicon in `public/workshops/workshop-favicon.svg`, linked by `render.tsx`. Edit the SVG source directly.
 - Run `pnpm lint`, `pnpm build`, and `pnpm check:workshop`. Verify physical directory serving as well as Vite development.
 - Publication requires approval. The broad deployment workflow also changes backend services.
