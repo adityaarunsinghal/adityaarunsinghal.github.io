@@ -17,6 +17,7 @@
   --ink: #111827;
   --muted: #4b5563;
   --teal: #0f766e;
+  --nyu-violet: #57068c;
   --rule: #d5d7cf;
   background: var(--paper);
   color: var(--ink);
@@ -116,7 +117,7 @@
 }
 .workshop-2026 .hero-copy .eyebrow {
   margin-bottom: 8px;
-  color: var(--teal);
+  color: var(--nyu-violet);
 }
 .workshop-2026 .course-name {
   font-weight: 550;
@@ -347,7 +348,8 @@
 }
 .workshop-2026 .session-calendar span {
   font-size: 11px;
-  background: #e5e9df;
+  background: #eee5f4;
+  color: var(--nyu-violet);
   padding: 5px;
   letter-spacing: 0.14em;
   font-weight: 600;

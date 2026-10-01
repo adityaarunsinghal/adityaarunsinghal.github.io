@@ -110,8 +110,8 @@ export default function AgenticAIWorkshop({
               Build an agent you can explain.
             </h1>
             <p className="hero-description">
-              Watch how agents work and ask questions along the way. You’ll
-              build something useful of your own.
+              Watch an agent choose a tool and see what runs it. Then build one
+              around a problem you care about!
             </p>
             <div className="hero-logistics">
               <strong>{course.dates}</strong>
@@ -193,15 +193,15 @@ export default function AgenticAIWorkshop({
             <div>
               <p className="eyebrow">HOW WE LEARN</p>
               <h2 id="format-title">
-                Keep your laptop closed and ask questions.
+                Follow the agent’s decisions in class.
               </h2>
               <p className="format-lead">
-                Watch the result in class and predict the next step. We’ll
-                inspect the mechanism together.
+                Keep your laptop closed and ask questions as we predict what
+                happens next. Build your own between sessions.
               </p>
               <p>
-                Build between sessions using slides and starter code. You’ll be
-                encouraged to share your agent through a common class app store.
+                Slides and starter code support your project. You’ll be
+                encouraged to share your agent through the class app store.
               </p>
             </div>
             <div className="format-notes">
@@ -217,17 +217,18 @@ export default function AgenticAIWorkshop({
                 <span>BETWEEN SESSIONS</span>
                 <h3>About 1–2 hours of development each week</h3>
                 <p>
-                  Choose a useful task for your project. As you extend it,
-                  bring what you learned back to class.
+                  Start with a research question, a recurring task, or a personal
+                  workflow. Make a small version that works, then develop it
+                  each week.
                 </p>
               </div>
               <div>
                 <span>SUPPORT</span>
                 <h3>Friday office hours</h3>
                 <p>
-                  Personalized help and model inference through OpenRouter for
-                  registered students. Access and joining details will be shared
-                  with the class.
+                  Bring a broken tool call, a confusing code path, or an idea
+                  that feels too big. We’ll help you find the next step. Joining
+                  details will be shared with registered students.
                 </p>
               </div>
             </div>
