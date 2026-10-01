@@ -87,6 +87,8 @@ export const resources: {
   name: string;
   description: string;
   url: string | null;
+  action?: string;
+  note?: string;
 }[] = [
   {
     name: "2026 public repository",
@@ -102,6 +104,13 @@ export const resources: {
     name: "Starter code",
     description: "Code to run, inspect, and make your own.",
     url: null,
+  },
+  {
+    name: "Class app store",
+    description: "Publish your project and explore what others in the workshop build.",
+    url: "https://nyu-workshop.adityasinghal.com/",
+    action: "Open the class app store",
+    note: "(For registered students only)",
   },
 ];
 

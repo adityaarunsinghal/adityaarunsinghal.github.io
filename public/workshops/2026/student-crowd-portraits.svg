@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+<style>.ink-lines{stroke:#38343b;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}.mouth-talk{opacity:0}</style>
+<defs>
+<symbol id="art-ember" viewBox="0 0 240 240">
+        <g class="ink-lines">
+          <path d="M165 167c37-26 55 4 34 23 20 0 14 27-8 28l-35-14" fill="#d7633c"/>
+          <path d="M62 124 41 58q-2-14 10-6l47 36M141 87l42-39q12-10 12 5l-8 70" fill="#ed9060"/>
+          <path d="m55 68 13 40 16-12M174 69l-22 26 19 12" fill="#aa4b39" stroke="none"/>
+          <path d="M82 171q-20 23-16 40l43 9 49-5q15-26-8-47" fill="#d57646"/>
+          <path d="M82 82c-27 12-39 39-31 72 6 33 29 48 71 49 46 1 72-22 72-56 0-36-13-63-45-69q-19-20-38 1-13-15-29 3Z" fill="#f4a365"/>
+          <path d="M66 150q15-24 39-1 16 9 34-1 25-19 38 7-4 34-54 34-46 1-57-39" fill="#ffebbe" stroke="none"/>
+          <path d="m68 110 106-1" fill="none" stroke="#6f5344" stroke-width="10"/>
+          <circle cx="89" cy="127" r="24" fill="#ebf5dd" stroke="#74564a" stroke-width="5"/>
+          <circle cx="151" cy="127" r="24" fill="#ebf5dd" stroke="#74564a" stroke-width="5"/>
+          <path d="M113 124q8-6 14 0" fill="none" stroke="#74564a" stroke-width="5"/>
+          <g class="eyes" stroke="none"><ellipse cx="91" cy="130" rx="7" ry="11" fill="#363237"/><ellipse cx="149" cy="130" rx="7" ry="11" fill="#363237"/><circle cx="93" cy="127" r="2.5" fill="#fff"/><circle cx="151" cy="127" r="2.5" fill="#fff"/></g>
+          <path d="m116 154 9 0-4 5Z" fill="#613f39" stroke="#613f39"/>
+          <path class="mouth-rest" d="M107 164q13 14 27-1" fill="none" stroke-width="3"/>
+          <ellipse class="mouth-talk" cx="121" cy="167" rx="10" ry="8" fill="#653b40" stroke-width="2.5"/>
+          <ellipse cx="72" cy="153" rx="10" ry="5" fill="#ea7860" stroke="none"/>
+          <ellipse cx="170" cy="153" rx="10" ry="5" fill="#ea7860" stroke="none"/>
+          <path d="M79 195q7-7 13 2l-1 14M148 195q-7-7-13 2l1 14" fill="none"/>
+          <path d="m105 84 4-17 12 14 12-17 6 18" fill="#ffe4a4"/>
+        </g>
+      </symbol>
+<symbol id="art-patch" viewBox="0 0 240 240">
+        <g class="ink-lines">
+          <path d="M173 169q38-1 32 27t-56 14" fill="#8574ba"/>
+          <path d="m190 175 6 20m-15-13 1 23" fill="none" stroke="#54466e" stroke-width="10"/>
+          <path d="M53 111 44 57q-1-12 11-5l44 35m42 0 45-35q12-7 11 5l-10 57" fill="#9989ce"/>
+          <path d="m58 67 6 26 21-4m88 0 12-23-28 21" fill="#e9b7d7" stroke="none"/>
+          <path d="M80 174q-23 20-17 39l43 8 52-8q11-19-10-42" fill="#8675ba"/>
+          <path d="M78 81q40-21 83 0 38 16 35 66-3 55-75 55-69-1-74-48-6-50 31-73Z" fill="#b9a2dd"/>
+          <path d="M52 121q17-21 48 4 19 13 39-1 26-25 52-1l-2 27q-21 21-50-2-20-14-36 2-24 17-49 0Z" fill="#6e5a99" stroke="none"/>
+          <path d="M86 160q9-10 25-6 12 4 25 0 17-4 24 9-6 25-39 26-28-1-35-29Z" fill="#f8e4d5" stroke="none"/>
+          <g class="eyes" stroke="none"><ellipse cx="84" cy="132" rx="11" ry="15" fill="#fff9e6"/><ellipse cx="155" cy="132" rx="11" ry="15" fill="#fff9e6"/><ellipse cx="87" cy="134" rx="5" ry="9" fill="#34313a"/><ellipse cx="152" cy="134" rx="5" ry="9" fill="#34313a"/></g>
+          <path d="m114 158 12 0-6 7Z" fill="#584059" stroke="#584059"/>
+          <path class="mouth-rest" d="M109 172q12 8 24-2" fill="none" stroke-width="3"/>
+          <ellipse class="mouth-talk" cx="121" cy="174" rx="9" ry="7" fill="#634052" stroke-width="2.5"/>
+          <path d="M84 90q35-21 73 0" fill="none" stroke="#675186" stroke-width="9"/>
+          <rect x="94" y="64" width="52" height="32" rx="9" fill="#d4e9bd"/>
+          <path d="m111 74-7 6 7 6m17-12 7 6-7 6" fill="none" stroke="#46654a" stroke-width="2.7"/>
+          <path d="m82 198 6 14m62-14-5 14" fill="none"/>
+        </g>
+      </symbol>
+<symbol id="art-sprig" viewBox="0 0 240 240">
+        <g class="ink-lines">
+          <path d="M112 78q-1-25-27-33 5 26 30 28m6 4q-2-38 36-47-2 30-34 37" fill="#74a475"/>
+          <path d="M124 73q10-18 22-27M114 73 97 55" fill="none" stroke="#4a7350" stroke-width="2"/>
+          <path d="M64 103 51 79q-4-12 9-8l29 13m60 0 30-14q14-5 9 9l-13 25" fill="#6f9764"/>
+          <path d="M63 91q55-39 111 1 34 26 19 78-11 41-73 41-60 0-74-40-15-47 17-80Z" fill="#86ad75"/>
+          <path d="M52 148q4 24 29 41m107-43q-7 28-29 44" fill="none" stroke="#5b875b" stroke-width="11"/>
+          <path d="M66 110q27-20 53 4 28-26 55-3 24 22 8 48-17 26-60 30-44-3-62-29-12-26 6-50Z" fill="#f7eccb" stroke="none"/>
+          <circle cx="90" cy="134" r="20" fill="#fffcdf" stroke="#496d52" stroke-width="3"/>
+          <circle cx="152" cy="134" r="20" fill="#fffcdf" stroke="#496d52" stroke-width="3"/>
+          <path d="M110 132q11-7 22 0" fill="none" stroke="#496d52" stroke-width="3"/>
+          <g class="eyes" stroke="none"><ellipse cx="92" cy="135" rx="7" ry="10" fill="#363d36"/><ellipse cx="150" cy="135" rx="7" ry="10" fill="#363d36"/><circle cx="94" cy="132" r="2.5" fill="#fff"/><circle cx="152" cy="132" r="2.5" fill="#fff"/></g>
+          <path class="mouth-rest" d="m115 155 13 0-6 10Z" fill="#d69b48" stroke="#766046" stroke-width="2"/>
+          <path class="mouth-talk" d="m113 153 17 0-8 17Z" fill="#d69b48" stroke="#766046" stroke-width="2"/>
+          <ellipse cx="71" cy="157" rx="9" ry="4" fill="#d9bc90" stroke="none"/><ellipse cx="169" cy="157" rx="9" ry="4" fill="#d9bc90" stroke="none"/>
+          <path d="M72 182q24-4 49 8 26-12 50-8l-3 35q-24-2-47 6-24-8-47-6Z" fill="#fbf3d5"/>
+          <path d="M121 191v31m-36-29 24 6m-23 5 23 5m24-10 23-6m-23 16 23-5" fill="none" stroke="#8b966b" stroke-width="2.3"/>
+          <path d="M63 185q-4 12 14 15m101-16q7 13-13 16" fill="#8bab6d"/>
+        </g>
+      </symbol>
+<symbol id="art-nimbus" viewBox="0 0 240 240">
+        <g class="ink-lines">
+          <path d="M78 105Q25 86 45 55q8-12 19-3l40 38m37 0 33-42q10-11 18-1 26 30-25 61" fill="#90c8d5"/>
+          <path d="m60 61 24 27m94-29-21 31" fill="none" stroke="#d4e7db" stroke-width="9"/>
+          <path d="M65 168q-26 20-5 40 8 7 21 0 5 19 24 9 10 14 24 0 20 12 28-7 22 5 25-12 3-23-26-32" fill="#9dcfda"/>
+          <path d="M61 99q6-24 29-20 8-18 29-11 24-14 40 8 29-1 29 23 27 11 13 37 17 31-10 44-11 27-45 18-28 20-49 0-33 9-43-15-30-9-15-39-11-29 22-45Z" fill="#b8e1e7"/>
+          <path d="M77 144q45-20 86 0 14 33-41 37-49-3-45-37" fill="#e8f3e8" stroke="none"/>
+          <path d="M109 100q20-18 28-3 4 11-12 10" fill="none" stroke="#6ca2b5" stroke-width="4"/>
+          <g class="eyes" stroke="none"><ellipse cx="86" cy="130" rx="7" ry="11" fill="#314657"/><ellipse cx="155" cy="130" rx="7" ry="11" fill="#314657"/><circle cx="88" cy="127" r="2.3" fill="#fff"/><circle cx="157" cy="127" r="2.3" fill="#fff"/></g>
+          <path class="mouth-rest" d="M111 151q10 11 21 0" fill="none" stroke-width="3"/>
+          <ellipse class="mouth-talk" cx="122" cy="155" rx="8" ry="7" fill="#42677a" stroke-width="2.5"/>
+          <ellipse cx="69" cy="146" rx="10" ry="5" fill="#a6b9cf" stroke="none"/><ellipse cx="173" cy="146" rx="10" ry="5" fill="#a6b9cf" stroke="none"/>
+          <path d="m90 191 25-7 35 10-2 29-33-8-28 7Z" fill="#fff1cb"/>
+          <path d="m115 187-1 26m10-15q14 5 14 13" fill="none" stroke="#bc9563" stroke-width="2.2"/>
+          <path d="M81 192q-5 12 14 11m60-7q14 6 0 14" fill="#9dcfda"/>
+        </g>
+      </symbol>
+<symbol id="art-socket" viewBox="0 0 240 240">
+        <g class="ink-lines">
+          <path d="M63 125 33 104 27 79m37 63-37-5-10-19m48 42-30 12-20-9m162-39 30-20 6-25m-40 61 39-3 10-19m-46 42 30 12 20-9" fill="none" stroke="#d8a553" stroke-width="10"/>
+          <path d="m21 71 13-2 5 14-14 5Zm-11 40 12-4 7 12-12 7Zm1 45 8-9 12 7-8 13ZM209 67l12 4-2 16-15-5Zm10 41 12 5-4 13-15-6Zm-1 40 12 8-7 11-13-10Z" fill="#f0c987"/>
+          <path d="M83 176q-18 24-11 41l48 7 49-8q5-23-14-43" fill="#dba856"/>
+          <path d="M72 93q46-23 94-1 25 15 26 53-1 54-70 57-70-1-74-50-3-40 24-59Z" fill="#efc674"/>
+          <path d="M68 155q51-22 105 0-3 31-50 34-48-1-55-34Z" fill="#fff0c5" stroke="none"/>
+          <g class="eyes" stroke="none"><ellipse cx="88" cy="132" rx="9" ry="12" fill="#463b36"/><ellipse cx="155" cy="132" rx="9" ry="12" fill="#463b36"/><circle cx="90" cy="129" r="3" fill="#fff"/><circle cx="157" cy="129" r="3" fill="#fff"/></g>
+          <path d="M83 110q10-7 18-2m41 0q9-5 18 2" fill="none" stroke="#b78c46" stroke-width="3"/>
+          <path class="mouth-rest" d="M106 161q15 13 31-1" fill="none" stroke-width="3"/>
+          <ellipse class="mouth-talk" cx="122" cy="164" rx="10" ry="8" fill="#855449" stroke-width="2.5"/>
+          <ellipse cx="70" cy="151" rx="11" ry="5" fill="#e7a472" stroke="none"/><ellipse cx="173" cy="151" rx="11" ry="5" fill="#e7a472" stroke="none"/>
+          <path d="M94 85q6-26 28-24 24-3 25 24" fill="#e1b15d"/>
+          <path d="m117 65 0 18m12-18 0 18" fill="none" stroke="#fff0c5" stroke-width="4"/>
+          <rect x="93" y="195" width="35" height="17" rx="8.5" transform="rotate(-18 110 203)" fill="none" stroke="#607e71" stroke-width="6"/>
+          <rect x="116" y="195" width="35" height="17" rx="8.5" transform="rotate(-18 133 203)" fill="none" stroke="#607e71" stroke-width="6"/>
+          <path d="M81 193q0 11 13 12m66-14q2 13-11 14" fill="none"/>
+        </g>
+      </symbol>
+<symbol id="art-chorus" viewBox="0 0 240 240">
+        <g class="ink-lines">
+          <path d="M77 174q-12 26-4 43l48 7 47-8q10-24-13-45" fill="#cb849c"/>
+          <path d="M73 144q-39-5-43 29 5 30 56 26m72-55q43-10 52 21 1 31-49 34" fill="#d990a4"/>
+          <path d="m34 150-9-22 24 14m143 0 23-15-5 25" fill="#b77597"/>
+          <ellipse cx="53" cy="163" rx="30" ry="31" fill="#eeb6be"/>
+          <ellipse cx="190" cy="163" rx="29" ry="31" fill="#eeb6be"/>
+          <path d="M67 101 64 74q0-12 10-5l24 19m47-1 23-21q10-8 11 7l-2 33" fill="#ae83ab"/>
+          <path d="M83 83q35-19 74 3 31 18 29 59-4 51-66 53-62-2-64-54-2-42 27-61Z" fill="#df9aaf"/>
+          <path d="M83 155q39-19 76 1-2 26-37 27-36-1-39-28Z" fill="#fde7d8" stroke="none"/>
+          <path d="m100 87 2-26 18 10 20-11 3 26" fill="#8d9cbc"/>
+          <path d="m115 78 8 5 8-6" fill="none" stroke="#dde1e9" stroke-width="3"/>
+          <g class="eyes" stroke="none">
+            <ellipse cx="95" cy="129" rx="8" ry="12" fill="#443744"/><ellipse cx="150" cy="129" rx="8" ry="12" fill="#443744"/>
+            <circle cx="97" cy="125" r="2.8" fill="#fff"/><circle cx="152" cy="125" r="2.8" fill="#fff"/>
+            <ellipse cx="43" cy="161" rx="3.5" ry="5" fill="#564252"/><ellipse cx="61" cy="161" rx="3.5" ry="5" fill="#564252"/>
+            <ellipse cx="181" cy="161" rx="3.5" ry="5" fill="#564252"/><ellipse cx="199" cy="161" rx="3.5" ry="5" fill="#564252"/>
+          </g>
+          <path class="mouth-rest" d="M111 159q12 13 24-1" fill="none" stroke-width="3"/>
+          <ellipse class="mouth-talk" cx="123" cy="163" rx="9" ry="8" fill="#8c4b64" stroke-width="2.5"/>
+          <path d="M47 175q6 5 11-1m127 0q6 5 11-1" fill="none" stroke-width="2.2"/>
+          <ellipse cx="80" cy="149" rx="9" ry="4" fill="#d98099" stroke="none"/><ellipse cx="165" cy="149" rx="9" ry="4" fill="#d98099" stroke="none"/>
+          <path d="M94 197q-8 12 6 18m47-18q10 12-5 18" fill="none"/>
+          <path d="M115 208h15" fill="none" stroke="#f9decf" stroke-width="5"/>
+        </g>
+      </symbol>
+</defs>
+</svg>

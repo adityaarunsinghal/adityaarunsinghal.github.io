@@ -6,6 +6,7 @@ import {
   sessions,
   type CourseState,
 } from "../../workshop/pages";
+import StudentCrowd from "./StudentCrowd";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -99,6 +100,7 @@ export default function AgenticAIWorkshop({
       <main id="main-content">
         <section
           className="course-wrap course-hero"
+          id="overview"
           aria-labelledby="course-title"
         >
           <div className="hero-copy">
@@ -256,19 +258,23 @@ export default function AgenticAIWorkshop({
                   <h3>{resource.name}</h3>
                   <p>{resource.description}</p>
                 </div>
-                {resource.url ? (
-                  <a href={resource.url}>
-                    Open resource <Arrow />
-                  </a>
-                ) : (
-                  <span className="coming-soon">Coming Soon</span>
-                )}
+                <div className="resource-destination">
+                  {resource.url ? (
+                    <a className="store-link" href={resource.url}>
+                      {resource.action ?? "Open resource"} <Arrow />
+                    </a>
+                  ) : (
+                    <span className="coming-soon">Coming Soon</span>
+                  )}
+                  {resource.note && <small>{resource.note}</small>}
+                </div>
               </div>
             ))}
           </div>
         </section>
         <section
           className="course-wrap demo-section"
+          id="demo-day"
           aria-labelledby="demo-title"
         >
           <div className="demo-date">
@@ -338,7 +344,7 @@ export default function AgenticAIWorkshop({
           className="course-wrap course-section practical-section"
           aria-labelledby="practical-title"
         >
-          <div className="instructor-note">
+          <div className="instructor-note" id="instructor">
             <p className="eyebrow">YOUR INSTRUCTOR</p>
             <h2>Adi Singhal</h2>
             <p>
@@ -349,7 +355,7 @@ export default function AgenticAIWorkshop({
               Connect on LinkedIn <Arrow />
             </a>
           </div>
-          <div className="course-faq">
+          <div className="course-faq" id="before-you-join">
             <h2 id="practical-title">Before you join</h2>
             <details open>
               <summary>Who is the workshop for?</summary>
@@ -391,7 +397,8 @@ export default function AgenticAIWorkshop({
             </details>
           </div>
         </section>
-        <section className="closing-band">
+        <StudentCrowd />
+        <section className="closing-band" id="register">
           <div className="course-wrap closing-inner">
             <div>
               <p className="eyebrow">NYU CDS · AGENTIC AI WORKSHOP 2026</p>
