@@ -13,9 +13,7 @@ export default function StudentCrowd() {
           <h2 id="crowd-title">Who signed up?</h2>
         </div>
         <p>
-          {crowd.responses} responses as of {crowd.snapshot}. These six
-          illustrated voices are fictional composites of the different starting
-          points people described. A response does not establish attendance.
+          {crowd.responses} responses as of {crowd.snapshot}.
         </p>
       </div>
       <ol className="crowd-grid">
@@ -52,10 +50,6 @@ export default function StudentCrowd() {
           </li>
         ))}
       </ol>
-      <p className="crowd-method">
-        Each response selected one agent-experience starting point. Circle
-        counts show those answers, not fixed types of people.
-      </p>
     </section>
   );
 }

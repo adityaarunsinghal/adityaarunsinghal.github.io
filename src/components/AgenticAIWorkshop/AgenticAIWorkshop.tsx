@@ -266,7 +266,7 @@ export default function AgenticAIWorkshop({
                   ) : (
                     <span className="coming-soon">Coming Soon</span>
                   )}
-                  {resource.note && <small>{resource.note}</small>}
+                  {resource.note && <small><em>{resource.note}</em></small>}
                 </div>
               </div>
             ))}
