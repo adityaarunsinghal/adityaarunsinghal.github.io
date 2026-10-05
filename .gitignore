@@ -45,3 +45,13 @@ scripts/backfill-data.json
 
 # Instructor portraits are generated from the supplied source media.
 /public/workshops/2026/instructors/
+
+# Local working material
+/log.md
+/tmp/
+/docs/audit-findings-raw-*.json
+/docs/audit-workflow.mjs
+/docs/repo-audit-report-*.md
+/docs/visitsdenmark/TODOS.md
+/functions/.env*
+/functions/.secret.local

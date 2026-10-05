@@ -45,3 +45,10 @@ git checkout 38fba1c -- docs/implementation-plans/2026-02-25-element-tracker/
 | Path | Replacement |
 | --- | --- |
 | `public/workshops/instructor-waves-2026-10-09.js` | `public/workshops/instructor-portraits-2026-10-09.js` selects greeting GIFs or reduced-motion stills automatically. |
+
+## Removed 2026-10-05
+
+Local development logs, audit working files and completed implementation notes
+were removed from the public source tree. Their recovery reference is
+`beb13286f0a88432b839bee64914f98d165691f1`. Keep recovered working material outside
+published source and build output.
