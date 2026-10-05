@@ -9,6 +9,19 @@ name: Deploy to GitHub Pages
 
 on:
   workflow_dispatch: # Allows manual triggering from GitHub UI
+    inputs:
+      deploy_pages:
+        description: Publish website pages
+        type: boolean
+        default: true
+      deploy_functions:
+        description: Deploy Firebase Functions after separate backend review
+        type: boolean
+        default: false
+      deploy_rules:
+        description: Deploy Firestore rules after separate authorization review
+        type: boolean
+        default: false
 
 jobs:
   build-and-deploy:
@@ -21,7 +34,7 @@ jobs:
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
-        version: latest
+        version: 10.32.1
 
     - name: Setup Node.js
       uses: actions/setup-node@v5
@@ -38,9 +51,11 @@ jobs:
       run: pnpm install --frozen-lockfile
       
     - name: Install Functions dependencies
+      if: inputs.deploy_functions
       run: cd functions && npm ci
       
     - name: Build Functions
+      if: inputs.deploy_functions
       run: cd functions && npm run build
       
     - name: Build
@@ -55,21 +70,25 @@ jobs:
         VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
         VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
         VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
+
+    - name: Check public artifacts
+      run: pnpm check:public
     
     - name: Deploy Firebase Functions
-      continue-on-error: true
+      if: inputs.deploy_functions
       env:
         TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       run: pnpm dlx firebase-tools deploy --only functions --project aditya-singhal-website --token "$FIREBASE_TOKEN"
 
     - name: Deploy Firestore Rules
-      continue-on-error: true
+      if: inputs.deploy_rules
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       run: pnpm dlx firebase-tools deploy --only firestore:rules --project aditya-singhal-website --token "$FIREBASE_TOKEN"
         
     - name: Deploy GitHub Pages
+      if: inputs.deploy_pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.32.1",
   "engines": {
     "node": ">=20.19.0"
   },
@@ -14,7 +15,8 @@
     "clean": "rimraf dist",
     "build": "tsc && vite build && node scripts/build-workshop-pages.mjs",
     "check:workshop": "node scripts/check-workshop-pages.mjs",
-    "analyze": "npm run build && npx vite-bundle-analyzer dist",
+    "analyze": "pnpm run build && node -e \"console.log('Bundle report: dist/stats.html')\"",
+    "check:public": "node scripts/check-public-artifacts.mjs",
     "lint": "eslint src --max-warnings 0",
     "preview": "vite preview"
   },
@@ -24,6 +26,7 @@
   ],
   "pnpm": {
     "overrides": {
+      "websocket-driver@<0.7.5": "0.7.5",
       "protobufjs": ">=7.5.9",
       "@grpc/grpc-js@>=1.9.0 <1.10.0": ">=1.9.16 <1.10.0",
       "js-yaml@^4": ">=4.2.0",
@@ -33,7 +36,6 @@
   },
   "dependencies": {
     "@react-spring/web": "^10.0.3",
-    "@types/papaparse": "^5.3.16",
     "canvas-confetti": "^1.9.3",
     "firebase": "^12.1.0",
     "localforage": "^1.10.0",
@@ -42,12 +44,13 @@
     "react": "^19.2.5",
     "react-activity-calendar": "^3.1.1",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.17.0"
+    "react-router-dom": "^7.18.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "@resvg/resvg-js": "2.6.2",
     "@types/canvas-confetti": "^1.9.0",
+    "@types/papaparse": "^5.3.16",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.58.1",
