@@ -16,7 +16,7 @@
     "build": "tsc && vite build && node scripts/build-workshop-pages.mjs",
     "check:workshop": "node scripts/check-workshop-pages.mjs",
     "analyze": "pnpm run build && node -e \"console.log('Bundle report: dist/stats.html')\"",
-    "check:public": "node scripts/check-public-artifacts.mjs",
+    "check:public": "node --test scripts/check-public-artifacts.test.mjs && node scripts/check-public-artifacts.mjs",
     "lint": "eslint src --max-warnings 0",
     "preview": "vite preview"
   },
