@@ -27,11 +27,18 @@
   "pnpm": {
     "overrides": {
       "websocket-driver@<0.7.5": "0.7.5",
-      "protobufjs": ">=7.5.9",
-      "@grpc/grpc-js@>=1.9.0 <1.10.0": ">=1.9.16 <1.10.0",
-      "js-yaml@^4": ">=4.2.0",
-      "postcss@^8": ">=8.5.10",
-      "@babel/core@^7": ">=7.29.6"
+      "protobufjs": "8.6.6",
+      "postcss@^8": "8.5.23",
+      "@babel/core@^7": ">=7.29.6",
+      "@grpc/grpc-js@>=1.9.0 <1.13.6": "1.13.6",
+      "brace-expansion@^1": "1.1.21",
+      "brace-expansion@^5": "5.0.12",
+      "nanoid@^3": "3.3.18",
+      "browserslist@^4": "4.28.7",
+      "@humanfs/node": "0.16.8",
+      "baseline-browser-mapping": "2.11.0",
+      "pre-commit>cross-spawn": "6.0.6",
+      "js-yaml": "5.4.1"
     }
   },
   "dependencies": {
