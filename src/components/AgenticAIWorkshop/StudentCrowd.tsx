@@ -9,11 +9,12 @@ export default function StudentCrowd() {
     >
       <div className="section-heading">
         <div>
-          <p className="eyebrow">FROM THE REGISTRATION FORM</p>
+          <p className="eyebrow">FROM THE WORKSHOP FORMS</p>
           <h2 id="crowd-title">Who signed up?</h2>
         </div>
         <p>
-          {crowd.responses} responses as of {crowd.snapshot}.
+          Fictional voices based on replies as of {crowd.snapshot}.
+          Approximate counts overlap.
         </p>
       </div>
       <ol className="crowd-grid">
@@ -23,28 +24,21 @@ export default function StudentCrowd() {
               <summary>
                 <span className="crowd-portrait" style={{ background: person.color }}>
                   <svg viewBox="0 0 240 240" aria-hidden="true">
-                    <use href={`/workshops/2026/student-crowd-portraits.svg#art-${person.id}`} />
+                    <use href={`/workshops/2026/student-crowd-portraits.svg#art-${person.portrait}`} />
                   </svg>
-                  <span className="crowd-count">{person.count}</span>
+                  <span
+                    className="crowd-count"
+                    aria-label={`Approximately ${person.count}`}
+                  >
+                    ≈{person.count}
+                  </span>
                 </span>
                 <span className="crowd-name">{person.name}</span>
                 <span className="crowd-label">{person.label}</span>
-                <span className="crowd-intro">{person.intro}</span>
                 <span className="crowd-expand">Read my perspective</span>
               </summary>
               <div className="crowd-voice">
-                <div>
-                  <h3>What excites me</h3>
-                  <p>{person.excites}</p>
-                </div>
-                <div>
-                  <h3>What worries me</h3>
-                  <p>{person.worries}</p>
-                </div>
-                <div>
-                  <h3>What I want to leave with</h3>
-                  <p>{person.leaveWith}</p>
-                </div>
+                <p>{person.blurb}</p>
               </div>
             </details>
           </li>
