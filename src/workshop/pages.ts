@@ -7,6 +7,8 @@ export const course = {
   year: 2026,
   path: "/agentic-ai-workshop/",
   archivePath: "/agentic-ai-workshop-2025/",
+  publicRepositoryUrl:
+    "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026",
   registrationUrl:
     "https://docs.google.com/forms/d/e/1FAIpQLSd_lhxUjjw0NMCvsf5qojymmS8Wur0tA26rqOnSCZarhkV31g/viewform",
   deadline: "Monday, October 5 at 5 PM ET",
@@ -89,21 +91,26 @@ export const resources: {
   url: string | null;
   action?: string;
   note?: string;
+  download?: string;
 }[] = [
   {
     name: "2026 public repository",
     description: "The home for this year’s course materials.",
-    url: null,
+    url: course.publicRepositoryUrl,
+    action: "Open the repository",
   },
   {
-    name: "Session slides",
-    description: "The explanations and visuals from class.",
-    url: null,
+    name: "Session 1 slides",
+    description: "Download the HTML slide deck and open it in your browser.",
+    url: "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-01-agent-harnesses/session-01-agent-harnesses-2026-10-07.html",
+    action: "Download Session 1 slides",
+    download: "session-01-agent-harnesses-2026-10-07.html",
   },
   {
-    name: "Starter code",
+    name: "Session 1 starter code",
     description: "Code to run, inspect, and make your own.",
-    url: null,
+    url: `${course.publicRepositoryUrl}/tree/main/session-01-agent-harnesses/demo-app`,
+    action: "Open starter code",
   },
   {
     name: "Class app store",

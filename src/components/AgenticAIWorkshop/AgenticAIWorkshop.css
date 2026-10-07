@@ -167,6 +167,14 @@
   font-size: 14px;
   color: var(--muted);
 }
+.workshop-2026 .hero-materials-link {
+  margin-top: 12px;
+  font-size: 14px;
+}
+.workshop-2026 .hero-materials-link a {
+  color: var(--teal);
+  text-underline-offset: 4px;
+}
 .workshop-2026 .subtle-link {
   display: block;
   margin-top: 28px;
@@ -485,6 +493,13 @@
 }
 .workshop-2026 .resource-destination .store-link:hover {
   background: #115e59;
+}
+.workshop-2026 .resource-destination .store-link[aria-disabled="true"] {
+  cursor: progress;
+  opacity: 0.7;
+}
+.workshop-2026 .resource-destination .slide-download-status {
+  font-size: 12px;
 }
 .workshop-2026 .resource-destination small {
   font-size: 12px;

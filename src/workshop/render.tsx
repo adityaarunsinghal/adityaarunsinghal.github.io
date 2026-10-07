@@ -106,6 +106,9 @@ export function renderWorkshop(
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>{page.title}</title>
           <meta name="description" content={page.description} />
+          {page.kind === "current" && (
+            <script src="/workshops/download-slides.js" defer />
+          )}
           <link rel="canonical" href={canonical} />
           <link
             rel="icon"

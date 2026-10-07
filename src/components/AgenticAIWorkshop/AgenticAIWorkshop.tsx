@@ -122,6 +122,11 @@ export default function AgenticAIWorkshop({
               {action.label} <Arrow />
             </a>
             <p className="registration-note">{action.note}</p>
+            <p className="hero-materials-link">
+              <a href={course.publicRepositoryUrl}>
+                Get Session 1 slides and starter code <Arrow />
+              </a>
+            </p>
             <a className="subtle-link" href={course.archivePath}>
               Looking for last year’s workshop?{" "}
               <span>
@@ -200,8 +205,9 @@ export default function AgenticAIWorkshop({
                 happens next. Build your own between sessions.
               </p>
               <p>
-                Slides and starter code support your project. You’ll be
-                encouraged to share your agent through the class app store.
+                <a href={course.publicRepositoryUrl}>Slides and starter code</a>{" "}
+                support your project. You’ll be encouraged to share your agent
+                through the class app store.
               </p>
             </div>
             <div className="format-notes">
@@ -247,8 +253,9 @@ export default function AgenticAIWorkshop({
               </h2>
             </div>
             <p>
-              The public course repository, slides, and starter code are coming
-              soon. Their links will appear here when available.
+              Session 1 slides and starter code are available in the{" "}
+              <a href={course.publicRepositoryUrl}>public course repository</a>.
+              Each session’s materials will be released the day before class.
             </p>
           </div>
           <div className="resource-list">
@@ -261,11 +268,24 @@ export default function AgenticAIWorkshop({
                 </div>
                 <div className="resource-destination">
                   {resource.url ? (
-                    <a className="store-link" href={resource.url}>
+                    <a
+                      className="store-link"
+                      href={resource.url}
+                      download={resource.download}
+                      data-slide-download={resource.download}
+                    >
                       {resource.action ?? "Open resource"} <Arrow />
                     </a>
                   ) : (
                     <span className="coming-soon">Coming Soon</span>
+                  )}
+                  {resource.download && (
+                    <p
+                      className="slide-download-status"
+                      data-slide-download-status=""
+                      role="status"
+                      hidden
+                    />
                   )}
                   {resource.note && <small><em>{resource.note}</em></small>}
                 </div>
@@ -379,9 +399,12 @@ export default function AgenticAIWorkshop({
             <details>
               <summary>What will I need?</summary>
               <p>
-                Time to build between sessions and curiosity in the room. Slides
-                and starter code are coming soon. Registered students will
-                receive inference access through OpenRouter.
+                Time to build between sessions and curiosity in the room. Find
+                slides and starter code in the{" "}
+                <a href={course.publicRepositoryUrl}>
+                  public course repository
+                </a>. Registered students will receive inference access through
+                OpenRouter.
               </p>
             </details>
             <details>

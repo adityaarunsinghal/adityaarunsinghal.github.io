@@ -28,10 +28,13 @@ for (const page of pageDefinitions) {
   );
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.ok(html.includes('id="main-content"'));
-  assert.ok(
-    !html.includes("<script"),
-    `${page.path} should work without a client bundle`,
+  assert.equal(
+    (html.match(/<script\b/g) || []).length,
+    page.kind === "current" ? 1 : 0,
+    `${page.path} should use only its slide download enhancement`,
   );
+  if (page.kind === "current")
+    assert.ok(html.includes('src="/workshops/download-slides.js" defer'));
   assert.ok(!html.includes('href="#"'));
   assert.ok(
     !html.includes("-personal"),
@@ -68,13 +71,20 @@ for (const text of [
   "Coffee chats",
 ])
   assert.ok(current.includes(text), `Missing course fact: ${text}`);
-assert.equal((current.match(/class="coming-soon"/g) || []).length, 3);
+assert.equal((current.match(/class="coming-soon"/g) || []).length, 0);
 assert.equal(current.includes(form), course.state === "registration-open");
 assert.ok(!/notebook|codex|openai|—/i.test(current), "Unexpected 2026 wording");
-assert.ok(
-  !/github\.com\/[^"]*2026/.test(current),
-  "Unpublished 2026 repository URL",
-);
+for (const destination of [
+  course.publicRepositoryUrl,
+  "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-01-agent-harnesses/session-01-agent-harnesses-2026-10-07.html",
+  `${course.publicRepositoryUrl}/tree/main/session-01-agent-harnesses/demo-app`,
+])
+  assert.ok(
+    current.includes(`href="${destination}"`),
+    `Missing published material: ${destination}`,
+  );
+assert.ok(current.includes("day before class"));
+assert.ok(current.includes('download="session-01-agent-harnesses-2026-10-07.html"'));
 for (const kind of ["registration", "feedback", "archived-registration"]) {
   for (const page of pageDefinitions.filter((item) => item.kind === kind)) {
     const html = await read(`${page.path}/index.html`);
@@ -112,7 +122,8 @@ for (const state of [
       state === "registration-open",
     );
     assert.ok(
-      html.includes("Coming Soon") || route.includes("registration-form"),
+      html.includes(course.publicRepositoryUrl) ||
+        route.includes("registration-form"),
     );
   }
 }

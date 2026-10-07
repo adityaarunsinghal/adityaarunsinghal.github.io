@@ -62,7 +62,10 @@ async def check(args):
             response = await page.goto(args.base_url + route, wait_until="networkidle")
             assert response.status == 200, (route, response.status)
             assert await page.locator("h1").count() == 1
-            assert await page.locator("script").count() == 0
+            current_course = await page.locator("#course-title").count() == 1
+            assert await page.locator("script").count() == (
+                1 if current_course else 0
+            )
             report["routes"].append(
                 {"route": route, "status": response.status, "final_url": page.url}
             )
