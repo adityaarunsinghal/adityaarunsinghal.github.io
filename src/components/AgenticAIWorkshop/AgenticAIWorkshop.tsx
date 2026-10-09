@@ -7,6 +7,7 @@ import {
   type CourseState,
 } from "../../workshop/pages";
 import StudentCrowd from "./StudentCrowd";
+import Instructors from "./Instructors";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -361,21 +362,11 @@ export default function AgenticAIWorkshop({
             ))}
           </div>
         </section>
+        <Instructors />
         <section
           className="course-wrap course-section practical-section"
           aria-labelledby="practical-title"
         >
-          <div className="instructor-note" id="instructor">
-            <p className="eyebrow">YOUR INSTRUCTOR</p>
-            <h2>Adi Singhal</h2>
-            <p>
-              Former CDS student and founder of the NYU Data Science Club. Adi
-              teaches through examples, demonstrations, and plenty of questions.
-            </p>
-            <a href="https://www.linkedin.com/in/adi-singhal/">
-              Connect on LinkedIn <Arrow />
-            </a>
-          </div>
           <div className="course-faq" id="before-you-join">
             <h2 id="practical-title">Before you join</h2>
             <details open>

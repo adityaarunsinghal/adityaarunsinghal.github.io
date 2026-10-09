@@ -46,6 +46,29 @@ export const historical = {
   ],
 };
 
+export const instructors = [
+  {
+    id: "adi",
+    name: "Adi Singhal",
+    biography:
+      "Former CDS student and founder of the NYU Data Science Club. Adi teaches through examples, demonstrations, and plenty of questions.",
+    linkedin: "https://www.linkedin.com/in/adi-singhal/",
+    wave: "/workshops/2026/instructors/adi-wave-2026-10-09.gif",
+    still: "/workshops/2026/instructors/adi-wave-2026-10-09.jpg",
+    height: 384,
+  },
+  {
+    id: "luca",
+    name: "Luca Chang",
+    biography:
+      "Works in the AWS Agentic AI organization and is an MCP specification maintainer and SDK contributor. Expert in building production-ready agentic systems.",
+    linkedin: "https://www.linkedin.com/in/luca-chang/",
+    wave: "/workshops/2026/instructors/luca-wave-2026-10-09.gif",
+    still: "/workshops/2026/instructors/luca-wave-2026-10-09.jpg",
+    height: 360,
+  },
+];
+
 export const sessions = [
   {
     day: "08",

@@ -107,7 +107,10 @@ export function renderWorkshop(
           <title>{page.title}</title>
           <meta name="description" content={page.description} />
           {page.kind === "current" && (
-            <script src="/workshops/download-slides.js" defer />
+            <>
+              <script src="/workshops/download-slides.js" defer />
+              <script src="/workshops/instructor-waves-2026-10-09.js" defer />
+            </>
           )}
           <link rel="canonical" href={canonical} />
           <link

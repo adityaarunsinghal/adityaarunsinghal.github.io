@@ -63,9 +63,7 @@ async def check(args):
             assert response.status == 200, (route, response.status)
             assert await page.locator("h1").count() == 1
             current_course = await page.locator("#course-title").count() == 1
-            assert await page.locator("script").count() == (
-                1 if current_course else 0
-            )
+            assert await page.locator("script").count() == (2 if current_course else 0)
             report["routes"].append(
                 {"route": route, "status": response.status, "final_url": page.url}
             )
@@ -137,6 +135,43 @@ async def check(args):
                 == 0
             )
 
+        await page.emulate_media(reduced_motion="no-preference")
+        await page.set_viewport_size({"width": 1440, "height": 1000})
+        await page.goto(args.base_url + "/agentic-ai-workshop/")
+        await page.locator("#instructor").scroll_into_view_if_needed()
+        report["instructor_waves"] = []
+        for name in ["Adi Singhal", "Luca Chang"]:
+            portrait = page.locator(f'[data-instructor-name="{name}"]')
+            image = portrait.locator("img")
+            await image.evaluate("(image) => image.decode()")
+            assert (await image.get_attribute("src")).endswith(".gif")
+            await portrait.get_by_role("button", name=f"Pause {name}'s wave").click()
+            await image.evaluate("(image) => image.decode()")
+            assert (await image.get_attribute("src")).endswith(".jpg")
+            button = portrait.get_by_role("button", name=f"Play {name}'s wave")
+            await button.focus()
+            await page.keyboard.press("Enter")
+            await image.evaluate("(image) => image.decode()")
+            assert (await image.get_attribute("src")).endswith(".gif")
+            report["instructor_waves"].append(
+                {"name": name, "decoded": True, "pause_and_keyboard_play": True}
+            )
+        await page.locator("#instructor").screenshot(
+            path=str(output / "2026-instructors-desktop.png")
+        )
+        await page.set_viewport_size({"width": 390, "height": 844})
+        await page.locator("#instructor").screenshot(
+            path=str(output / "2026-instructors-phone.png")
+        )
+        await page.emulate_media(reduced_motion="reduce")
+        for image in await page.locator("#instructor img").all():
+            await page.wait_for_function(
+                "(id) => document.getElementById(id).src.endsWith('.jpg')",
+                arg=await image.get_attribute("id"),
+            )
+            await image.evaluate("(image) => image.decode()")
+        report["instructor_reduced_motion"] = True
+
         await page.goto(
             args.base_url + "/agentic-ai-workshop/", wait_until="networkidle"
         )
@@ -207,6 +242,18 @@ async def check(args):
             await nojs_page.goto(args.base_url + route)
             assert await nojs_page.locator("h1").is_visible()
             assert await nojs_page.locator('a[href^="https://"]').count() > 0
+            if route == "/agentic-ai-workshop/":
+                await nojs_page.locator("#instructor").scroll_into_view_if_needed()
+                for image in await nojs_page.locator("#instructor img").all():
+                    await image.evaluate("(image) => image.decode()")
+                    assert (await image.get_attribute("src")).endswith(".jpg")
+                    assert await image.evaluate(
+                        "(image) => image.complete && image.naturalWidth > 0"
+                    )
+                assert (
+                    await nojs_page.locator("[data-wave-toggle]:visible").count() == 0
+                )
+                report["instructor_no_javascript"] = True
         await nojs.close()
 
         returning = await browser.new_context(service_workers="allow")

@@ -42,3 +42,6 @@ scripts/backfill-data.json
 # Worktrees
 .worktrees/
 .playwright-mcp/
+
+# Instructor portraits are generated from the supplied source media.
+/public/workshops/2026/instructors/

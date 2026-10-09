@@ -5,6 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 import react from "@vitejs/plugin-react";
 import { generateSocialImages } from "./workshop-social-images.mjs";
+import { generateInstructorPortraits } from "./workshop-instructor-portraits.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -57,6 +58,7 @@ for (const page of pageDefinitions) {
 }
 
 await generateSocialImages(path.join(output, "workshops"));
+await generateInstructorPortraits(path.join(output, "workshops/2026/instructors"));
 const urls = [
   "/",
   ...pageDefinitions

@@ -30,11 +30,13 @@ for (const page of pageDefinitions) {
   assert.ok(html.includes('id="main-content"'));
   assert.equal(
     (html.match(/<script\b/g) || []).length,
-    page.kind === "current" ? 1 : 0,
-    `${page.path} should use only its slide download enhancement`,
+    page.kind === "current" ? 2 : 0,
+    `${page.path} should use only its slide download and portrait enhancements`,
   );
-  if (page.kind === "current")
+  if (page.kind === "current") {
     assert.ok(html.includes('src="/workshops/download-slides.js" defer'));
+    assert.ok(html.includes('src="/workshops/instructor-waves-2026-10-09.js" defer'));
+  }
   assert.ok(!html.includes('href="#"'));
   assert.ok(
     !html.includes("-personal"),

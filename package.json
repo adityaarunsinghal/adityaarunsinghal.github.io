@@ -10,7 +10,7 @@
   "scripts": {
     "predeploy": "pnpm run build",
     "deploy": "gh-pages -d dist",
-    "dev": "vite",
+    "dev": "node scripts/workshop-instructor-portraits.mjs && vite",
     "clean": "rimraf dist",
     "build": "tsc && vite build && node scripts/build-workshop-pages.mjs",
     "check:workshop": "node scripts/check-workshop-pages.mjs",
