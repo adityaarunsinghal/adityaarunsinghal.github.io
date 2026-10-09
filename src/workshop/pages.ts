@@ -51,7 +51,7 @@ export const instructors = [
     id: "adi",
     name: "Adi Singhal",
     biography:
-      "Former CDS student and founder of the NYU Data Science Club. Adi teaches through examples, demonstrations, and plenty of questions.",
+      "Applied Scientist at Amazon, former AWS Bedrock engineer, Ambassador at the Agentic AI Foundation (AAIF) and Instructor at NYU. At NYU, he studied psychology and data science, conducted research with faculty, and founded and led the Data Science Club to 1k members.",
     linkedin: "https://www.linkedin.com/in/adi-singhal/",
     wave: "/workshops/2026/instructors/adi-wave-2026-10-09.gif",
     still: "/workshops/2026/instructors/adi-wave-2026-10-09.jpg",

@@ -14,6 +14,6 @@
 - Publication requires approval. The broad deployment workflow also changes backend services.
 - Instructor biographies, LinkedIn destinations and portrait paths are in `pages.ts`. Preserve supplied biography wording when moving it into structured data.
 - Retain supplied portrait media in `scripts/assets/workshop-instructors/`. `scripts/workshop-instructor-portraits.mjs` generates GIFs and JPEG stills for the workshop build and development server; FFmpeg must be installed. Generated portrait assets remain uncommitted.
-- Portraits initially render as still images. The independent wave enhancement respects reduced-motion preferences and exposes keyboard-accessible pause/play controls.
+- Portraits initially render as still images. The independent portrait enhancement selects waving GIFs automatically and respects reduced-motion preferences.
 - The current dependency lockfile uses pnpm 10 overrides from `package.json`. When a newer global pnpm rejects them, use `COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@10.32.1` for the existing frozen install, lint, build and workshop checks.
 - For a course-only release, stage the changed course document and its required assets, then publish that directory with the existing additive Pages publisher. Compare all prior Pages files by content hash and verify the live document and actual rendering.

@@ -141,21 +141,12 @@ async def check(args):
         await page.locator("#instructor").scroll_into_view_if_needed()
         report["instructor_waves"] = []
         for name in ["Adi Singhal", "Luca Chang"]:
-            portrait = page.locator(f'[data-instructor-name="{name}"]')
-            image = portrait.locator("img")
+            image = page.get_by_alt_text(f"{name} waving hello", exact=True)
             await image.evaluate("(image) => image.decode()")
             assert (await image.get_attribute("src")).endswith(".gif")
-            await portrait.get_by_role("button", name=f"Pause {name}'s wave").click()
-            await image.evaluate("(image) => image.decode()")
-            assert (await image.get_attribute("src")).endswith(".jpg")
-            button = portrait.get_by_role("button", name=f"Play {name}'s wave")
-            await button.focus()
-            await page.keyboard.press("Enter")
-            await image.evaluate("(image) => image.decode()")
-            assert (await image.get_attribute("src")).endswith(".gif")
-            report["instructor_waves"].append(
-                {"name": name, "decoded": True, "pause_and_keyboard_play": True}
-            )
+            report["instructor_waves"].append({"name": name, "decoded": True})
+        assert await page.locator("#instructor button").count() == 0
+        report["instructor_controls_absent"] = True
         await page.locator("#instructor").screenshot(
             path=str(output / "2026-instructors-desktop.png")
         )
@@ -250,9 +241,7 @@ async def check(args):
                     assert await image.evaluate(
                         "(image) => image.complete && image.naturalWidth > 0"
                     )
-                assert (
-                    await nojs_page.locator("[data-wave-toggle]:visible").count() == 0
-                )
+                assert await nojs_page.locator("#instructor button").count() == 0
                 report["instructor_no_javascript"] = True
         await nojs.close()
 

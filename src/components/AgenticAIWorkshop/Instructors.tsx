@@ -19,7 +19,6 @@ export default function Instructors() {
             <div
               className="instructor-portrait"
               data-instructor-wave=""
-              data-instructor-name={instructor.name}
             >
               <img
                 id={`${instructor.id}-instructor-wave`}
@@ -32,15 +31,6 @@ export default function Instructors() {
                 loading="lazy"
                 decoding="async"
               />
-              <button
-                type="button"
-                data-wave-toggle=""
-                aria-controls={`${instructor.id}-instructor-wave`}
-                aria-label={`Pause ${instructor.name}'s wave`}
-                hidden
-              >
-                Pause wave
-              </button>
             </div>
             <div className="instructor-copy">
               <h3 id={`${instructor.id}-instructor-title`}>{instructor.name}</h3>

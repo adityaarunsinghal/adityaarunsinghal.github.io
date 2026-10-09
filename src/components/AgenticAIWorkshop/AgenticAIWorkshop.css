@@ -639,27 +639,6 @@
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
-.workshop-2026 .instructor-portrait button {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  padding: 8px 12px;
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  background: #fcfbf7;
-  color: var(--ink);
-  font: inherit;
-  font-size: 12px;
-  line-height: 1.4;
-  cursor: pointer;
-}
-.workshop-2026 .instructor-portrait button:hover {
-  background: #e9ede5;
-}
-.workshop-2026 .instructor-portrait button:focus-visible {
-  outline: 3px solid #b45309;
-  outline-offset: 3px;
-}
 .workshop-2026 .instructor-copy {
   padding: 28px;
 }

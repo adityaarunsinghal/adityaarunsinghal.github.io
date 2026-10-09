@@ -35,7 +35,7 @@ for (const page of pageDefinitions) {
   );
   if (page.kind === "current") {
     assert.ok(html.includes('src="/workshops/download-slides.js" defer'));
-    assert.ok(html.includes('src="/workshops/instructor-waves-2026-10-09.js" defer'));
+    assert.ok(html.includes('src="/workshops/instructor-portraits-2026-10-09.js" defer'));
   }
   assert.ok(!html.includes('href="#"'));
   assert.ok(
@@ -58,6 +58,8 @@ for (const page of pageDefinitions) {
 }
 
 const current = await read(`${currentPath}/index.html`);
+assert.ok(!current.includes("Pause wave"));
+assert.ok(!current.includes("data-wave-toggle"));
 for (const text of [
   "October 8, 15, 22 &amp; 29, 2026",
   "5:30–7:00 PM ET",

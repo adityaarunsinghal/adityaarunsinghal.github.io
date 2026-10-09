@@ -109,7 +109,7 @@ export function renderWorkshop(
           {page.kind === "current" && (
             <>
               <script src="/workshops/download-slides.js" defer />
-              <script src="/workshops/instructor-waves-2026-10-09.js" defer />
+              <script src="/workshops/instructor-portraits-2026-10-09.js" defer />
             </>
           )}
           <link rel="canonical" href={canonical} />

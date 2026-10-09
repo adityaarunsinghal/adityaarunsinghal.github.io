@@ -39,3 +39,9 @@ git checkout 38fba1c -- docs/implementation-plans/2026-02-25-element-tracker/
 | `src/components/FeedbackForm.tsx` | Shared 2025 feedback information pages retain the original form destination. |
 | `robots.txt` | `public/robots.txt` is copied into the published output. |
 | `sitemap.xml`, `sitemap.txt` | `scripts/build-workshop-pages.mjs` generates both from the public route registry. |
+
+## Retired 2026-10-09 (recovery commit: `690c36f`)
+
+| Path | Replacement |
+| --- | --- |
+| `public/workshops/instructor-waves-2026-10-09.js` | `public/workshops/instructor-portraits-2026-10-09.js` selects greeting GIFs or reduced-motion stills automatically. |
