@@ -1,0 +1,321 @@
+.workshop-2026 .recording-section {
+  --recording-paper: #fffefa;
+  --recording-ink: #111827;
+  --recording-muted: #4b5563;
+  --recording-rule: #d5d7cf;
+  --recording-accent: #0f766e;
+  --recording-active: #edf2eb;
+  --recording-field: #ffffff;
+}
+.workshop-2025 .recording-section {
+  --recording-paper: #142338;
+  --recording-ink: #ffffff;
+  --recording-muted: #c6d5e4;
+  --recording-rule: #62768c;
+  --recording-accent: #7de4d9;
+  --recording-active: #1c3c49;
+  --recording-field: #0f1c2f;
+}
+:is(.workshop-2025, .workshop-2026) .recording-section {
+  box-sizing: border-box;
+  max-width: 1224px;
+  padding: 64px 32px;
+  margin: 0 auto;
+  color: var(--recording-ink);
+  font-size: 16px;
+  line-height: 1.6;
+  scroll-margin-top: 24px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-section *,
+:is(.workshop-2025, .workshop-2026) .recording-section *::before,
+:is(.workshop-2025, .workshop-2026) .recording-section *::after {
+  box-sizing: border-box;
+}
+:is(.workshop-2025, .workshop-2026) .recording-section :is(h2, h3, h4, p, ol) {
+  margin: 0;
+}
+:is(.workshop-2025, .workshop-2026) .recording-section .section-heading {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: end;
+  margin-bottom: 32px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-section .eyebrow {
+  color: var(--recording-accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+.workshop-2025 .recording-section h2 {
+  font-size: clamp(30px, 3.1vw, 42px);
+  line-height: 1.15;
+}
+:is(.workshop-2025, .workshop-2026) .recording-section .section-heading > p {
+  color: var(--recording-muted);
+}
+:is(.workshop-2025, .workshop-2026) .recording-list {
+  display: grid;
+  gap: 40px;
+}
+:is(.workshop-2025, .workshop-2026) .session-recording {
+  min-width: 0;
+  border: 1px solid var(--recording-rule);
+  border-radius: 8px;
+  background: var(--recording-paper);
+  padding: 28px;
+  scroll-margin-top: 24px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-heading {
+  margin-bottom: 24px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-heading .session-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--recording-muted);
+  margin-bottom: 8px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-heading .session-label span {
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-left: 12px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-heading h3 {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+:is(.workshop-2025, .workshop-2026) .recording-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+:is(.workshop-2025, .workshop-2026) .recording-view {
+  min-width: 0;
+}
+:is(.workshop-2025, .workshop-2026) .recording-player {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 4px;
+  background: #111827;
+}
+:is(.workshop-2025, .workshop-2026) .recording-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 18px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-actions .course-button {
+  display: inline-flex;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: #0f766e;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+:is(.workshop-2025, .workshop-2026) .recording-actions .course-button:hover {
+  background: #115e59;
+}
+:is(.workshop-2025, .workshop-2026) .recording-share {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 8px 0;
+  color: var(--recording-accent);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+:is(.workshop-2025, .workshop-2026) .recording-duration,
+:is(.workshop-2025, .workshop-2026) .recording-status {
+  font-size: 13px;
+  color: var(--recording-muted);
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+:is(.workshop-2025, .workshop-2026) .recording-status:empty {
+  display: none;
+}
+:is(.workshop-2025, .workshop-2026) .recording-chapters {
+  min-width: 0;
+}
+:is(.workshop-2025, .workshop-2026) .recording-chapters h4 {
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+:is(.workshop-2025, .workshop-2026) .recording-help {
+  color: var(--recording-muted);
+  font-size: 13px;
+  margin-top: 8px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-search {
+  margin-top: 16px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-search label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-search input,
+:is(.workshop-2025, .workshop-2026) .recording-share-url {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  color: var(--recording-ink);
+  background: var(--recording-field);
+  border: 1px solid var(--recording-rule);
+  border-radius: 4px;
+  font: inherit;
+  font-size: 14px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-search input::placeholder {
+  color: var(--recording-muted);
+  opacity: 1;
+}
+:is(.workshop-2025, .workshop-2026) .recording-share-url {
+  margin-top: 10px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-count {
+  font-size: 12px;
+  color: var(--recording-muted);
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+:is(.workshop-2025, .workshop-2026) .chapter-list {
+  max-height: 350px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 8px 4px 4px;
+  list-style: none;
+  scrollbar-width: thin;
+}
+:is(.workshop-2025, .workshop-2026) .chapter-list a {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 12px;
+  padding: 11px 8px;
+  border-top: 1px solid var(--recording-rule);
+  color: var(--recording-ink);
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+:is(.workshop-2025, .workshop-2026) .chapter-list a:hover,
+:is(.workshop-2025, .workshop-2026) .chapter-list a[aria-current="true"] {
+  background: var(--recording-active);
+}
+:is(.workshop-2025, .workshop-2026) .chapter-list a[aria-current="true"] {
+  box-shadow: inset 3px 0 var(--recording-accent);
+}
+:is(.workshop-2025, .workshop-2026) .chapter-time {
+  color: var(--recording-accent);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+:is(.workshop-2025, .workshop-2026) .recording-empty {
+  margin-top: 12px;
+  color: var(--recording-muted);
+  font-size: 14px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-pending {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--recording-muted);
+  font-size: 14px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-section :is(a, button, input):focus-visible {
+  outline: 3px solid #d97706;
+  outline-offset: 3px;
+}
+:is(.workshop-2025, .workshop-2026) .recording-section [hidden] {
+  display: none;
+}
+.workshop-2026 .session-recording {
+  background: #fffefa;
+}
+.workshop-2026 .recording-heading {
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--recording-rule);
+}
+.workshop-2026 .recording-heading .session-label {
+  color: var(--nyu-violet);
+  letter-spacing: 0.1em;
+}
+.workshop-2026 .recording-heading time {
+  color: var(--recording-muted);
+}
+.workshop-2026 .recording-heading h3 {
+  font-family: "Workshop Subhead", Georgia, serif;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.workshop-2026 .recording-chapters h4 {
+  font-family: "Workshop Subhead", Georgia, serif;
+  font-size: 27px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+.workshop-2026 .recording-help {
+  margin-top: 10px;
+}
+.workshop-2026 .chapter-list a {
+  font-size: 14px;
+  line-height: 1.55;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+@media (max-width: 800px) {
+  :is(.workshop-2025, .workshop-2026) .recording-section .section-heading,
+  :is(.workshop-2025, .workshop-2026) .recording-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}
+@media (max-width: 480px) {
+  :is(.workshop-2025, .workshop-2026) .recording-section {
+    padding: 48px 20px;
+  }
+  :is(.workshop-2025, .workshop-2026) .session-recording {
+    padding: 18px;
+  }
+  .workshop-2025 .recording-heading h3 {
+    font-size: 23px;
+  }
+  :is(.workshop-2025, .workshop-2026) .recording-heading .session-label span {
+    display: block;
+    margin-top: 4px;
+    margin-left: 0;
+  }
+  :is(.workshop-2025, .workshop-2026) .chapter-list a {
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 8px;
+  }
+  :is(.workshop-2025, .workshop-2026) .recording-pending {
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+  }
+}

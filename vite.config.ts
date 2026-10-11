@@ -25,7 +25,7 @@ export default defineConfig({
                 stylesheet[1] === "2025"
                   ? "AgenticAIWorkshop2025"
                   : "AgenticAIWorkshop";
-              const [base, css] = await Promise.all([
+              const [base, css, recordings] = await Promise.all([
                 readFile(
                   path.resolve(__dirname, "src/workshop/base.css"),
                   "utf8",
@@ -37,9 +37,13 @@ export default defineConfig({
                   ),
                   "utf8",
                 ),
+                readFile(
+                  path.resolve(__dirname, "src/workshop/recordings.css"),
+                  "utf8",
+                ),
               ]);
               response.setHeader("Content-Type", "text/css; charset=utf-8");
-              response.end(base + "\n" + css);
+              response.end(base + "\n" + css + "\n" + recordings);
               return;
             }
             if (

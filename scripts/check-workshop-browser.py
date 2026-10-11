@@ -63,7 +63,11 @@ async def check(args):
             assert response.status == 200, (route, response.status)
             assert await page.locator("h1").count() == 1
             current_course = await page.locator("#course-title").count() == 1
-            assert await page.locator("script").count() == (2 if current_course else 0)
+            recordings = await page.locator("[data-session-recording]").count()
+            expected_scripts = (2 if current_course else 0) + int(recordings > 0)
+            # The recording enhancement may already have requested the player API.
+            external_scripts = await page.locator('script[src^="https://"]').count()
+            assert await page.locator("script").count() - external_scripts == expected_scripts
             report["routes"].append(
                 {"route": route, "status": response.status, "final_url": page.url}
             )
@@ -142,6 +146,10 @@ async def check(args):
         report["instructor_waves"] = []
         for name in ["Adi Singhal", "Luca Chang"]:
             image = page.get_by_alt_text(f"{name} waving hello", exact=True)
+            await page.wait_for_function(
+                "(id) => document.getElementById(id).src.endsWith('.gif')",
+                arg=await image.get_attribute("id"),
+            )
             await image.evaluate("(image) => image.decode()")
             assert (await image.get_attribute("src")).endswith(".gif")
             report["instructor_waves"].append({"name": name, "decoded": True})
@@ -256,7 +264,7 @@ async def check(args):
         )
         await page.wait_for_url("**/agentic-ai-workshop/")
         assert await page.locator("#course-title").is_visible()
-        assert len(page.frames) == 1
+        assert len(page.frames) == 1 + await page.locator("iframe").count()
         report["homepage_iframe_escape"] = True
         await page.evaluate("""async () => {
             await navigator.serviceWorker.register('/sw.js');

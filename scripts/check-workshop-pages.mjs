@@ -4,8 +4,10 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import {
   course,
+  historicalRecordings,
   pageDefinitions,
   renderWorkshop,
+  sessionRecordings,
 } from "../dist-ssr/workshop/render.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -28,11 +30,16 @@ for (const page of pageDefinitions) {
   );
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.ok(html.includes('id="main-content"'));
+  const recordings =
+    page.kind === "current" ? sessionRecordings :
+      page.kind === "archive" ? historicalRecordings : [];
+  const recordingScript = recordings.some((recording) => recording.youtubeId);
   assert.equal(
     (html.match(/<script\b/g) || []).length,
-    page.kind === "current" ? 2 : 0,
-    `${page.path} should use only its slide download and portrait enhancements`,
+    (page.kind === "current" ? 2 : 0) + Number(recordingScript),
+    `${page.path} should use only its independent enhancements`,
   );
+  assert.equal(html.includes('src="/workshops/session-recordings.js" defer'), recordingScript);
   if (page.kind === "current") {
     assert.ok(html.includes('src="/workshops/download-slides.js" defer'));
     assert.ok(html.includes('src="/workshops/instructor-portraits-2026-10-09.js" defer'));
@@ -75,7 +82,15 @@ for (const text of [
   "Coffee chats",
 ])
   assert.ok(current.includes(text), `Missing course fact: ${text}`);
-assert.equal((current.match(/class="coming-soon"/g) || []).length, 0);
+assert.equal(
+  (current.match(/class="coming-soon"/g) || []).length,
+  sessionRecordings.filter((recording) => recording.youtubeId === null).length,
+);
+assert.ok(current.includes('id="recordings"'));
+assert.equal(
+  (current.match(/class="recording-player"/g) || []).length,
+  sessionRecordings.filter((recording) => recording.youtubeId).length,
+);
 assert.equal(current.includes(form), course.state === "registration-open");
 assert.ok(!/notebook|codex|openai|—/i.test(current), "Unexpected 2026 wording");
 for (const destination of [
@@ -133,6 +148,31 @@ for (const state of [
 }
 assert.equal(renderWorkshop("/unknown/", "/test.css"), null);
 const archive = await read(`${archivePath}/index.html`);
+for (const recording of historicalRecordings) {
+  assert.ok(archive.includes(`https://www.youtube-nocookie.com/embed/${recording.youtubeId}?`));
+  assert.ok(new RegExp(`datetime="${recording.date}"`, "i").test(archive));
+  assert.ok(!current.includes(recording.youtubeId), "2025 recording leaked into the 2026 page");
+}
+assert.equal((archive.match(/data-recording-seek=/g) || []).length, 113);
+const publishedFixture = sessionRecordings.map((recording) => ({
+  ...recording, youtubeId: historicalRecordings[0].youtubeId,
+}));
+const recordingPreview = renderWorkshop(currentPath, "/test.css", course.state, publishedFixture);
+assert.ok(recordingPreview.includes('src="/workshops/session-recordings.js" defer'));
+assert.ok(recordingPreview.includes('href="#session-1-recording"'));
+assert.ok(recordingPreview.includes('data-recording-seek="3391"'));
+assert.ok(recordingPreview.includes("1:05:40"));
+assert.ok(recordingPreview.includes("2:00:44"));
+assert.ok(recordingPreview.includes("View on YouTube"));
+assert.throws(() => renderWorkshop(currentPath, "/test.css", course.state, [{
+  ...publishedFixture[0], youtubeId: "https://www.youtube.com/watch?v=not-an-id",
+}]), /11-character YouTube video ID/);
+assert.throws(() => renderWorkshop(currentPath, "/test.css", course.state, [{
+  ...publishedFixture[0], chapters: [{ startSeconds: 8000, title: "Outside the video" }],
+}]), /Invalid chapter/);
+assert.throws(() => renderWorkshop(currentPath, "/test.css", course.state, [
+  publishedFixture[0], publishedFixture[0],
+]), /duplicate recording ID/);
 for (const text of [
   "2025 workshop archive",
   "Oct 1-22, 2025",
@@ -185,5 +225,5 @@ assert.ok(
   ),
 );
 console.log(
-  `Passed: ${checked} static routes; course facts; resource availability; 4 lifecycle states; archive; assets; metadata; preserved CSV, CNAME, and service worker.`,
+  `Passed: ${checked} static routes; course facts; resources and recording availability; chapter destinations and validation; 4 lifecycle states; archive; assets; metadata; preserved CSV, CNAME, and service worker.`,
 );

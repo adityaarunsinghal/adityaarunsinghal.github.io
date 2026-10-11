@@ -1,7 +1,13 @@
 import { quotes } from '../../workshop/quotes';
+import { historicalRecordings, type SessionRecording } from '../../workshop/pages';
+import SessionRecordings from '../AgenticAIWorkshop/SessionRecordings';
 
-// Course body preserved from b349c17; year navigation and quote presentation are archival additions.
-const AgenticAIWorkshop2025 = () => {
+// Course body preserved from b349c17; navigation, recordings and quotes are archival additions.
+const AgenticAIWorkshop2025 = ({
+  recordings = historicalRecordings,
+}: {
+  recordings?: SessionRecording[];
+}) => {
   const sessions = [
     {
       date: 'Oct 1',
@@ -63,6 +69,7 @@ const AgenticAIWorkshop2025 = () => {
         <p>These materials describe the October 2025 course.</p>
         <nav aria-label="Archive navigation">
           <a href="/agentic-ai-workshop/">Visit the 2026 workshop</a>
+          <a href="#recordings">Full recordings</a>
           <a href="https://www.youtube.com/playlist?list=PLgF7i4LH-YxYvhXK-yywN7eFRjRjQrq89">2025 highlights</a>
           <a href="https://github.com/adityaarunsinghal/agentic-ai-workshop-2025">2025 code</a>
         </nav>
@@ -129,6 +136,8 @@ const AgenticAIWorkshop2025 = () => {
           </div>
         </div>
       </div>
+
+      <SessionRecordings recordings={recordings} />
 
       <div className="content-section">
         <div className="intro-section">

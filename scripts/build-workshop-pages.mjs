@@ -29,6 +29,7 @@ const { renderWorkshop, pageDefinitions } = await import(
 );
 await mkdir(path.join(output, "assets"), { recursive: true });
 const base = await readFile(path.join(root, "src/workshop/base.css"), "utf8");
+const recordings = await readFile(path.join(root, "src/workshop/recordings.css"), "utf8");
 const styles = {};
 for (const year of [2025, 2026]) {
   const component =
@@ -39,7 +40,9 @@ for (const year of [2025, 2026]) {
     (await readFile(
       path.join(root, `src/components/${component}/${component}.css`),
       "utf8",
-    ));
+    )) +
+    "\n" +
+    recordings;
   const hash = createHash("sha256").update(css).digest("hex").slice(0, 12);
   const asset = `assets/workshop-${year}-${hash}.css`;
   await writeFile(path.join(output, asset), css);

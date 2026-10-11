@@ -171,6 +171,12 @@ uv run python -m http.server 4174 --bind 127.0.0.1 --directory dist
 
 The 2026 public repository, slides, and starter code remain Coming Soon until their actual URLs are supplied. Registration state changes require coordination with the form owner and an approved publication. See [workshop release notes](docs/workshop-site-release-2026-09-27.md).
 
+The 2025 archive includes all three session recordings with searchable chapters,
+YouTube timestamp links, and links to share a moment. Recording metadata and
+each episode’s search examples live in `src/workshop/pages.ts`. The 2026 Session
+1 entry has its chapter list prepared and stays Coming Soon until the uploaded
+video is available. See [recording setup and checks](docs/workshop-recordings.md).
+
 Social cards are generated from a committed SVG template and bundled Lato fonts. The fonts retain their SIL Open Font License in `scripts/assets/fonts/OFL.txt`.
 
 Workshop headings use self-hosted Source Serif 4 Display and Subhead. Their source references and license are in `public/workshops/2026/fonts/`. The newspaper example retains Georgia.

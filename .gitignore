@@ -30,6 +30,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+__pycache__/
+*.py[cod]
 
 # Project
 temp

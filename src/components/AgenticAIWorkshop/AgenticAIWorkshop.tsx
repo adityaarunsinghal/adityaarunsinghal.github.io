@@ -3,11 +3,14 @@ import {
   courseAction,
   historical,
   resources,
+  sessionRecordings,
   sessions,
   type CourseState,
+  type SessionRecording,
 } from "../../workshop/pages";
 import StudentCrowd from "./StudentCrowd";
 import Instructors from "./Instructors";
+import SessionRecordings from "./SessionRecordings";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -77,10 +80,13 @@ function BriefingExample() {
 
 export default function AgenticAIWorkshop({
   state = course.state,
+  recordings = sessionRecordings,
 }: {
   state?: CourseState;
+  recordings?: SessionRecording[];
 }) {
   const action = courseAction(state);
+  const availableRecordings = recordings.filter((recording) => recording.youtubeId);
   return (
     <div className="workshop-2026">
       <header className="course-header">
@@ -92,6 +98,7 @@ export default function AgenticAIWorkshop({
             <a href="#schedule">Schedule</a>
             <a href="#format">Format</a>
             <a href="#materials">Materials</a>
+            {recordings.length > 0 && <a href="#recordings">Recordings</a>}
             <a href={course.appStoreUrl}>App store <Arrow /></a>
             <a href={course.archivePath}>
               2025 archive <Arrow />
@@ -129,6 +136,13 @@ export default function AgenticAIWorkshop({
                 Get Session 1 slides and starter code <Arrow />
               </a>
             </p>
+            {availableRecordings.length > 0 && (
+              <p className="hero-materials-link">
+                <a href={`#${availableRecordings[0].id}`}>
+                  Watch Session {availableRecordings[0].session} <Arrow />
+                </a>
+              </p>
+            )}
             <a className="subtle-link" href={course.archivePath}>
               Looking for last year’s workshop?{" "}
               <span>
@@ -181,6 +195,13 @@ export default function AgenticAIWorkshop({
                       <li key={topic}>{topic}</li>
                     ))}
                   </ul>
+                  {availableRecordings
+                    .filter((recording) => recording.session === index + 1)
+                    .map((recording) => (
+                      <p className="session-recording-link" key={recording.id}>
+                        <a href={`#${recording.id}`}>Watch the recording <Arrow /></a>
+                      </p>
+                    ))}
                 </div>
                 <span className="session-time">
                   THURSDAY
@@ -295,6 +316,7 @@ export default function AgenticAIWorkshop({
             ))}
           </div>
         </section>
+        <SessionRecordings recordings={recordings} />
         <section
           className="course-wrap demo-section"
           id="demo-day"

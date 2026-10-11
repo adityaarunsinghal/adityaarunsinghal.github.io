@@ -5,11 +5,14 @@ import {
   course,
   courseAction,
   historical,
+  historicalRecordings,
+  sessionRecordings,
   workshopPage,
   type CourseState,
+  type SessionRecording,
 } from "./pages";
 
-export { course, pageDefinitions } from "./pages";
+export { course, pageDefinitions, sessionRecordings, historicalRecordings } from "./pages";
 
 function InformationPage({
   kind,
@@ -86,9 +89,11 @@ export function renderWorkshop(
   pathname: string,
   stylesheet: string,
   state: CourseState = course.state,
+  recordings: SessionRecording[] = sessionRecordings,
 ) {
   const page = workshopPage(pathname);
   if (!page) return null;
+  const pageRecordings = page.kind === "archive" ? historicalRecordings : recordings;
   const year =
     page.kind === "archive" ||
     page.kind === "feedback" ||
@@ -112,6 +117,10 @@ export function renderWorkshop(
               <script src="/workshops/instructor-portraits-2026-10-09.js" defer />
             </>
           )}
+          {(page.kind === "current" || page.kind === "archive") &&
+            pageRecordings.some((recording) => recording.youtubeId) && (
+              <script src="/workshops/session-recordings.js" defer />
+            )}
           <link rel="canonical" href={canonical} />
           <link
             rel="icon"
@@ -150,9 +159,9 @@ export function renderWorkshop(
             Skip to content
           </a>
           {page.kind === "current" ? (
-            <AgenticAIWorkshop state={state} />
+            <AgenticAIWorkshop state={state} recordings={recordings} />
           ) : page.kind === "archive" ? (
-            <AgenticAIWorkshop2025 />
+            <AgenticAIWorkshop2025 recordings={pageRecordings} />
           ) : (
             <InformationPage kind={page.kind} state={state} />
           )}
