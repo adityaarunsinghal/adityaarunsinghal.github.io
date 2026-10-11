@@ -114,3 +114,11 @@ The browser check verified the supplied video ID, chapter search, a seek to
 local player fixture. Real video playback remains subject to YouTube finishing
 processing and making the video viewable. A visibility or processing change on
 YouTube requires no website redeployment; refresh a player opened during processing.
+
+Activation source: `890fba49a56a14b425535c0d65d93a7421817fdf`.
+Pages release: `6f42f61b9849e14a774172adb6a2879d4ccd67cb`.
+GitHub Pages deployment `38106149314` completed successfully. The live
+`#recordings` section exposes the supplied video and all 43 chapters; chapter
+search and mobile reflow were checked in the browser. All three required
+published assets match their candidate hashes. The release changes only the
+2026 course document and preserves the other 120 Pages files by content hash.
