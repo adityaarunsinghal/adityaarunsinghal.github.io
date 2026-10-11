@@ -174,8 +174,8 @@ The 2026 public repository, slides, and starter code remain Coming Soon until th
 The 2025 archive includes all three session recordings with searchable chapters,
 YouTube timestamp links, and links to share a moment. Recording metadata and
 each episode’s search examples live in `src/workshop/pages.ts`. The 2026 Session
-1 entry has its chapter list prepared and stays Coming Soon until the uploaded
-video is available. See [recording setup and checks](docs/workshop-recordings.md).
+1 recording is configured with 43 chapters. An authorized upload can be linked
+while YouTube finishes processing. See [recording setup and checks](docs/workshop-recordings.md).
 
 Social cards are generated from a committed SVG template and bundled Lato fonts. The fonts retain their SIL Open Font License in `scripts/assets/fonts/OFL.txt`.
 

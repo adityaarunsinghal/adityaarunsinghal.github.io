@@ -16,11 +16,14 @@ The 2025 chapters preserve the supplied YouTube descriptions' titles and times,
 sorted chronologically. Dates follow the archived course schedule. Chapter
 times are description metadata, not a fresh transcript alignment.
 
-The prepared 2026 Session 1 entry has 43 chapters on the original
-2:02:32.321 timeline. Leave `youtubeId: null` while uploading. Once the public
-video plays, set `youtubeId` to its 11-character video ID and rebuild. Its
+The 2026 Session 1 entry has 43 chapters on the original
+2:02:32.321 timeline. Leave `youtubeId: null` until the actual video is supplied.
+Set `youtubeId` to its 11-character video ID and rebuild. Its
 embed, chapter list, YouTube button, hero link and schedule link then appear
-together. If the final edit trims time or adds an introduction, update the
+together. An explicitly authorized upload can be deployed while YouTube is
+still uploading or processing; playback becomes available when YouTube finishes
+and the video's visibility permits it. If the final edit trims time or adds an
+introduction, update the
 chapter starts and duration to match the uploaded video before publication.
 
 Add further sessions or parts as recording entries with unique IDs, the
@@ -55,8 +58,9 @@ the existing additive Pages publisher, then compare all previous Pages files
 by hash and verify the live page and video controls.
 
 For both years, include the current course document and its content-hashed
-stylesheet as well. Keep the 2026 upload marked Coming Soon until its actual
-video is supplied. Retain all previously published assets.
+stylesheet as well. Keep an upload marked Coming Soon until its actual
+video is supplied or the user authorizes its processing URL. Retain all
+previously published assets.
 
 ## Public source hygiene
 
@@ -92,3 +96,21 @@ The additive release retains 116 other previously published files by content
 hash. The existing archive course content is preserved. The website and both
 public workshop repositories' current default-branch trees were checked for
 working logs and are clean; the personal workshop repository remains private.
+
+## Session 1 upload connected October 11, 2026
+
+The 2026 Session 1 viewer uses YouTube ID `UtjOl-LPcCk`. Publication was authorized
+while the upload was still processing. YouTube exposed the correct title and
+description, permitted embedding and reported that processing was in progress.
+All 43 chapter titles and times match the video's supplied description.
+
+The viewer, chapter search, YouTube button and course navigation are enabled.
+Share `/agentic-ai-workshop/#recordings` for the recording section, or
+`/agentic-ai-workshop/#session-1-recording` for Session 1. Timestamp links use
+`?recording=session-1-recording&t=SECONDS#session-1-recording`.
+
+The browser check verified the supplied video ID, chapter search, a seek to
+56:31, the YouTube timestamp link, mobile reflow and accessibility using the
+local player fixture. Real video playback remains subject to YouTube finishing
+processing and making the video viewable. A visibility or processing change on
+YouTube requires no website redeployment; refresh a player opened during processing.

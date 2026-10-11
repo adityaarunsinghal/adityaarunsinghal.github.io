@@ -91,6 +91,11 @@ assert.equal(
   (current.match(/class="recording-player"/g) || []).length,
   sessionRecordings.filter((recording) => recording.youtubeId).length,
 );
+for (const recording of sessionRecordings.filter((item) => item.youtubeId)) {
+  assert.ok(current.includes(`https://www.youtube-nocookie.com/embed/${recording.youtubeId}?`));
+  assert.ok(current.includes(`href="https://www.youtube.com/watch?v=${recording.youtubeId}"`));
+  assert.ok(current.includes(`href="#${recording.id}"`));
+}
 assert.equal(current.includes(form), course.state === "registration-open");
 assert.ok(!/notebook|codex|openai|—/i.test(current), "Unexpected 2026 wording");
 for (const destination of [

@@ -131,8 +131,8 @@ export const sessionRecordings: SessionRecording[] = [
     session: 1,
     date: "2026-10-08",
     title: "Models, Tools & Agent Harnesses",
-    // Set this to the final YouTube video's ID after the upload is available.
-    youtubeId: null,
+    // The viewer is configured while YouTube finishes uploading and processing.
+    youtubeId: "UtjOl-LPcCk",
     durationSeconds: 7352.321,
     searchPlaceholder: "Try “caching” or “homework”",
     // These match the prepared YouTube description on the untrimmed Session 1 timeline.
