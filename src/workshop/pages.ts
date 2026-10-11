@@ -7,6 +7,7 @@ export const course = {
   year: 2026,
   path: "/agentic-ai-workshop/",
   archivePath: "/agentic-ai-workshop-2025/",
+  appStoreUrl: "https://nyu-workshop.adityasinghal.com/",
   publicRepositoryUrl:
     "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026",
   registrationUrl:
@@ -138,7 +139,7 @@ export const resources: {
   {
     name: "Class app store",
     description: "Publish your project and explore what others in the workshop build.",
-    url: "https://nyu-workshop.adityasinghal.com/",
+    url: course.appStoreUrl,
     action: "Open the class app store",
     note: "(For registered students only)",
   },

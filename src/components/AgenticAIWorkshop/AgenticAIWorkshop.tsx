@@ -92,6 +92,7 @@ export default function AgenticAIWorkshop({
             <a href="#schedule">Schedule</a>
             <a href="#format">Format</a>
             <a href="#materials">Materials</a>
+            <a href={course.appStoreUrl}>App store <Arrow /></a>
             <a href={course.archivePath}>
               2025 archive <Arrow />
             </a>
