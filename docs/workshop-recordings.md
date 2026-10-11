@@ -69,3 +69,26 @@ checks tracked source and generated Pages artifacts for private paths, working
 logs and known credential fingerprints. Check the default-branch trees of the
 public website and both public workshop repositories for working logs after
 pushing. The separate personal workshop repository must remain private.
+
+## Published October 11, 2026
+
+Viewer source: `e319184a8efba02e6f6de129e6a183c29fa8d97c`.
+Pages release: `95285a30374f3cb7cc541baf267005e76e8a4d6c`.
+GitHub Pages deployment `38101251893` completed successfully.
+
+The 2025 archive publishes three recordings and 113 chapters with distinct
+episode search examples. The approved 2026 paper and serif design is published
+with Session 1 marked Coming Soon. Its 43 chapters are ready for the final
+YouTube ID. No practice video is included on the published 2026 page.
+
+Lint, build, static workshop checks, public-artifact checks and recording
+browser checks passed. Both year styles match between development and
+production. Recording layouts pass accessibility checks at 1440, 768, 390 and
+320 pixels. The live site played all three 2025 videos after chapter seeks to
+38:00, 52:30 and 53:00. The published documents and required assets match the
+candidate hashes.
+
+The additive release retains 116 other previously published files by content
+hash. The existing archive course content is preserved. The website and both
+public workshop repositories' current default-branch trees were checked for
+working logs and are clean; the personal workshop repository remains private.
