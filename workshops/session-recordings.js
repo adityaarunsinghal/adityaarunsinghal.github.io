@@ -89,6 +89,9 @@
     function currentMoment() {
       if (ready && !pendingSeek) {
         try {
+          const state = player.getPlayerState();
+          // A cued video can report zero before Play, even with a shared start time.
+          if (state === -1 || state === 5) return moment;
           const seconds = player.getCurrentTime();
           if (Number.isFinite(seconds) && seconds >= 0 && seconds < duration)
             return Math.floor(seconds);
@@ -107,11 +110,11 @@
     function useNativeLinks() {
       ready = false;
       stopPolling();
+      share.hidden = true;
       if (help) help.textContent = "Chapter links open YouTube at that moment.";
     }
 
     setMoment(moment);
-    share.hidden = false;
     youtube.addEventListener("click", () => setMoment(currentMoment()));
     share.addEventListener("click", async () => {
       const url = new URL(window.location.pathname, window.location.origin);
@@ -183,6 +186,7 @@
               player = event.target;
               players.add(player);
               ready = true;
+              share.hidden = false;
               if (help) help.textContent = "Select a chapter to play it here.";
             },
             onStateChange(event) {
