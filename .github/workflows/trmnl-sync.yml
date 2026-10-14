@@ -20,6 +20,8 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '22'
+          # This job uses npm; pnpm is not installed on the runner.
+          package-manager-cache: false
       
       - name: Install dependencies
         # Pin the major version. An unpinned install silently jumped to v14, whose
