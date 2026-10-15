@@ -3,7 +3,7 @@ export type CourseState =
 
 export const course = {
   // Change deliberately with the form owner. A visitor's clock cannot establish acceptance.
-  state: "registration-open" as CourseState,
+  state: "in-progress" as CourseState,
   year: 2026,
   path: "/agentic-ai-workshop/",
   archivePath: "/agentic-ai-workshop-2025/",
@@ -335,65 +335,74 @@ export const historicalRecordings: SessionRecording[] = [
   },
 ];
 
+type ResourceLink = {
+  url: string | null;
+  action?: string;
+  download?: string;
+};
+
 export const resources: {
   name: string;
   description: string;
-  url: string | null;
-  action?: string;
+  links: ResourceLink[];
   note?: string;
-  download?: string;
 }[] = [
   {
     name: "2026 public repository",
     description: "The home for this year’s course materials.",
-    url: course.publicRepositoryUrl,
-    action: "Open the repository",
+    links: [{ url: course.publicRepositoryUrl, action: "Open the repository" }],
   },
   {
-    name: "Session 1 slides",
-    description: "Download the HTML slide deck and open it in your browser.",
-    url: "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-01-agent-harnesses/session-01-agent-harnesses-2026-10-07.html",
-    action: "Download Session 1 slides",
-    download: "session-01-agent-harnesses-2026-10-07.html",
+    name: "Session 1: Agents and harnesses",
+    description: "Download the slides and explore the starter code for your own agent.",
+    links: [
+      {
+        url: "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-01-agent-harnesses/session-01-agent-harnesses-2026-10-07.html",
+        action: "Download Session 1 slides",
+        download: "session-01-agent-harnesses-2026-10-07.html",
+      },
+      {
+        url: `${course.publicRepositoryUrl}/tree/main/session-01-agent-harnesses/demo-app`,
+        action: "Open starter code",
+      },
+    ],
   },
   {
-    name: "Session 1 starter code",
-    description: "Code to run, inspect, and make your own.",
-    url: `${course.publicRepositoryUrl}/tree/main/session-01-agent-harnesses/demo-app`,
-    action: "Open starter code",
+    name: "Session 2: Agents beyond chat",
+    description: "Explore the slides and demo app, then build an interactive agent.",
+    links: [
+      {
+        url: `${course.publicRepositoryUrl}/blob/main/session-02-beyond-chat-interfaces/slides/session-02-beyond-chat-interfaces-2026-10-15.html`,
+        action: "Open Session 2 slides",
+      },
+      {
+        url: `${course.publicRepositoryUrl}/tree/main/session-02-beyond-chat-interfaces/demo-app`,
+        action: "Open starter code",
+      },
+    ],
+  },
+  {
+    name: "Build and publish your agent",
+    description: "Follow the setup, ZIP upload, peer feedback, and course-credit instructions.",
+    links: [{ url: `${course.publicRepositoryUrl}#clone-and-build-your-own-agent`, action: "Read the project guide" }],
   },
   {
     name: "Class app store",
     description: "Publish your project and explore what others in the workshop build.",
-    url: course.appStoreUrl,
-    action: "Open the class app store",
+    links: [{ url: course.appStoreUrl, action: "Open the class app store" }],
     note: "(For registered students only)",
   },
 ];
 
 export function courseAction(state: CourseState) {
-  if (state === "registration-open")
-    return {
-      label: "Register for the workshop",
-      href: course.registrationUrl,
-      note: `Register by ${course.deadline}.`,
-    };
-  if (state === "registration-closed")
-    return {
-      label: "View the schedule",
-      href: `${course.path}#schedule`,
-      note: "Registration has closed.",
-    };
-  if (state === "in-progress")
-    return {
-      label: "View course materials",
-      href: `${course.path}#materials`,
-      note: "The workshop is in progress. Registration has closed.",
-    };
   return {
-    label: "View course materials",
-    href: `${course.path}#materials`,
-    note: "The 2026 workshop has concluded.",
+    label: "Watch the recordings",
+    href: `${course.path}#recordings`,
+    note: state === "complete"
+      ? "The 2026 workshop has concluded. Registration has closed."
+      : state === "registration-open"
+        ? `Register by ${course.deadline}.`
+        : "Registration has closed.",
   };
 }
 

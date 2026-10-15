@@ -131,11 +131,6 @@ export default function AgenticAIWorkshop({
               {action.label} <Arrow />
             </a>
             <p className="registration-note">{action.note}</p>
-            <p className="hero-materials-link">
-              <a href={course.publicRepositoryUrl}>
-                Get Session 1 slides and starter code <Arrow />
-              </a>
-            </p>
             {availableRecordings.length > 0 && (
               <p className="hero-materials-link">
                 <a href={`#${availableRecordings[0].id}`}>
@@ -276,7 +271,7 @@ export default function AgenticAIWorkshop({
               </h2>
             </div>
             <p>
-              Session 1 slides and starter code are available in the{" "}
+              Session 1 and 2 slides and starter code are available in the{" "}
               <a href={course.publicRepositoryUrl}>public course repository</a>.
               Each session’s materials will be released the day before class.
             </p>
@@ -290,26 +285,32 @@ export default function AgenticAIWorkshop({
                   <p>{resource.description}</p>
                 </div>
                 <div className="resource-destination">
-                  {resource.url ? (
-                    <a
-                      className="store-link"
-                      href={resource.url}
-                      download={resource.download}
-                      data-slide-download={resource.download}
-                    >
-                      {resource.action ?? "Open resource"} <Arrow />
-                    </a>
-                  ) : (
-                    <span className="coming-soon">Coming Soon</span>
-                  )}
-                  {resource.download && (
-                    <p
-                      className="slide-download-status"
-                      data-slide-download-status=""
-                      role="status"
-                      hidden
-                    />
-                  )}
+                  <div className="resource-actions">
+                    {resource.links.map((link, linkIndex) => (
+                      <div className="resource-action" key={link.url ?? linkIndex}>
+                        {link.url ? (
+                          <a
+                            className="store-link"
+                            href={link.url}
+                            download={link.download}
+                            data-slide-download={link.download}
+                          >
+                            {link.action ?? "Open resource"} <Arrow />
+                          </a>
+                        ) : (
+                          <span className="coming-soon">Coming Soon</span>
+                        )}
+                        {link.download && (
+                          <p
+                            className="slide-download-status"
+                            data-slide-download-status=""
+                            role="status"
+                            hidden
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
                   {resource.note && <small><em>{resource.note}</em></small>}
                 </div>
               </div>
@@ -422,9 +423,11 @@ export default function AgenticAIWorkshop({
               </p>
             </details>
             <details>
-              <summary>How do I register or ask a question?</summary>
+              <summary>Is registration still open?</summary>
               <p>
-                {action.note} The registration form requires Google sign-in.
+                Registration has closed. You can view the{" "}
+                <a href={course.registrationUrl}>original registration form</a>{" "}
+                for reference. The form requires Google sign-in.
               </p>
               <p>
                 <a href={`mailto:${course.contact}`}>

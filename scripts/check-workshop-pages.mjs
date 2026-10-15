@@ -96,7 +96,9 @@ for (const recording of sessionRecordings.filter((item) => item.youtubeId)) {
   assert.ok(current.includes(`href="https://www.youtube.com/watch?v=${recording.youtubeId}"`));
   assert.ok(current.includes(`href="#${recording.id}"`));
 }
-assert.equal(current.includes(form), course.state === "registration-open");
+assert.equal((current.match(new RegExp(`href="${form}"`, "g")) || []).length, 1);
+assert.ok(current.includes("Watch the recordings"));
+assert.ok(current.includes("Registration has closed."));
 assert.ok(!/notebook|codex|openai|—/i.test(current), "Unexpected 2026 wording");
 for (const destination of [
   course.publicRepositoryUrl,
@@ -114,7 +116,7 @@ for (const kind of ["registration", "feedback", "archived-registration"]) {
     const html = await read(`${page.path}/index.html`);
     assert.ok(html.includes("noindex, follow"));
     if (kind === "registration")
-      assert.equal(html.includes(form), course.state === "registration-open");
+      assert.equal(html.includes(form), false);
     if (kind === "feedback") {
       assert.ok(html.includes("https://forms.gle/CbqwHw1mtBcL7hHZ7"));
       assert.ok(html.includes("2025 workshop feedback"));
@@ -138,13 +140,15 @@ for (const state of [
     const html = renderWorkshop(route, "/test.css", state);
     assert.equal(
       html.includes(form),
-      state === "registration-open",
+      route === currentPath,
       `Wrong registration action in ${state} at ${route}`,
     );
     assert.equal(
       html.includes("Register for the workshop"),
-      state === "registration-open",
+      false,
     );
+    assert.ok(html.includes("Watch the recordings"));
+    assert.ok(html.includes(`href="${course.path}#recordings"`));
     assert.ok(
       html.includes(course.publicRepositoryUrl) ||
         route.includes("registration-form"),
