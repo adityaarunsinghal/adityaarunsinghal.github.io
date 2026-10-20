@@ -31,7 +31,7 @@
 :is(.workshop-2025, .workshop-2026) .recording-section *::after {
   box-sizing: border-box;
 }
-:is(.workshop-2025, .workshop-2026) .recording-section :is(h2, h3, h4, p, ol) {
+:is(.workshop-2025, .workshop-2026) .recording-section :where(h2, h3, h4, p, ol) {
   margin: 0;
 }
 :is(.workshop-2025, .workshop-2026) .recording-section .section-heading {
@@ -118,6 +118,8 @@
   display: inline-flex;
   gap: 16px;
   align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: 10px 16px;
   border-radius: 6px;
   background: #0f766e;
@@ -135,6 +137,7 @@
   background: none;
   border: 0;
   padding: 8px 0;
+  min-height: 44px;
   color: var(--recording-accent);
   font: inherit;
   font-size: 13px;
