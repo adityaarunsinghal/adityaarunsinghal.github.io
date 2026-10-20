@@ -122,3 +122,31 @@ GitHub Pages deployment `38106149314` completed successfully. The live
 search and mobile reflow were checked in the browser. All three required
 published assets match their candidate hashes. The release changes only the
 2026 course document and preserves the other 120 Pages files by content hash.
+
+## Session 2 and recording spacing, October 20, 2026
+
+Session 2 is published as `CnrdDizVvV8`, with 33 searchable chapters matching
+the uploaded description and a 1:30:03 duration. Its recording title is
+“Beyond Chat, MCP Apps & Decision APIs”. The full series title is
+“Agentic AI Workshop 2026 - Session 2: Beyond Chat, MCP Apps & Decision APIs”.
+Share `/agentic-ai-workshop/#session-2-recording`.
+
+The shared paragraph reset now yields to the recording components' spacing.
+The duration has its intended 12-pixel gap below the controls, and both action
+buttons have a minimum height of 44 pixels. The correction applies to all
+five recordings across 2025 and 2026. The 2025 body and existing Session 1
+recording markup are unchanged.
+
+Source: `c653bcceca2bab2084220a82115aa1a85f30af38`.
+Pages release: `ed1b345fafde289bf7ee3d4a6759b61f669fa6b6`.
+GitHub Pages deployment `39449081171` completed successfully.
+
+Lint, build, static workshop checks, public-artifact checks and the existing
+recording browser checks pass. Built pages, Vite development and the live
+site show the corrected controls at desktop and phone widths. Session 2
+chapter search, seeking, copied moment links and mobile layout pass. Its
+actual YouTube embed also played and advanced from 32:41 in a muted browser.
+
+The additive release changes the two course documents, adds their updated
+stylesheets and preserves the other 120 published files by content hash.
+The live documents and stylesheets match the reviewed candidate.
