@@ -5,27 +5,19 @@
   if (!pair) return;
 
   const image = pair.querySelector("img");
-  const toggle = pair.querySelector("button");
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  let playing = !motion.matches;
+  let animationFailed = false;
 
   function update() {
-    image.src = playing ? image.dataset.waveSrc : image.dataset.stillSrc;
-    toggle.textContent = playing ? "Pause waving" : "Play waving";
+    image.src = motion.matches || animationFailed
+      ? image.dataset.stillSrc
+      : image.dataset.waveSrc;
   }
 
-  toggle.hidden = false;
-  toggle.addEventListener("click", () => {
-    playing = !playing;
-    update();
-  });
-  motion.addEventListener("change", () => {
-    playing = !motion.matches;
-    update();
-  });
+  motion.addEventListener("change", update);
   image.addEventListener("error", () => {
-    if (!playing) return;
-    playing = false;
+    if (animationFailed) return;
+    animationFailed = true;
     update();
   });
   update();

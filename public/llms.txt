@@ -7,7 +7,6 @@ His work includes production RAG infrastructure, MCP-based engineering automatio
 ## Profile
 
 - [Personal website](https://adityasinghal.com/): Introduction, selected work, writing, and contact links.
-- [Résumé — June 2026, PDF](https://adityasinghal.com/Aditya_Singhal_Resume_2026-06-09.pdf): Detailed experience, projects, education, and dated reports of outcomes and adoption.
 - [LinkedIn](https://www.linkedin.com/in/adi-singhal/): Professional profile and published writing.
 - [GitHub](https://github.com/adityaarunsinghal): Public repositories.
 - [X](https://x.com/dramebaazguy): Adi's profile as @dramebaazguy.
