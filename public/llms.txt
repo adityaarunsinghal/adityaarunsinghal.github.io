@@ -1,0 +1,29 @@
+# Aditya (Adi) Singhal
+
+> Applied Scientist at Amazon, former AWS Bedrock engineer, and agentic AI instructor at NYU. Adi builds and evaluates AI agents, works with Model Context Protocol (MCP) and RAG systems, and shares public code and technical writing.
+
+His work includes production RAG infrastructure, MCP-based engineering automation, and LLM evaluation. His current Applied Scientist role is at Amazon; his earlier AWS Bedrock role was in software engineering.
+
+## Profile
+
+- [Personal website](https://adityasinghal.com/): Introduction, selected work, writing, and contact links.
+- [Résumé — June 2026, PDF](https://adityasinghal.com/Aditya_Singhal_Resume_2026-06-09.pdf): Detailed experience, projects, education, and dated reports of outcomes and adoption.
+- [LinkedIn](https://www.linkedin.com/in/adi-singhal/): Professional profile and published writing.
+- [GitHub](https://github.com/adityaarunsinghal): Public repositories.
+- [X](https://x.com/dramebaazguy): Adi's profile as @dramebaazguy.
+
+## Agentic AI and MCP teaching
+
+- [NYU Agentic AI Workshop 2026](https://adityasinghal.com/agentic-ai-workshop/): Agent harnesses, tools and MCP, interfaces beyond chat, multi-agent systems, and evaluation. Taught with Luca Chang.
+- [2026 workshop code and materials](https://github.com/adityaarunsinghal/agentic-ai-workshop-2026): Released lessons, slides, and runnable examples.
+- [NYU Agentic AI Workshop 2025 archive](https://adityasinghal.com/agentic-ai-workshop-2025/): The earlier course, session recordings, chapters, and public code.
+
+## Public projects
+
+- [LLM-as-a-Judge Prompt Improver](https://github.com/adityaarunsinghal/LLM-As-A-Judge-Prompt-Improver): Prompt evaluation and improvement using scoring, cross-validation, error analysis, and an iterative optimization loop.
+- [cc-hindsight](https://github.com/adityaarunsinghal/cc-hindsight): Turns coding-agent session history into reusable prompts and preference files.
+
+## Technical writing
+
+- [Why 'Code Mode' is like Shaking a Tree](https://www.linkedin.com/pulse/why-code-mode-like-shaking-tree-aditya-singhal-gkzae): August 21, 2026. Coauthored with Patrick Kelly; explains programmatic tool use and intermediate data handling. Port of Context's benchmarks in the article are attributed to that team.
+- [What I learnt about the new MCP 2.0 release today at the NY Release Event](https://www.linkedin.com/pulse/what-i-learnt-new-mcp-20-release-today-ny-event-aditya-singhal-7vupe): July 29, 2026. Notes from the MCP release event on protocol changes and their implications for agent builders.
