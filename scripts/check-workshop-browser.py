@@ -201,7 +201,7 @@ async def check(args):
         )
         assert "from=email" in page.url and page.url.endswith("#materials")
 
-        # The installed SPA router accepts case variants and repeated trailing slashes.
+        # Public compatibility routing preserves case variants and old bookmarks.
         report["compatibility"] = []
         for variant in [
             "/Agentic-AI-Workshop?via=case#materials",
@@ -257,15 +257,11 @@ async def check(args):
         await returning.route("**/*", local_only)
         page = await returning.new_page()
         await page.goto(args.base_url + "/", wait_until="networkidle")
-        await (
-            page.frame_locator("iframe")
-            .locator('a[href="/agentic-ai-workshop/"]')
-            .click()
-        )
+        await page.locator('nav a[href="/agentic-ai-workshop/"]').click()
         await page.wait_for_url("**/agentic-ai-workshop/")
         assert await page.locator("#course-title").is_visible()
         assert len(page.frames) == 1 + await page.locator("iframe").count()
-        report["homepage_iframe_escape"] = True
+        report["homepage_document_navigation"] = True
         await page.evaluate("""async () => {
             await navigator.serviceWorker.register('/sw.js');
             await navigator.serviceWorker.ready;
@@ -290,7 +286,7 @@ async def check(args):
         report["signed_out_routes"] = []
         for route in ["/login", "/progress", "/lovesingy", "/translate"]:
             await page.goto(args.base_url + route, wait_until="networkidle")
-            await page.wait_for_url("**/login")
+            await page.wait_for_url(lambda url: urlparse(url).path.rstrip("/") == "/login")
             report["signed_out_routes"].append(
                 {"route": route, "destination": page.url}
             )

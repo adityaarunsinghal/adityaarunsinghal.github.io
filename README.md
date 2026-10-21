@@ -1,10 +1,10 @@
 # Aditya Singhal's Personal Website
 
-A React + TypeScript personal website with Firebase authentication and several private mini-apps, hosted on GitHub Pages at [adityasinghal.com](https://adityasinghal.com).
+A statically generated personal website and React + TypeScript private mini-apps, hosted on GitHub Pages at [adityasinghal.com](https://adityasinghal.com).
 
 ## Features
 
-- **Public landing page**: personal site at `/`
+- **Public landing page**: complete HTML at `/`, available without JavaScript
 - **Element tracker** (`/progress`): daily habit/streak tracker with heatmap and donut charts
 - **Private messaging** (`/lovesingy`): love-note board with countdowns, synced to a TRMNL e-ink display
 - **Live translator** (`/translate`): speech-to-text Danish/Hindi to English via a Firebase Function
@@ -13,9 +13,9 @@ A React + TypeScript personal website with Firebase authentication and several p
 
 ## Tech Stack
 
-- **Frontend**: React 19 + TypeScript 6
+- **Frontend**: static public documents; React 19 + TypeScript 6 for private apps
 - **Build Tool**: Vite
-- **Routing**: React Router DOM 7
+- **Routing**: physical public/app documents and React Router DOM 7 within the apps
 - **Authentication**: Firebase Auth (Google OAuth)
 - **Database**: Cloud Firestore
 - **Serverless**: Firebase Functions (Google Translate proxy)
@@ -34,14 +34,20 @@ src/
 │   ├── LovesIngy/             # /lovesingy messages + countdowns
 │   ├── VisitsDenmark/         # /translate live translator
 │   ├── AgenticAIWorkshop/     # workshop pages
-│   ├── OldStaticWebsite/      # public landing page at /
 │   ├── PrivateRoute.tsx       # auth gate wrapper
-│   └── *Redirect.tsx          # social/profile redirects
+│   └── PublicDocumentBridge.tsx # navigation from apps to public documents
+├── site/
+│   ├── content.ts            # reviewed public identity and reading map
+│   ├── home.html             # homepage template
+│   ├── render.ts             # document, metadata and discovery rendering
+│   └── routes.ts             # application/shortcut paths and legacy compatibility
 ├── contexts/AuthContext.tsx   # auth state
 ├── hooks/useAuth.ts           # auth hook
 ├── config.ts                  # ALLOWED_EMAILS whitelist
 ├── firebase.ts                # Firebase init (auth, db)
-└── router.tsx                 # all routes
+└── router.tsx                 # application routes and public-document bridges
+app.html                       # application entry template; public home generated separately
+scripts/build-site-pages.mjs    # public home, app entries, shortcuts, sitemap and llms.txt
 functions/                     # Firebase Functions (translateText)
 scripts/trmnl-sync.mjs         # scheduled TRMNL e-ink sync (GitHub Actions)
 ```
@@ -77,7 +83,8 @@ scripts/trmnl-sync.mjs         # scheduled TRMNL e-ink sync (GitHub Actions)
 
 ### Available Scripts
 - `pnpm dev` - Start development server
-- `pnpm build` - Type-check, build the SPA, and generate standalone workshop documents
+- `pnpm build` - Type-check, build the apps, and generate public/workshop documents and discovery files
+- `pnpm check:site` - Check public HTML, schema, application isolation, shortcuts, and legacy bookmarks
 - `pnpm check:workshop` - Check generated workshop routes, content, metadata, assets, and registration states
 - `pnpm preview` - Preview the production build
 - `pnpm run deploy` - Build and deploy to GitHub Pages (use `run`; bare `pnpm deploy` is reserved)
@@ -167,10 +174,23 @@ Use `--browser-executable /absolute/path/to/chromium` for an existing compatible
 To check physical directory routing independently of Vite:
 
 ```bash
-uv run python -m http.server 4174 --bind 127.0.0.1 --directory dist
+uv run python scripts/serve-static-preview.py --port 4174
 ```
 
-The 2026 public repository, slides, and starter code remain Coming Soon until their actual URLs are supplied. Registration state changes require coordination with the form owner and an approved publication. See [workshop release notes](docs/workshop-site-release-2026-09-27.md).
+This serves actual files and the custom 404 document, so case variants and old
+`/?/route` bookmarks can be verified without Vite's development fallback.
+
+The public homepage and `/static/` compatibility document share their template
+and HTTPS canonical. Public content does not load the React/Firebase application.
+App documents are generated at `/login/`, `/progress/`, `/lovesingy/`, and
+`/translate/`, with `noindex` and the existing authentication behavior.
+Shortcut documents are generated from `src/site/routes.ts`. The résumé remains
+unlisted and is excluded from the reading map and sitemap.
+
+Bundle analysis is written to ignored `temp/build-reports/stats.html`, outside
+the deployment output.
+
+Workshop resource availability and destinations are controlled by `src/workshop/pages.ts`. Keep unreleased resources unavailable until their actual public URLs are supplied. Registration state changes require coordination with the form owner and an approved publication. See [workshop release notes](docs/workshop-site-release-2026-09-27.md).
 
 The 2025 archive includes all three session recordings with searchable chapters,
 YouTube timestamp links, and links to share a moment. Recording metadata and
