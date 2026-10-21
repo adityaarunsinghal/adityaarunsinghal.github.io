@@ -1,6 +1,6 @@
 # Aditya (Adi) Singhal
 
-> Applied Scientist at Amazon, former AWS Bedrock engineer, and agentic AI instructor at NYU. Adi builds and evaluates AI agents, works with Model Context Protocol (MCP) and RAG systems, and shares public code and technical writing.
+> Aditya (Adi) Singhal builds and evaluates AI agents with MCP. Applied Scientist at Amazon, former AWS Bedrock engineer, and agentic AI instructor at NYU.
 
 His work includes production RAG infrastructure, MCP-based engineering automation, and LLM evaluation. His current Applied Scientist role is at Amazon; his earlier AWS Bedrock role was in software engineering.
 
