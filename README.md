@@ -135,6 +135,7 @@ match /element-tracker/{document} {
 - `/registration-form/`, `/agentic-ai-workshop/registration-form/` - Current registration information
 - `/agentic-ai-workshop/feedback/`, `/agentic-ai-workshop-2025/feedback/` - 2025 feedback information
 - `/linkedin`, `/instagram`, `/facebook`, `/youtube`, `/wife`, `/latest-resume` - Redirects
+- `/x/`, `/twitter/` - Static redirects to Adi's X profile, also available without JavaScript
 - `/404` - Not-found page
 
 ## License
