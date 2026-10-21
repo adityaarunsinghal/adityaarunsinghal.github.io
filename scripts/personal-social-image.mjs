@@ -2,10 +2,10 @@ import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
 
-// Regenerate the public card from the existing portrait and bundled OFL fonts.
+// Regenerate the public card from the supplied MCP portrait and bundled OFL fonts.
 // No system fonts, remote assets, or image-generation service are required.
 const portrait = await readFile(
-  new URL("../public/static/images/roundpp.png", import.meta.url),
+  new URL("./assets/personal-portraits/adi-mcp-2026.jpeg", import.meta.url),
 );
 const fontFiles = ["Lato-Regular.ttf", "Lato-Bold.ttf"].map((name) =>
   fileURLToPath(new URL(`./assets/fonts/${name}`, import.meta.url)),
@@ -25,7 +25,10 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
     <path d="M64 517H1136" stroke="#33415d"/>
     <text x="64" y="563" font-size="25" fill="#bac9e8">I build and evaluate production AI agents.</text>
   </g>
-  <image x="848" y="198" width="280" height="280" href="data:image/png;base64,${portrait.toString("base64")}"/>
+  <defs>
+    <clipPath id="portrait"><rect x="848" y="122" width="280" height="380" rx="12"/></clipPath>
+  </defs>
+  <image x="848" y="122" width="280" height="380" clip-path="url(#portrait)" href="data:image/jpeg;base64,${portrait.toString("base64")}"/>
 </svg>`;
 
 const output = new URL("../public/social/adi-singhal.png", import.meta.url);
