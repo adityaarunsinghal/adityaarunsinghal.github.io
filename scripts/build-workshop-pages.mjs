@@ -62,20 +62,6 @@ for (const page of pageDefinitions) {
 
 await generateSocialImages(path.join(output, "workshops"));
 await generateInstructorPortraits(path.join(output, "workshops/2026/instructors"));
-const urls = [
-  "/",
-  ...pageDefinitions
-    .filter((page) => page.kind === "current" || page.kind === "archive")
-    .map((page) => page.path),
-];
-await writeFile(
-  path.join(output, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url><loc>https://adityasinghal.com${url}</loc></url>`).join("\n")}\n</urlset>\n`,
-);
-await writeFile(
-  path.join(output, "sitemap.txt"),
-  urls.map((url) => `https://adityasinghal.com${url}`).join("\n") + "\n",
-);
 console.log(
   `Generated ${pageDefinitions.length} workshop documents, year-specific styles and social cards.`,
 );

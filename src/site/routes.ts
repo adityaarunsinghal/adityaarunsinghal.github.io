@@ -30,7 +30,9 @@ function routeKey(pathname: string) {
 
 export const routeEntries: [string, string][] = [
   ["", "/"],
+  ["/index", "/"],
   ["/static", "/static/"],
+  ["/static/index", "/static/"],
   ["/404", "/404.html"],
   ...appPages.map((page): [string, string] => [routeKey(page.path), page.path]),
   ...shortcutPages.map((page): [string, string] => [routeKey(page.path), page.path]),

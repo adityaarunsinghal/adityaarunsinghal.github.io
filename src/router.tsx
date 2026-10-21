@@ -1,27 +1,17 @@
 import { lazy } from "react";
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import PrivateRoute from "@/components/PrivateRoute";
 import { pageDefinitions } from "./workshop/pages";
+import { shortcutPages } from "./site/routes";
+import PublicDocumentBridge from "@/components/PublicDocumentBridge";
 
 // Eager: tiny components on hot paths (login, simple redirects).
 import Login from "@/components/Login/Login";
-import ResumeRedirect from "@/components/ResumeRedirect";
-import LinkedInRedirect from "@/components/LinkedInRedirect";
-import InstagramRedirect from "@/components/InstagramRedirect";
-import FacebookRedirect from "@/components/FacebookRedirect";
-import YouTubeRedirect from "@/components/YouTubeRedirect";
-import GitHubRedirect from "@/components/GitHubRedirect";
-import WifeRedirect from "@/components/WifeRedirect";
 
 // Lazy: heavier feature routes get their own chunks so the initial bundle stays
 // small. Each only downloads when its route is visited. These carry the big deps
-// (firebase, charts, confetti, react-spring, jQuery landing page).
-const OldStaticWebsite = lazy(() =>
-  import("@/components/OldStaticWebsite/OldStaticWebsite").then((m) => ({
-    default: m.OldStaticWebsite,
-  })),
-);
+// (firebase, charts, confetti, react-spring).
 const LovesIngy = lazy(() => import("@/components/LovesIngy/LovesIngy"));
 const WorkshopRouteBridge = lazy(
   () => import("@/components/WorkshopRouteBridge"),
@@ -30,15 +20,13 @@ const VisitsDenmark = lazy(
   () => import("@/components/VisitsDenmark/VisitsDenmark"),
 );
 const Progress = lazy(() => import("@/components/Progress/Progress"));
-// Lazy so the 1.1MB animated 404 asset never loads as part of the initial bundle.
-const NotFound = lazy(() => import("@/components/NotFound"));
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <ErrorBoundary>
-        <OldStaticWebsite />
+            <PublicDocumentBridge destination="/" />
       </ErrorBoundary>
     ),
   },
@@ -54,7 +42,7 @@ const router = createBrowserRouter([
     path: "/404",
     element: (
       <ErrorBoundary>
-        <NotFound />
+            <PublicDocumentBridge destination="/404.html" preserveLocation={false} />
       </ErrorBoundary>
     ),
   },
@@ -96,37 +84,13 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     ),
   })),
-  ...["latest-resume", "Latest-Resume", "LATEST-RESUME"].map((path) => ({
-    path: `/${path}`,
-    element: <ResumeRedirect />,
-  })),
-  ...["linkedin", "LinkedIn", "LINKEDIN"].map((path) => ({
-    path: `/${path}`,
-    element: <LinkedInRedirect />,
-  })),
-  ...["instagram", "Instagram", "INSTAGRAM"].map((path) => ({
-    path: `/${path}`,
-    element: <InstagramRedirect />,
-  })),
-  ...["facebook", "Facebook", "FACEBOOK"].map((path) => ({
-    path: `/${path}`,
-    element: <FacebookRedirect />,
-  })),
-  ...["youtube", "YouTube", "YOUTUBE"].map((path) => ({
-    path: `/${path}`,
-    element: <YouTubeRedirect />,
-  })),
-  ...["github", "GitHub", "GITHUB", "Github"].map((path) => ({
-    path: `/${path}`,
-    element: <GitHubRedirect />,
-  })),
-  ...["wife", "Wife", "WIFE"].map((path) => ({
-    path: `/${path}`,
-    element: <WifeRedirect />,
+  ...shortcutPages.map((page) => ({
+    path: page.path,
+    element: <PublicDocumentBridge destination={page.destination} preserveLocation={false} />,
   })),
   {
     path: "/*",
-    element: <Navigate to="/404" replace />,
+    element: <PublicDocumentBridge destination="/404.html" preserveLocation={false} />,
   },
 ]);
 

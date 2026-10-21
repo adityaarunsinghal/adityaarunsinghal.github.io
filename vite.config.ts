@@ -10,6 +10,58 @@ export default defineConfig({
   plugins: [
     react(),
     {
+      name: "public-site-documents",
+      configureServer(server) {
+        server.middlewares.use(async (request, response, next) => {
+          if (request.method !== "GET" && request.method !== "HEAD") return next();
+          const url = new URL(request.url || "/", "http://localhost");
+          if (/^\/(?:@|src\/|node_modules\/)/.test(url.pathname)) return next();
+          try {
+            const site = await server.ssrLoadModule("/src/site/render.ts");
+            if (url.pathname === "/__site/routes.js") {
+              response.setHeader("Content-Type", "application/javascript; charset=utf-8");
+              response.end(request.method === "HEAD" ? undefined : site.renderCompatibilityScript());
+              return;
+            }
+            const canonical = site.canonicalLocalRoute(url.pathname);
+            if (canonical && canonical !== url.pathname) {
+              response.statusCode = 308;
+              response.setHeader("Location", canonical + url.search);
+              response.end();
+              return;
+            }
+            let html: string | undefined;
+            if (canonical === "/" || canonical === "/static/") {
+              html = site.renderHome();
+            } else {
+              const app = site.appPages.find((page: { path: string }) => page.path === canonical);
+              const shortcut = site.shortcutPages.find((page: { path: string }) => page.path === canonical);
+              if (app) {
+                html = (await readFile(path.resolve(__dirname, "app.html"), "utf8"))
+                  .replace(/<title>.*?<\/title>/s, `<title>${site.escapeHtml(app.title)} | Aditya Singhal</title>`)
+                  .replace("<!-- site:route-compatibility -->", '<script src="/__site/routes.js"></script>');
+              } else if (shortcut) {
+                html = site.renderShortcut(shortcut);
+              } else if (canonical && canonical !== "/404.html") {
+                // The existing workshop middleware owns its documents.
+                return next();
+              } else if (!path.extname(url.pathname) || url.pathname.endsWith(".html")) {
+                response.statusCode = 404;
+                html = site.renderNotFound();
+              }
+            }
+            if (!html) return next();
+            response.setHeader("Content-Type", "text/html; charset=utf-8");
+            response.end(
+              request.method === "HEAD" ? undefined : await server.transformIndexHtml(url.pathname, html),
+            );
+          } catch (error) {
+            next(error as Error);
+          }
+        });
+      },
+    },
+    {
       name: "workshop-documents",
       configureServer(server) {
         server.middlewares.use(async (request, response, next) => {
@@ -81,7 +133,7 @@ export default defineConfig({
       },
     },
     visualizer({
-      filename: "dist/stats.html",
+      filename: "temp/build-reports/stats.html",
       open: false,
       gzipSize: true,
       brotliSize: true,
@@ -130,9 +182,10 @@ export default defineConfig({
     //    growing first-load from ~216kB to ~258kB gzip. The targeted rule below
     //    only names firebase + react, so everything else keeps its default
     //    (lazy, per-route) chunking.
-    // If you bump vite, re-check dist/stats.html and the eager modulepreload set
-    // in dist/index.html before shipping.
+    // If you bump vite, re-check temp/build-reports/stats.html and the eager
+    // modulepreload set in the generated application documents before shipping.
     rollupOptions: {
+      input: path.resolve(__dirname, "app.html"),
       plugins: [
         copy({
           targets: [{ src: "public/CNAME", dest: "dist" }],
