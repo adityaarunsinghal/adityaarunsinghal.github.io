@@ -35,6 +35,136 @@
   height: 100%;
 }
 
+/* Personal introduction and the paired portraits. */
+#header .content .inner {
+  max-height: none;
+  transition: none;
+}
+
+.profile-intro {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 49rem;
+}
+
+.profile-portrait {
+  display: block;
+  flex: 0 0 auto;
+  width: 176px;
+  height: auto;
+  border-radius: 12px;
+}
+
+.profile-copy {
+  min-width: 0;
+  text-align: left;
+}
+
+#header .profile-copy h1 {
+  margin-bottom: 0.75rem;
+}
+
+#header .content .profile-headline {
+  margin: 0 0 0.75rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 600;
+}
+
+#header .content .profile-bio {
+  max-width: 36rem;
+  margin: 0 0 1.25rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #e0e5ef;
+}
+
+#header .content .profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.25rem;
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.profile-links a {
+  color: #c5d5ff;
+}
+
+.wave-pair {
+  width: min(100%, 29rem);
+  margin: 2rem auto 1.5rem;
+}
+
+.wave-pair img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.wave-pair figcaption {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  margin-top: 0.65rem;
+  color: #d7deed;
+  font-size: 0.8rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.wave-pair .wave-toggle {
+  height: auto;
+  padding: 0.25rem 0.4rem;
+  border: 0;
+  border-radius: 3px;
+  box-shadow: none;
+  color: #c5d5ff;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: normal;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.wave-pair .wave-toggle[hidden] {
+  display: none;
+}
+
+@media (max-width: 736px) {
+  .profile-intro {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .profile-portrait {
+    width: 144px;
+  }
+
+  .profile-copy {
+    text-align: center;
+  }
+
+  #header .content .inner {
+    padding: 1.5rem 1rem;
+  }
+
+  #header .content .profile-links {
+    justify-content: center;
+  }
+}
+
 /* ==========================================================================
    Open-source projects showcase — "terminal window" cards
    Lives at the top of #current. Styled as mini terminals since both projects
@@ -199,7 +329,7 @@
 }
 
 .term-meta .meta-key {
-  color: rgba(255, 255, 255, 0.4);
+  color: #b8c4da;
   margin-right: 0.5rem;
 }
 
@@ -221,7 +351,7 @@
 }
 
 .term-tag {
-  color: rgba(155, 108, 240, 0.9);
+  color: #c5adfa;
   margin-right: 0.6rem;
   white-space: nowrap;
 }
@@ -311,6 +441,10 @@
   gap: 0.5rem;
 }
 
+#main .projects-showcase .term-cta.button.special {
+  color: #1b1f22 !important;
+}
+
 /* GitHub marks are INLINE SVG (not FontAwesome glyphs). The template's webfont
    mechanism proved fragile here (a stale/absent FontAwesome face renders a tofu
    box), so the octocat is drawn as SVG with fill:currentColor and can never
@@ -351,14 +485,14 @@
 }
 
 /* ==========================================================================
-   Contact: memorable vanity routes (adityasinghal.com/linkedin, /github, ...)
+   Contact: direct public destinations
    Monospace list echoing the terminal cards above.
    NOTE: selectors are prefixed with #main to out-specify the template's
    ID-scoped `#main article ul`/`li` rules (which otherwise force disc bullets,
    list-item display, and left padding). Without #main these rules silently lose
    the cascade.
    ========================================================================== */
-#main .easy-routes {
+#main .contact-links {
   list-style: none;
   padding: 0;
   margin: 1.5rem 0 0 0;
@@ -366,7 +500,7 @@
   font-size: 0.82rem;
 }
 
-#main .easy-routes li {
+#main .contact-links li {
   display: flex;
   align-items: baseline;
   gap: 0.6rem;
@@ -376,28 +510,57 @@
   list-style: none;
 }
 
-#main .easy-routes li:last-child {
+#main .contact-links li:last-child {
   border-bottom: 0;
 }
 
-#main .easy-routes .er-key {
+#main .contact-links .contact-label {
   display: inline-block;
   flex-shrink: 0;
   min-width: 5.5rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: #b8c4da;
 }
 
-#main .easy-routes .er-key::before {
-  content: '/';
-  color: rgba(155, 108, 240, 0.9);
-}
-
-#main .easy-routes a {
+#main .contact-links a {
+  min-width: 0;
+  overflow-wrap: anywhere;
   color: rgba(255, 255, 255, 0.85);
   border-bottom: none;
   transition: color 0.2s ease-in-out;
 }
 
-#main .easy-routes a:hover {
+#main .contact-links a:hover {
   color: #fff;
+}
+
+#main .writing-list {
+  padding: 0;
+  list-style: none;
+}
+
+#main .writing-list li {
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  list-style: none;
+}
+
+#main .writing-list h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+#main .writing-list p {
+  margin: 0 0 0.75rem;
+}
+
+#main .writing-list .writing-meta {
+  color: #bac8e2;
+  font-size: 0.85rem;
+}
+
+.selected-writing {
+  margin-bottom: 2rem;
 }
