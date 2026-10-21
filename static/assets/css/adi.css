@@ -24,7 +24,15 @@
   margin-bottom: 1rem;
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 * 100) */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+}
+
+/* YouTube requires at least 200px of height for the interactive player. */
+.video-container.is-playing {
+  min-height: 200px;
 }
 
 .video-container iframe {
@@ -33,6 +41,128 @@
   left: 0;
   width: 100%;
   height: 100%;
+  border: 0;
+}
+
+#main .video-launch {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border: 0;
+}
+
+.video-launch img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 48px;
+  border-radius: 12px;
+  color: #fff;
+  background: #e00025;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.video-launch:hover .video-play-icon,
+.video-launch:focus-visible .video-play-icon {
+  background: #b8001e;
+}
+
+#main .video-launch:focus-visible {
+  outline: 3px solid #c5d5ff;
+  outline-offset: -4px;
+}
+
+/* Personal introduction and the paired portraits. */
+#header .content .inner {
+  max-height: none;
+  transition: none;
+}
+
+.profile-intro {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 49rem;
+}
+
+.profile-portrait {
+  display: block;
+  flex: 0 0 auto;
+  width: 176px;
+  height: auto;
+  border-radius: 12px;
+}
+
+.profile-copy {
+  min-width: 0;
+  text-align: left;
+}
+
+#header .profile-copy h1 {
+  margin-bottom: 0.75rem;
+  letter-spacing: normal;
+}
+
+#header .content .profile-headline {
+  margin: 0 0 0.75rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 600;
+}
+
+#header .content .profile-bio {
+  max-width: 36rem;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #e0e5ef;
+}
+
+.wave-pair {
+  width: min(100%, 29rem);
+  margin: 2rem auto 1.5rem;
+}
+
+.wave-pair img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+@media (max-width: 736px) {
+  .profile-intro {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .profile-portrait {
+    width: 144px;
+  }
+
+  .profile-copy {
+    text-align: center;
+  }
+
+  #header .content .inner {
+    padding: 1.5rem 1rem;
+  }
+
 }
 
 /* ==========================================================================
@@ -199,7 +329,7 @@
 }
 
 .term-meta .meta-key {
-  color: rgba(255, 255, 255, 0.4);
+  color: #b8c4da;
   margin-right: 0.5rem;
 }
 
@@ -221,7 +351,7 @@
 }
 
 .term-tag {
-  color: rgba(155, 108, 240, 0.9);
+  color: #c5adfa;
   margin-right: 0.6rem;
   white-space: nowrap;
 }
@@ -311,6 +441,10 @@
   gap: 0.5rem;
 }
 
+#main .projects-showcase .term-cta.button.special {
+  color: #1b1f22 !important;
+}
+
 /* GitHub marks are INLINE SVG (not FontAwesome glyphs). The template's webfont
    mechanism proved fragile here (a stale/absent FontAwesome face renders a tofu
    box), so the octocat is drawn as SVG with fill:currentColor and can never
@@ -350,54 +484,34 @@
   }
 }
 
-/* ==========================================================================
-   Contact: memorable vanity routes (adityasinghal.com/linkedin, /github, ...)
-   Monospace list echoing the terminal cards above.
-   NOTE: selectors are prefixed with #main to out-specify the template's
-   ID-scoped `#main article ul`/`li` rules (which otherwise force disc bullets,
-   list-item display, and left padding). Without #main these rules silently lose
-   the cascade.
-   ========================================================================== */
-#main .easy-routes {
-  list-style: none;
+#main .writing-list {
   padding: 0;
-  margin: 1.5rem 0 0 0;
-  font-family: 'Courier New', monospace;
-  font-size: 0.82rem;
-}
-
-#main .easy-routes li {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  padding: 0.35rem 0;
-  margin: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   list-style: none;
 }
 
-#main .easy-routes li:last-child {
-  border-bottom: 0;
+#main .writing-list li {
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  list-style: none;
 }
 
-#main .easy-routes .er-key {
-  display: inline-block;
-  flex-shrink: 0;
-  min-width: 5.5rem;
-  color: rgba(255, 255, 255, 0.4);
+#main .writing-list h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
-#main .easy-routes .er-key::before {
-  content: '/';
-  color: rgba(155, 108, 240, 0.9);
+#main .writing-list p {
+  margin: 0 0 0.75rem;
 }
 
-#main .easy-routes a {
-  color: rgba(255, 255, 255, 0.85);
-  border-bottom: none;
-  transition: color 0.2s ease-in-out;
+#main .writing-list .writing-meta {
+  color: #bac8e2;
+  font-size: 0.85rem;
 }
 
-#main .easy-routes a:hover {
-  color: #fff;
+.selected-writing {
+  margin-bottom: 2rem;
 }

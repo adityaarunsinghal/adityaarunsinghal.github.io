@@ -3,7 +3,9 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Aditya Singhal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aditya Singhal | Agentic AI, MCP &amp; Applied Science</title>
+  <meta name="description" content="Aditya (Adi) Singhal builds and evaluates AI agents with MCP. Applied Scientist at Amazon, former AWS Bedrock engineer, and agentic AI instructor at NYU." />
   <link rel="stylesheet" href="./assets/css/main.css" />
   <link rel="stylesheet" href="./assets/css/adi.css" />
   <noscript>
@@ -16,32 +18,37 @@
   <div id="wrapper">
     <!-- Header -->
     <header id="header">
-      <span class="icon" style="width: 120px; height: 120px">
-        <img src="./images/roundpp.png" style="width: 120px; height: 120px" />
-      </span>
       <div class="content">
         <div class="inner">
-          <h1>Aditya Singhal</h1>
-          <p>
-            Software Engineer | ML Researcher | Educator | Author | Film
-            Director
-          </p>
+          <div class="profile-intro">
+            <img class="profile-portrait" src="./images/adi-mcp-2026.webp"
+              width="720" height="960" fetchpriority="high"
+              alt="Adi Singhal in an MCP Dev Summit 2026 shirt" />
+            <div class="profile-copy">
+              <h1>Aditya Singhal</h1>
+              <p class="profile-headline">I build and evaluate production AI agents.</p>
+              <p class="profile-bio">
+                I'm Adi, an Applied Scientist at Amazon and a former AWS Bedrock engineer.
+                I work on agentic AI, Model Context Protocol (MCP), and RAG systems,
+                and teach agentic AI at NYU.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      <nav>
+      <nav aria-label="Main navigation">
         <!-- Tabs -->
         <ul>
-          <!-- <li><a href="#profile">Profile</a></li> -->
-          <li><a href="#book">Book</a></li>
-          <li><a href="#current">Current</a></li>
           <li><a href="/agentic-ai-workshop/" target="_top">Agentic AI</a></li>
+          <li><a href="#current">Work</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li><a href="#book">Book</a></li>
         </ul>
       </nav>
     </header>
 
     <!-- Main -->
-    <div id="main">
+    <main id="main">
       <!-- Book -->
       <article id="book">
         <h2 class="major">I's till you're 18</h2>
@@ -87,7 +94,13 @@
 
       <!-- Current work -->
       <article id="current">
-        <h2 class="major">Current Work</h2>
+        <h2 class="major">Selected Work</h2>
+        <p>
+          My work spans production RAG at AWS Bedrock, MCP-based engineering automation,
+          and the evaluation of AI agents. Here are some public tools and writing from that work.
+          I also teach an <a href="/agentic-ai-workshop/" target="_top">agentic AI workshop at NYU</a>,
+          with recordings and code you can explore.
+        </p>
 
         <!-- Open-source projects showcase (terminal-window cards).
              Styles live in assets/css/adi.css under .projects-showcase. -->
@@ -112,7 +125,8 @@
                 <span class="caret">&#9656;</span>The prompt you'd write if you knew then what you know now.
               </p>
               <p class="term-desc">
-                Mine your Claude Code session history into a oneshot prompt library and CLAUDE.md preferences.
+                Turn your Claude Code and kiro-cli session history into a reusable prompt library
+                and CLAUDE.md or AGENTS.md preferences.
               </p>
               <div class="term-meta">
                 <span class="meta-key">lang:</span>
@@ -194,64 +208,112 @@
           <hr class="showcase-divider" />
         </section>
 
-        <p>I make short films and often post them here on these channels!</p>
+        <section class="selected-writing" aria-labelledby="writing-title">
+          <h3 id="writing-title">Writing on MCP &amp; agentic AI</h3>
+          <ul class="writing-list">
+            <li>
+              <h4><a href="https://www.linkedin.com/pulse/why-code-mode-like-shaking-tree-aditya-singhal-gkzae"
+                target="_blank" rel="noopener">Why 'Code Mode' is like Shaking a Tree</a></h4>
+              <p class="writing-meta">With Patrick Kelly · <time datetime="2026-08-21">August 21, 2026</time></p>
+              <p>How code mode lets a runtime compose tool calls and move intermediate results
+                without passing everything back through the model.</p>
+            </li>
+            <li>
+              <h4><a href="https://www.linkedin.com/pulse/what-i-learnt-new-mcp-20-release-today-ny-event-aditya-singhal-7vupe"
+                target="_blank" rel="noopener">What I learnt about the new MCP 2.0 release today at the NY Release Event</a></h4>
+              <p class="writing-meta"><time datetime="2026-07-29">July 29, 2026</time></p>
+              <p>Notes from the release event on stateless requests, tool discovery,
+                and what the changes mean for people building agents.</p>
+            </li>
+          </ul>
+        </section>
 
-        <div>The Artsy Channel - <a href="https://www.youtube.com/channel/UCgepx936F0EMIiYK8I4HiNw">Link</a></div>
-        <div class="video-container"><iframe
-            src="https://www.youtube.com/embed/videoseries?list=PLk0qDeh-rDptDAvR6NTDmUYMqfrG0fiOy"
-            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
-						gyroscope; picture-in-picture" allowfullscreen></iframe>
-          <br />
+        <h3>Beyond the code</h3>
+        <p>I also make short films and talk to strangers on camera.</p>
+
+        <h4>Short films</h4>
+        <div class="video-container">
+          <a class="video-launch" href="https://www.youtube.com/watch?v=lkA05ODFs4U&amp;list=PLk0qDeh-rDptDAvR6NTDmUYMqfrG0fiOy"
+            data-youtube-id="lkA05ODFs4U" data-playlist="PLk0qDeh-rDptDAvR6NTDmUYMqfrG0fiOy"
+            data-player-title="Short films — Waste Makes Wasted"
+            aria-label="Play the short films playlist, starting with Waste Makes Wasted">
+            <img src="./images/video-posters/lkA05ODFs4U-1280.webp"
+              srcset="./images/video-posters/lkA05ODFs4U-640.webp 640w, ./images/video-posters/lkA05ODFs4U-1280.webp 1280w"
+              sizes="(max-width: 640px) calc(100vw - 64px), 576px"
+              width="1280" height="720" loading="lazy" decoding="async"
+              alt="Waste Makes Wasted — a stop-motion short film" />
+            <span class="video-play-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+            </span>
+          </a>
         </div>
-        <div>The Fun Channel -
-          <a href="https://www.youtube.com/channel/UCLvgK2OW0iGjBokTNKB-UsA">Link</a>
-        </div>
-        <div class="video-container"><iframe src="https://www.youtube.com/embed/Gaa14VT4eWI"
-            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
-						gyroscope; picture-in-picture" allowfullscreen></iframe>
-          <br />
+
+        <h4>Conversations with strangers</h4>
+        <div class="video-container">
+          <a class="video-launch" href="https://www.youtube.com/watch?v=Gaa14VT4eWI"
+            data-youtube-id="Gaa14VT4eWI"
+            data-player-title="What is your Warning Label? — Conversations with Strangers"
+            aria-label="Play What is your Warning Label? — Conversations with Strangers">
+            <img src="./images/video-posters/Gaa14VT4eWI-1280.webp"
+              srcset="./images/video-posters/Gaa14VT4eWI-640.webp 640w, ./images/video-posters/Gaa14VT4eWI-1280.webp 1280w"
+              sizes="(max-width: 640px) calc(100vw - 64px), 576px"
+              width="1280" height="720" loading="lazy" decoding="async"
+              alt="What is your Warning Label? — Conversations with Strangers" />
+            <span class="video-play-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+            </span>
+          </a>
         </div>
       </article>
 
       <!-- Contact -->
       <article id="contact">
         <h2 class="major">Contact</h2>
-        <p>Find me around the web. The quickest way to reach me is any of these.</p>
+        <p>Find me around the web for conversations about agent systems, MCP, teaching,
+          and the rest of life.</p>
         <ul class="icons">
           <li>
-            <a href="/linkedin" target="_blank" rel="noopener" class="icon fa-linkedin"><span
+            <a href="https://www.linkedin.com/in/adi-singhal/" target="_blank" rel="noopener"
+              class="icon fa-linkedin" aria-label="Adi Singhal on LinkedIn"><span
                 class="label">LinkedIn</span></a>
           </li>
           <li>
-            <a href="/github" target="_blank" rel="noopener" class="icon fa-github"><span
+            <a href="https://github.com/adityaarunsinghal" target="_blank" rel="noopener"
+              class="icon fa-github" aria-label="Adi Singhal on GitHub"><span
                 class="label">GitHub</span></a>
           </li>
           <li>
-            <a href="/instagram" target="_blank" rel="noopener" class="icon fa-instagram"><span
+            <a href="https://x.com/dramebaazguy" target="_blank" rel="noopener"
+              class="icon x-icon" aria-label="Adi Singhal on X"><span aria-hidden="true">𝕏</span></a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/that_dramebaaz_guy/" target="_blank" rel="noopener"
+              class="icon fa-instagram" aria-label="Adi Singhal on Instagram"><span
                 class="label">Instagram</span></a>
           </li>
           <li>
-            <a href="/youtube" target="_blank" rel="noopener" class="icon fa-youtube-play"><span
+            <a href="https://www.youtube.com/@singhaladitya" target="_blank" rel="noopener"
+              class="icon fa-youtube-play" aria-label="Adi Singhal on YouTube"><span
                 class="label">YouTube</span></a>
           </li>
           <li>
-            <a href="/facebook" target="_blank" rel="noopener"
-              class="icon fa-facebook"><span class="label">Facebook</span></a>
+            <a href="https://www.facebook.com/that.dramebaaz.guy" target="_blank" rel="noopener"
+              class="icon fa-facebook" aria-label="Adi Singhal on Facebook"><span class="label">Facebook</span></a>
           </li>
         </ul>
-        <!-- Surface the memorable vanity routes so people can just type them. -->
-        <ul class="easy-routes">
-          <li><span class="er-key">linkedin</span><a href="/linkedin" target="_blank" rel="noopener">adityasinghal.com/linkedin</a></li>
-          <li><span class="er-key">github</span><a href="/github" target="_blank" rel="noopener">adityasinghal.com/github</a></li>
-          <li><span class="er-key">youtube</span><a href="/youtube" target="_blank" rel="noopener">adityasinghal.com/youtube</a></li>
-          <li><span class="er-key">instagram</span><a href="/instagram" target="_blank" rel="noopener">adityasinghal.com/instagram</a></li>
-        </ul>
       </article>
-    </div>
+    </main>
 
     <!-- Footer -->
 
     <footer id="footer">
+      <figure class="wave-pair" data-wave-pair>
+        <img src="./images/adi-waving-still.webp" width="1024" height="300"
+          data-still-src="./images/adi-waving-still.webp"
+          data-wave-src="./images/adi-waving-together.webp"
+          alt="Two portraits of Adi, as a younger adult and today"
+          loading="lazy" />
+      </figure>
       <!-- <div class="disclaimer-note-box">
         <p class="disclaimer-note-text">You know, peoples' attention and
           priorities gradually drift with time.<br>
@@ -266,15 +328,26 @@
       </div> -->
       <ul class="icons">
         <li>
-          <a href="/linkedin" target="_blank" class="icon fa-linkedin"><span
+          <a href="https://www.linkedin.com/in/adi-singhal/" target="_blank" rel="noopener"
+            class="icon fa-linkedin" aria-label="Adi Singhal on LinkedIn"><span
               class="label">LinkedIn</span></a>
         </li>
         <li>
-          <a href="https://www.facebook.com/that.dramebaaz.guy" target="_blank" class="icon fa-facebook"><span
+          <a href="https://github.com/adityaarunsinghal" target="_blank" rel="noopener"
+            class="icon fa-github" aria-label="Adi Singhal on GitHub"><span class="label">GitHub</span></a>
+        </li>
+        <li>
+          <a href="https://x.com/dramebaazguy" target="_blank" rel="noopener"
+            class="icon x-icon" aria-label="Adi Singhal on X"><span aria-hidden="true">𝕏</span></a>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/that.dramebaaz.guy" target="_blank" rel="noopener"
+            class="icon fa-facebook" aria-label="Adi Singhal on Facebook"><span
               class="label">Facebook</span></a>
         </li>
         <li>
-          <a href="https://www.instagram.com/that_dramebaaz_guy/" target="_blank" class="icon fa-instagram"><span
+          <a href="https://www.instagram.com/that_dramebaaz_guy/" target="_blank" rel="noopener"
+            class="icon fa-instagram" aria-label="Adi Singhal on Instagram"><span
               class="label">Instagram</span></a>
         </li>
       </ul>
@@ -296,6 +369,8 @@
   <script src="./assets/js/main.js"></script>
   <script src="./assets/js/jquery-3.1.0.min.js"></script>
   <script src="./assets/js/dots.js" charset="utf-8"></script>
+  <script src="./assets/js/profile-waves.js" defer></script>
+  <script src="./assets/js/personal-videos.js" defer></script>
 
   <!-- Copy-to-clipboard for the project install commands. Self-contained,
        feature-detected; if the Clipboard API is unavailable the button falls
