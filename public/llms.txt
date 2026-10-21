@@ -10,6 +10,7 @@ His work includes production RAG infrastructure, MCP-based engineering automatio
 - [LinkedIn](https://www.linkedin.com/in/adi-singhal/): Professional profile and published writing.
 - [GitHub](https://github.com/adityaarunsinghal): Public repositories.
 - [X](https://x.com/dramebaazguy): Adi's profile as @dramebaazguy.
+- [YouTube](https://www.youtube.com/@singhaladitya): Films and conversations.
 
 ## Agentic AI and MCP teaching
 

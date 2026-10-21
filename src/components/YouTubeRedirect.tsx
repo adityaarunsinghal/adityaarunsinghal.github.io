@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 const YouTubeRedirect = () => {
   useEffect(() => {
-    window.location.href = 'https://www.youtube.com/channel/UCgepx936F0EMIiYK8I4HiNw';
+    window.location.href = 'https://www.youtube.com/@singhaladitya';
   }, []);
 
   return null;
