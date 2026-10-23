@@ -81,7 +81,7 @@ var canvasDots = function () {
     },
 
     animate: function () {
-      for (i = 0; i < dots.nb; i++) {
+      for (var i = 0; i < dots.nb; i++) {
         var dot = dots.array[i];
 
         if (dot.y < 0 || dot.y > canvas.height) {
@@ -97,10 +97,10 @@ var canvasDots = function () {
     },
 
     line: function () {
-      for (i = 0; i < dots.nb; i++) {
-        for (j = 0; j < dots.nb; j++) {
-          i_dot = dots.array[i];
-          j_dot = dots.array[j];
+      for (var i = 0; i < dots.nb; i++) {
+        for (var j = 0; j < dots.nb; j++) {
+          var i_dot = dots.array[i];
+          var j_dot = dots.array[j];
 
           if (
             i_dot.x - j_dot.x < dots.distance &&
@@ -127,10 +127,13 @@ var canvasDots = function () {
   };
 
   function createDots() {
+    if (document.hidden) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (i = 0; i < dots.nb; i++) {
-      dots.array.push(new Dot());
-      dot = dots.array[i];
+    for (var i = 0; i < dots.nb; i++) {
+      // Reuse the active particles. Appending every frame kept thousands of
+      // unused particles alive until the next resize.
+      if (!dots.array[i]) dots.array.push(new Dot());
+      var dot = dots.array[i];
 
       dot.create();
     }
