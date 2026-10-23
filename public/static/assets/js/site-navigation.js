@@ -136,17 +136,24 @@
       catch { return undefined; }
     }
 
-    function readLocation() {
-      const article = targetFromHash();
-      if (article !== undefined) change(article);
+    function removeEmptyFragment() {
+      if ((!location.hash || location.hash === '#') && location.href.endsWith('#')) {
+        history.replaceState(history.state, '', `${location.pathname}${location.search}`);
+      }
     }
 
-    function close(addState) {
+    function readLocation() {
+      const article = targetFromHash();
+      if (article !== undefined) {
+        if (!article) removeEmptyFragment();
+        change(article);
+      }
+    }
+
+    function close() {
       if (!desired) return;
-      if (addState) {
-        history.pushState(null, '', `${location.pathname}${location.search}#`);
-        change(null);
-      } else location.hash = '';
+      history.pushState(null, '', `${location.pathname}${location.search}`);
+      change(null);
     }
 
     for (const article of articles) {
@@ -160,14 +167,14 @@
       button.className = 'close';
       button.textContent = 'Close';
       button.setAttribute('aria-label', `Close ${heading?.textContent || article.id}`);
-      button.addEventListener('click', () => close(false));
+      button.addEventListener('click', close);
       article.append(button);
     }
 
     body.addEventListener('click', (event) => {
       // Use the original event path: launching a video replaces its clicked link.
       if (desired && !event.composedPath().some((node) => articles.includes(node))) {
-        close(true);
+        close();
       }
     });
 
@@ -175,7 +182,7 @@
       if (!desired) return;
       if (event.key === 'Escape') {
         event.preventDefault();
-        close(true);
+        close();
       } else if (event.key === 'Tab') {
         const controls = Array.from(desired.querySelectorAll(
           'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
@@ -203,6 +210,7 @@
     main.style.display = 'none';
     const initial = targetFromHash();
     if (initial) change(initial, true);
+    else if (initial === null) removeEmptyFragment();
   }
   if (document.readyState === 'loading') addEventListener('DOMContentLoaded', initialize, { once: true });
   else initialize();
