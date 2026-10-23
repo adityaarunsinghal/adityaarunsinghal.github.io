@@ -121,7 +121,7 @@ async def check():
             report["routes"].append({"input": route, "destination": page.url})
         response = await page.goto(base + "/definitely-not-a-page/")
         assert response.status == 404
-        assert await page.locator("h1").inner_text() == "Page not found"
+        assert await page.locator("h1").inner_text() == "What URL is that???"
         await page.wait_for_timeout(100)
         assert urlparse(page.url).path == "/definitely-not-a-page/"
         report["unknown_path"] = "Real HTTP 404; informative document; no SPA redirect."

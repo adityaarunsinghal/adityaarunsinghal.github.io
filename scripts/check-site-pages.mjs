@@ -100,7 +100,7 @@ for (const page of shortcutPages) {
 }
 
 const notFound = await read("404.html");
-assert.ok(notFound.includes("<h1>Page not found</h1>"));
+assert.ok(notFound.includes("<h1>What URL is that???</h1>"));
 assert.ok(notFound.includes('name="robots" content="noindex, follow"'));
 assert.ok(notFound.includes(`src="${scriptPath}"`));
 assert.ok(!notFound.includes('type="module"'));
