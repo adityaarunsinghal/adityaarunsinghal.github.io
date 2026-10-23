@@ -14,6 +14,7 @@ import {
 } from "./pages";
 
 export { course, pageDefinitions, sessionRecordings, historicalRecordings } from "./pages";
+export { analyticsMeasurementId };
 
 function InformationPage({
   kind,

@@ -1,8 +1,8 @@
 // Use a verified public GA4 web-stream ID and disable Enhanced measurement in
 // that stream before enabling these deliberately bounded public-page events.
 export const analytics = {
-  enabled: false,
-  measurementId: "",
+  enabled: true,
+  measurementId: "G-CSRQLVW2TG",
 } as const;
 
 export function analyticsMeasurementId(): string | null {

@@ -3,6 +3,7 @@ import { readFile, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import {
+  analyticsMeasurementId,
   course,
   historicalRecordings,
   pageDefinitions,
@@ -17,6 +18,7 @@ const form =
   "https://docs.google.com/forms/d/e/1FAIpQLSd_lhxUjjw0NMCvsf5qojymmS8Wur0tA26rqOnSCZarhkV31g/viewform";
 const currentPath = "/agentic-ai-workshop/";
 const archivePath = "/agentic-ai-workshop-2025/";
+const measurementId = analyticsMeasurementId();
 let checked = 0;
 
 for (const page of pageDefinitions) {
@@ -34,11 +36,15 @@ for (const page of pageDefinitions) {
     page.kind === "current" ? sessionRecordings :
       page.kind === "archive" ? historicalRecordings : [];
   const recordingScript = recordings.some((recording) => recording.youtubeId);
+  const analyticsScript = measurementId !== null
+    && (page.kind === "current" || page.kind === "archive");
   assert.equal(
     (html.match(/<script\b/g) || []).length,
-    (page.kind === "current" ? 2 : 0) + Number(recordingScript),
+    (page.kind === "current" ? 2 : 0) + Number(recordingScript) + Number(analyticsScript),
     `${page.path} should use only its independent enhancements`,
   );
+  assert.equal((html.match(/src="\/site-analytics\.js"/g) || []).length, Number(analyticsScript));
+  if (analyticsScript) assert.ok(html.includes(`data-measurement-id="${measurementId}"`));
   assert.equal(html.includes('src="/workshops/session-recordings.js" defer'), recordingScript);
   if (page.kind === "current") {
     assert.ok(html.includes('src="/workshops/download-slides.js" defer'));
