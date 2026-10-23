@@ -64,12 +64,35 @@ async def check(args):
             assert await page.locator("h1").count() == 1
             current_course = await page.locator("#course-title").count() == 1
             recordings = await page.locator("[data-session-recording]").count()
-            expected_scripts = (2 if current_course else 0) + int(recordings > 0)
+            expected_scripts = (
+                [
+                    "/workshops/download-slides.js",
+                    "/workshops/instructor-portraits-2026-10-09.js",
+                ]
+                if current_course
+                else []
+            )
+            if recordings:
+                expected_scripts.append("/workshops/session-recordings.js")
+            # Configured analytics is limited to the current course and archive.
+            analytics = page.locator('script[src="/site-analytics.js"]')
+            if await analytics.count():
+                assert await analytics.count() == 1
+                assert current_course or await page.locator(".workshop-2025").count() == 1
+                assert (await analytics.get_attribute("data-measurement-id") or "").startswith("G-")
+                expected_scripts.append("/site-analytics.js")
             # The recording enhancement may already have requested the player API.
-            external_scripts = await page.locator('script[src^="https://"]').count()
-            assert await page.locator("script").count() - external_scripts == expected_scripts
+            actual_scripts = await page.locator(
+                'script:not([src^="https://"])'
+            ).evaluate_all("(scripts) => scripts.map(script => script.getAttribute('src')).sort()")
+            assert actual_scripts == sorted(expected_scripts), (route, actual_scripts)
             report["routes"].append(
-                {"route": route, "status": response.status, "final_url": page.url}
+                {
+                    "route": route,
+                    "status": response.status,
+                    "final_url": page.url,
+                    "scripts": actual_scripts,
+                }
             )
 
         for year, route in [
