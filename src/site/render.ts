@@ -160,7 +160,6 @@ export function renderNotFound(compatibilityScript = "/__site/routes.js"): strin
 <body>
   <main>
     <h1>What URL is that???</h1>
-    <p>Even the kid is confused.</p>
     <picture>
       <source media="(prefers-reduced-motion: reduce)" srcset="/404-still.webp" />
       <img src="/404.webp" width="640" height="440" alt="A child shrugging" loading="lazy" decoding="async" />
