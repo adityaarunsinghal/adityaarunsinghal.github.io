@@ -115,6 +115,15 @@ export function renderWorkshop(
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>{page.title}</title>
           <meta name="description" content={page.description} />
+          {page.kind === "current" && (
+            <link
+              rel="preload"
+              href="/workshops/2026/fonts/WorkshopTitle-2026.woff2"
+              as="font"
+              type="font/woff2"
+              crossOrigin="anonymous"
+            />
+          )}
           {measurementId && (
             <script src="/site-analytics.js" data-measurement-id={measurementId} defer />
           )}

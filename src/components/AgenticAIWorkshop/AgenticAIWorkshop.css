@@ -1,3 +1,12 @@
+/* The fixed hero title uses a small subset of the same Display face.
+   The full face remains available for future title characters. */
+@font-face {
+  font-family: "Workshop Title";
+  src: url("/workshops/2026/fonts/WorkshopTitle-2026.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face {
   font-family: "Workshop Display";
   src: url("/workshops/2026/fonts/SourceSerif4Display-Regular.woff2") format("woff2");
@@ -130,6 +139,9 @@
   font-weight: 400;
   letter-spacing: -0.015em;
   text-wrap: balance;
+}
+.workshop-2026 .course-hero h1 {
+  font-family: "Workshop Title", "Workshop Display", Georgia, serif;
 }
 .workshop-2026 .hero-description {
   margin-top: 24px;
