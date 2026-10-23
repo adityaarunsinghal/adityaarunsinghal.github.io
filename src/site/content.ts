@@ -48,7 +48,7 @@ export const readingMap = [
     heading: "Public projects",
     links: [
       { name: "LLM-as-a-Judge Prompt Improver", url: "https://github.com/adityaarunsinghal/LLM-As-A-Judge-Prompt-Improver", description: "Prompt evaluation and improvement using scoring, cross-validation, error analysis, and an iterative optimization loop." },
-      { name: "cc-hindsight", url: "https://github.com/adityaarunsinghal/cc-hindsight", description: "Turns coding-agent session history into reusable prompts and preference files." },
+      { name: "Human Hindsight", url: "https://github.com/adityaarunsinghal/human-hindsight", description: "Turns Claude Code, Codex, Kiro, and OpenCode history into reusable first prompts and working preferences. Includes a guided CLI and a local Markdown library to browse, search, and copy; distillation uses your chosen agent CLI with consent." },
     ],
   },
   {
