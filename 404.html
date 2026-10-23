@@ -8,17 +8,31 @@
   <link rel="icon" type="image/png" href="/favicon.png" />
   <script src="/assets/site-routes-5c5e189ec65e.js" defer></script>
   <style>
-    body { margin:0; min-height:100vh; display:grid; place-items:center; background:#091126; color:#f4f6fc; font:1rem/1.7 system-ui,sans-serif; }
-    main { width:min(36rem,calc(100% - 3rem)); padding:3rem 0; }
-    h1 { line-height:1.2; }
-    a { color:#c5d5ff; text-underline-offset:3px; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; min-height:100svh; display:grid; place-items:center; padding:1.5rem; background:#f6f8fa; color:#213547; font:1rem/1.6 system-ui,sans-serif; }
+    main { width:min(40rem,100%); padding:1rem 0; text-align:center; }
+    h1 { margin:0; font-size:clamp(1.5rem,4vw,2rem); line-height:1.2; }
+    p { margin:1rem 0; }
+    picture { display:block; margin:1.5rem 0; }
+    img { display:block; width:100%; height:auto; border-radius:8px; }
+    .home-link { display:inline-flex; align-items:center; justify-content:center; padding:0.75rem 1.5rem; border-radius:6px; background:#176e3f; color:#fff; font-weight:600; text-decoration:none; }
+    .home-link:hover { background:#145c35; }
+    .home-link:focus-visible { outline:3px solid #165aa7; outline-offset:4px; }
+    @media (prefers-color-scheme:dark) {
+      body { background:#091126; color:#f4f6fc; }
+      .home-link:focus-visible { outline-color:#c5d5ff; }
+    }
   </style>
 </head>
 <body>
   <main>
-    <h1>Page not found</h1>
-    <p>That page is no longer here, or the address may be incomplete.</p>
-    <p><a href="/">Return to Aditya Singhal’s website</a></p>
+    <h1>What URL is that???</h1>
+    <p>Even the kid is confused.</p>
+    <picture>
+      <source media="(prefers-reduced-motion: reduce)" srcset="/404-still.webp" />
+      <img src="/404.webp" width="640" height="440" alt="A child shrugging" loading="lazy" decoding="async" />
+    </picture>
+    <a class="home-link" href="/">Go Home</a>
   </main>
 </body>
 </html>
