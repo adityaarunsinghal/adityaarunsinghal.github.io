@@ -1658,6 +1658,31 @@ body.is-loading #header .content .inner {
   white-space: nowrap;
 }
 
+/* A real button retains the template's close glyph without generic button chrome. */
+#main article button.close,
+#main article button.close:hover,
+#main article button.close:active {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  border-radius: 0;
+  line-height: normal;
+}
+
+#main article button.close:focus-visible {
+  outline: 2px solid #c5d5ff;
+  outline-offset: -6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js #header,
+  .js #footer,
+  .js #main article {
+    transition: none !important;
+  }
+}
+
 #main article .close:before {
   -moz-transition: background-color 0.2s ease-in-out;
   -webkit-transition: background-color 0.2s ease-in-out;
