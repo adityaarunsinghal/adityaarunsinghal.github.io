@@ -16,6 +16,10 @@ with Image.open(source / "adi-mcp-2026.jpeg") as original:
     portrait = ImageOps.exif_transpose(original).convert("RGB")
     portrait.thumbnail((720, 1080), Image.Resampling.LANCZOS)
     portrait.save(output / "adi-mcp-2026.webp", quality=88, method=6)
+    for width in (288, 576):
+        responsive = portrait.copy()
+        responsive.thumbnail((width, width * 2), Image.Resampling.LANCZOS)
+        responsive.save(output / f"adi-mcp-2026-{width}.webp", quality=88, method=6)
 
 # Both supplied GIFs already share a timeline. A single compressed animation
 # keeps the pair synchronized even when network loading or decoding is slow.

@@ -4,6 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   {{site.head}}
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600&amp;display=swap" />
   <link rel="stylesheet" href="/static/assets/css/main.css" />
   <link rel="stylesheet" href="/static/assets/css/adi.css" />
   <noscript>
@@ -19,7 +23,9 @@
       <div class="content">
         <div class="inner">
           <div class="profile-intro">
-            <img class="profile-portrait" src="/static/images/adi-mcp-2026.webp"
+            <img class="profile-portrait" src="/static/images/adi-mcp-2026-576.webp"
+              srcset="/static/images/adi-mcp-2026-288.webp 288w, /static/images/adi-mcp-2026-576.webp 576w, /static/images/adi-mcp-2026.webp 720w"
+              sizes="(max-width: 736px) 144px, 176px"
               width="720" height="960" fetchpriority="high"
               alt="Adi Singhal in an MCP Dev Summit 2026 shirt" />
             <div class="profile-copy">
@@ -47,7 +53,8 @@
       <article id="book">
         <h2 class="major">I's till you're 18</h2>
 
-        <span class="image main"><img src="/static/images/book_cover.jpg" alt="Book Cover photo" /></span>
+        <span class="image main"><img src="/static/images/book_cover.jpg" alt="Book Cover photo"
+          width="1506" height="1080" loading="lazy" decoding="async" /></span>
         <p>
           Ahaan was 12 when he first met you. A round faced reality show
           contestant dealing with fame and insecurities.<br />
