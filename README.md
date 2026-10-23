@@ -1,203 +1,137 @@
 # Aditya Singhal's Personal Website
 
-A statically generated personal website and React + TypeScript private mini-apps, hosted on GitHub Pages at [adityasinghal.com](https://adityasinghal.com).
+A personal website with static public pages and authenticated React utilities, hosted on GitHub Pages at [adityasinghal.com](https://adityasinghal.com).
 
-## Features
+The homepage and workshop pages render complete HTML. The homepage uses native JavaScript for section navigation, particle interaction, video players and portrait motion. React and Firebase load only for the application routes.
 
-- **Public landing page**: complete HTML at `/`, available without JavaScript
-- **Element tracker** (`/progress`): daily habit/streak tracker with heatmap and donut charts
-- **Private messaging** (`/lovesingy`): love-note board with countdowns, synced to a TRMNL e-ink display
-- **Live translator** (`/translate`): speech-to-text Danish/Hindi to English via a Firebase Function
-- **Agentic AI workshop** pages and various social redirects
-- **Auth-gated routes**: Google OAuth with an email whitelist
+## Local development
 
-## Tech Stack
+Use Node.js 22 (22.12 or newer), pnpm 10.32.1 (the version in `package.json`), and FFmpeg. CI and the Functions runtime use Node.js 22. FFmpeg generates workshop portrait assets during development and builds. Python 3 and [uv](https://docs.astral.sh/uv/) are needed for the optional browser checks.
 
-- **Frontend**: static public documents; React 19 + TypeScript 6 for private apps
-- **Build Tool**: Vite
-- **Routing**: physical public/app documents and React Router DOM 7 within the apps
-- **Authentication**: Firebase Auth (Google OAuth)
-- **Database**: Cloud Firestore
-- **Serverless**: Firebase Functions (Google Translate proxy)
-- **Styling**: plain CSS (per-component `.css` files)
-- **Package manager**: pnpm
-- **Deployment**: GitHub Pages (`gh-pages` branch)
-- **CI/CD**: GitHub Actions
-
-## Project Structure
-
-```
-src/
-├── components/
-│   ├── Login/                 # Google OAuth sign-in
-│   ├── Progress/              # /progress element tracker
-│   ├── LovesIngy/             # /lovesingy messages + countdowns
-│   ├── VisitsDenmark/         # /translate live translator
-│   ├── AgenticAIWorkshop/     # workshop pages
-│   ├── PrivateRoute.tsx       # auth gate wrapper
-│   └── PublicDocumentBridge.tsx # navigation from apps to public documents
-├── site/
-│   ├── content.ts            # reviewed public identity and reading map
-│   ├── home.html             # homepage template
-│   ├── render.ts             # document, metadata and discovery rendering
-│   └── routes.ts             # application/shortcut paths and legacy compatibility
-├── contexts/AuthContext.tsx   # auth state
-├── hooks/useAuth.ts           # auth hook
-├── config.ts                  # ALLOWED_EMAILS whitelist
-├── firebase.ts                # Firebase init (auth, db)
-└── router.tsx                 # application routes and public-document bridges
-app.html                       # application entry template; public home generated separately
-scripts/build-site-pages.mjs    # public home, app entries, shortcuts, sitemap and llms.txt
-functions/                     # Firebase Functions (translateText)
-scripts/trmnl-sync.mjs         # scheduled TRMNL e-ink sync (GitHub Actions)
-```
-
-## Development
-
-### Prerequisites
-- Node.js 20.19+
-- [pnpm](https://pnpm.io/)
-
-### Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/adityaarunsinghal/adityaarunsinghal.github.io.git
-   cd adityaarunsinghal.github.io
-   ```
-
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-
-3. Create environment file:
-   ```bash
-   cp .env.example .env
-   ```
-   Fill in your Firebase configuration values.
-
-4. Start the development server:
-   ```bash
-   pnpm dev
-   ```
-
-### Available Scripts
-- `pnpm dev` - Start development server
-- `pnpm build` - Type-check, build the apps, and generate public/workshop documents and discovery files
-- `pnpm check:site` - Check public HTML, schema, application isolation, shortcuts, and legacy bookmarks
-- `pnpm check:workshop` - Check generated workshop routes, content, metadata, assets, and registration states
-- `pnpm preview` - Preview the production build
-- `pnpm run deploy` - Build and deploy to GitHub Pages (use `run`; bare `pnpm deploy` is reserved)
-- `pnpm lint` - Run ESLint
-
-## Deployment
-
-**Manual deployment only** — the site does not auto-deploy on push to master.
-
-To deploy changes to production:
 ```bash
-pnpm run deploy
+git clone https://github.com/adityaarunsinghal/adityaarunsinghal.github.io.git
+cd adityaarunsinghal.github.io
+pnpm install --frozen-lockfile
+cp .env.example .env
+pnpm dev
 ```
 
-This builds the site and pushes `dist/` to the `gh-pages` branch, which GitHub Pages serves. Firestore rules deploy separately:
-```bash
-pnpm dlx firebase-tools deploy --only firestore:rules --project aditya-singhal-website
-```
+Fill in the Firebase web configuration in the local `.env` file. Keep server credentials out of `VITE_*` variables: those values are included in browser assets. Configure backend credentials separately from the browser build.
 
-### Environment Variables
-Set these as repository secrets for the (manually triggered) deploy workflow:
-- `VITE_FIREBASE_API_KEY`
-- `VITE_FIREBASE_AUTH_DOMAIN`
-- `VITE_FIREBASE_PROJECT_ID`
-- `VITE_FIREBASE_STORAGE_BUCKET`
-- `VITE_FIREBASE_MESSAGING_SENDER_ID`
-- `VITE_FIREBASE_APP_ID`
-- `VITE_FIREBASE_MEASUREMENT_ID`
+If a different global pnpm version is installed, run the repository's pinned version with `corepack pnpm@10.32.1` in place of `pnpm`.
 
-## Security
+## Commands
 
-### Authentication
-- Google OAuth via Firebase Auth
-- Email whitelist (`src/config.ts`) for private sections
-- `PrivateRoute` wrapper guards protected routes client-side
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Generate portrait assets and start Vite development. |
+| `pnpm build` | Type-check, build the applications, and generate public/workshop HTML and discovery files. |
+| `pnpm lint` | Run ESLint. |
+| `pnpm check:site` | Check public HTML, metadata, app isolation, shortcuts and legacy routes. |
+| `pnpm check:workshop` | Check workshop content, resources, assets and registration states. |
+| `pnpm check:public` | Check tracked source and build output for known private-artifact and credential patterns. |
+| `pnpm preview` | Preview the production build through Vite. |
+| `pnpm analyze` | Build and write the bundle report to `temp/build-reports/stats.html`. |
 
-### Database Security
-Firestore security rules (`firestore.rules`) are the authoritative access control. Each collection is restricted to whitelisted emails, and unlisted collections are denied by default. For example:
-```javascript
-match /element-tracker/{document} {
-  allow read, write: if request.auth != null
-    && request.auth.token.email == 'adityaarunsinghal@gmail.com';
-}
-```
+## Code layout
+
+| Location | Responsibility |
+| --- | --- |
+| `src/site/content.ts` | Public identity, profile links and reading map. |
+| `src/site/home.html` | Homepage template. |
+| `src/site/render.ts` | Homepage, shortcuts, 404, metadata and discovery rendering. |
+| `src/site/routes.ts` | App/shortcut paths and legacy URL normalization. |
+| `public/static/assets/` | Homepage styles and native browser enhancements. |
+| `src/workshop/pages.ts` | Course facts, resource availability, recordings and chapter metadata. |
+| `src/workshop/render.tsx` | Static workshop and information-page rendering. |
+| `src/router.tsx`, `app.html` | React application routing and entry template. |
+| `src/components/` | Application components and workshop presentation. |
+| `src/firebase.ts`, `src/contexts/`, `src/hooks/` | Firebase initialization and authentication state. |
+| `functions/` | Translation backend. |
+| `scripts/build-site-pages.mjs`, `scripts/build-workshop-pages.mjs` | Public document generators. |
+| `scripts/trmnl-sync.mjs`, `trmnl/` | Display synchronization and templates. |
+
+Generated site files live in ignored `dist/`; temporary renderer output lives in ignored `dist-ssr/`.
 
 ## Routes
 
-- `/` - Public landing page
-- `/login` - Google OAuth sign-in
-- `/progress` - Element tracker (auth-gated)
-- `/lovesingy` - Private messages + countdowns (auth-gated)
-- `/translate` - Live speech translator (auth-gated)
-- `/agentic-ai-workshop/` - 2026 course outline, registration, and materials status
-- `/agentic-ai-workshop-2025/` - 2025 archive, highlights, and code
-- `/registration-form/`, `/agentic-ai-workshop/registration-form/` - Current registration information
-- `/agentic-ai-workshop/feedback/`, `/agentic-ai-workshop-2025/feedback/` - 2025 feedback information
-- `/linkedin`, `/instagram`, `/facebook`, `/wife`, `/latest-resume` - Redirects
-- `/x/`, `/twitter/`, `/youtube/` - Static profile redirects, also available without JavaScript
-- `/404` - Not-found page
+| Route | Behavior |
+| --- | --- |
+| `/` | Static personal homepage. |
+| `/static/` | Compatibility copy of the homepage, canonicalized to `/`. |
+| `/login/` | Google sign-in. |
+| `/progress/` | Authenticated daily tracker. |
+| `/lovesingy/` | Authenticated messaging and countdown utility. |
+| `/translate/` | Authenticated speech translation utility. |
+| `/agentic-ai-workshop/` | Current course. |
+| `/agentic-ai-workshop-2025/` | Course archive. |
+| Workshop registration and feedback paths | Static information pages with their configured destinations. |
+| Profile shortcuts such as `/github/` and `/youtube/` | Static redirect documents with ordinary link fallbacks. |
+| Unknown paths | A genuine HTTP 404 with the generated not-found document. |
 
-## License
+Public pages work without JavaScript. App entry documents are `noindex`; Firebase authentication and Firestore rules control access to app data. Client route guards provide the sign-in flow, while server-side rules and backend validation enforce authorization.
 
-This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
-
-## Workshop development
-
-Course facts and resource destinations live in `src/workshop/pages.ts`. The page and archive render as complete HTML using `src/workshop/render.tsx`; native links and disclosures work without a client bundle. Vite development serves the same renderer.
+## Verify a build
 
 ```bash
 pnpm lint
 pnpm build
+pnpm check:site
 pnpm check:workshop
-pnpm preview --host 127.0.0.1 --port 4173 --strictPort
+pnpm check:public
 ```
 
-Open `http://127.0.0.1:4173/agentic-ai-workshop/` or the year-specific archive. Production output remains in ignored `dist/`; the isolated renderer is in ignored `dist-ssr/`. Run the full build when changing source before reviewing the production preview.
+Use the physical-file preview to check production paths and status codes:
 
-The browser check captures screenshots and tests responsive layout, accessibility, native controls, legacy navigation, and returning service-worker clients:
+```bash
+python3 scripts/serve-static-preview.py --port 4174
+```
+
+In another terminal, install the test browser and run the relevant checks against that same port:
 
 ```bash
 uv run --with playwright==1.58.0 playwright install chromium
-uv run scripts/check-workshop-browser.py
+uv run scripts/check-site-browser.py --base-url http://127.0.0.1:4174
+uv run scripts/check-workshop-browser.py --base-url http://127.0.0.1:4174
+uv run scripts/check-workshop-recordings.py --base-url http://127.0.0.1:4174
 ```
 
-Use `--browser-executable /absolute/path/to/chromium` for an existing compatible Chromium installation. Output defaults to ignored `temp/workshop-browser/`. The check permits local read requests only and does not authenticate or submit forms.
+The browser checks exercise local resources without signing in or submitting forms. Reports and screenshots go to ignored `temp/` directories. Vite development remains useful for editing, while the physical preview exposes missing files and real 404 behavior.
 
-To check physical directory routing independently of Vite:
+## Workshop maintenance
+
+Edit course facts, release state and destinations in `src/workshop/pages.ts`. Keep unavailable resources unset until their public URLs exist. Recording entries supply the video ID, duration, chapters and search examples; the renderer uses those records for players and links.
+
+Both years share the recording viewer. Keep year-specific styles scoped to their year and preserve the archive's content. Run the build and relevant workshop/recording checks after changes. See [recording configuration](docs/workshop-recordings.md) for the data and player details.
+
+Workshop headings use self-hosted Source Serif 4. The current title uses a small subset of the same face; source references and font licenses are in `public/workshops/2026/fonts/`. Social cards are generated from an SVG template and bundled Lato fonts, whose license is in `scripts/assets/fonts/OFL.txt`.
+
+## Publishing
+
+Source lives on `master`; GitHub Pages serves `gh-pages`. A source push does not publish the website.
+
+Run the build checks above and review the intended output before publishing. For an incremental release, the existing publisher supports additive mode:
 
 ```bash
-uv run python scripts/serve-static-preview.py --port 4174
+pnpm exec gh-pages --dist dist --add --nojekyll --message "Update website"
 ```
 
-This serves actual files and the custom 404 document, so case variants and old
-`/?/route` bookmarks can be verified without Vite's development fallback.
+Additive publication retains prior assets needed by already-open pages. Remove obsolete documents deliberately, and review the complete resulting file set. After the Pages build succeeds, verify the changed documents, assets, routes and HTTP status codes on the live site.
 
-The public homepage and `/static/` compatibility document share their template
-and HTTPS canonical. Public content does not load the React/Firebase application.
-App documents are generated at `/login/`, `/progress/`, `/lovesingy/`, and
-`/translate/`, with `noindex` and the existing authentication behavior.
-Shortcut documents are generated from `src/site/routes.ts`. The résumé remains
-unlisted and is excluded from the reading map and sitemap.
+`pnpm run deploy` remains a build-and-publish helper using the publisher's defaults. It does not perform the full checks or additive retention shown above. Firestore rules and Firebase Functions are separate deployments.
 
-Bundle analysis is written to ignored `temp/build-reports/stats.html`, outside
-the deployment output.
+### IndexNow
 
-Workshop resource availability and destinations are controlled by `src/workshop/pages.ts`. Keep unreleased resources unavailable until their actual public URLs are supplied. Registration state changes require coordination with the form owner and an approved publication. See [workshop release notes](docs/workshop-site-release-2026-09-27.md).
+`scripts/notify-indexnow.mjs` compares canonical public pages with a previous Pages commit. It requires a local verification receipt identifying the current source/Pages commits and passing live file checks:
 
-The 2025 archive includes all three session recordings with searchable chapters,
-YouTube timestamp links, and links to share a moment. Recording metadata and
-each episode’s search examples live in `src/workshop/pages.ts`. The 2026 Session
-1 recording is configured with 43 chapters. An authorized upload can be linked
-while YouTube finishes processing. See [recording setup and checks](docs/workshop-recordings.md).
+```bash
+node scripts/notify-indexnow.mjs \
+  --previous-ref PREVIOUS_PAGES_SHA \
+  --verified-release ./path/to/verified-release.json
+```
 
-Social cards are generated from a committed SVG template and bundled Lato fonts. The fonts retain their SIL Open Font License in `scripts/assets/fonts/OFL.txt`.
+The default is a dry run. Add `--send` after reviewing the selected URLs. Submission receipt confirms delivery to IndexNow, not search indexing.
 
-Workshop headings use self-hosted Source Serif 4 Display and Subhead. Their source references and license are in `public/workshops/2026/fonts/`. The newspaper example retains Georgia.
+## License
+
+See [LICENSE.txt](LICENSE.txt) for the existing Creative Commons Attribution 3.0 terms. Third-party code and fonts retain the licenses supplied with their assets.
