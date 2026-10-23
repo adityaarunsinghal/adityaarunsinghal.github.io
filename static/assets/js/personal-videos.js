@@ -31,5 +31,6 @@ for (const link of document.querySelectorAll("[data-youtube-id]")) {
     container.classList.add("is-playing");
     container.replaceChildren(player);
     player.focus();
+    document.dispatchEvent(new CustomEvent("site:video-open", { detail: { videoId } }));
   });
 }

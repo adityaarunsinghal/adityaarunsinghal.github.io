@@ -1,3 +1,10 @@
+/* Set the modal's initial layout before scripts arrive. Inline display values
+   from main.js still open articles; disabled JavaScript keeps all content. */
+.js #main,
+.js #main article {
+  display: none;
+}
+
 .disclaimer-note-text {
   font-size: medium;
   padding: 0.5rem;
