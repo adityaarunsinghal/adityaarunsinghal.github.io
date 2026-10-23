@@ -149,23 +149,6 @@
   color: #e0e5ef;
 }
 
-#header .profile-workshop-cta {
-  height: auto;
-  min-height: 2.75rem;
-  max-width: 100%;
-  padding: 0.6rem 1rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  letter-spacing: normal;
-  text-transform: none;
-  white-space: normal;
-}
-
-#header .profile-workshop-cta:focus-visible {
-  outline: 2px solid #c5d5ff;
-  outline-offset: 4px;
-}
-
 .wave-pair {
   width: min(100%, 29rem);
   margin: 2rem auto 1.5rem;

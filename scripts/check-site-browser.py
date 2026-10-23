@@ -50,10 +50,8 @@ async def check():
             await page.locator("h1").wait_for()
             await page.wait_for_function("!document.body.classList.contains('is-loading')")
             assert await page.locator("iframe").count() == 0
-            intro_link = page.locator(".profile-copy a")
-            assert await intro_link.count() == 1
-            assert await intro_link.get_attribute("href") == "/agentic-ai-workshop/"
-            assert await intro_link.inner_text() == "Explore the workshop"
+            assert await page.locator(".profile-copy a").count() == 0
+            assert await page.locator('nav[aria-label="Main navigation"] a[href="/agentic-ai-workshop/"]').count() == 1
             assert await page.locator(".wave-pair button").count() == 0
             assert await page.locator(".wave-pair figcaption").count() == 1
             assert await page.locator(".wave-year-labels span").all_text_contents() == ["2019", "2026"]
