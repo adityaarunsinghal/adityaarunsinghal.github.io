@@ -6,6 +6,7 @@
 
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  const coarsePointer = matchMedia('(pointer: coarse)');
   const particles = [];
   const frameDuration = 1000 / 30;
   let nearby = new Uint8Array(0);
@@ -14,6 +15,7 @@
   let touchTap = null;
   let frame = 0, resizeFrame = 0, lastFrame = 0;
   let accumulated = 0, suspended = false;
+  let scrollTimer = 0, scrolling = false;
 
   function draw() {
     context.clearRect(0, 0, width, height);
@@ -87,7 +89,7 @@
 
   function animate(now) {
     frame = 0;
-    if (suspended || document.hidden || motion.matches) return;
+    if (suspended || document.hidden || motion.matches || scrolling) return;
     if (lastFrame) accumulated += Math.min(now - lastFrame, frameDuration * 2);
     lastFrame = now;
     if (accumulated + 0.001 >= frameDuration) {
@@ -118,14 +120,14 @@
 
   function updateAnimation() {
     pause();
-    if (suspended || document.hidden) return;
+    if (suspended || document.hidden || scrolling) return;
     resize();
     if (motion.matches) draw();
     else frame = requestAnimationFrame(animate);
   }
 
   function scheduleResize() {
-    if (suspended || document.hidden || resizeFrame) return;
+    if (suspended || document.hidden || scrolling || resizeFrame) return;
     resizeFrame = requestAnimationFrame(() => { resizeFrame = 0; resize(); });
   }
   addEventListener('resize', scheduleResize, { passive: true });
@@ -158,10 +160,30 @@
     pointerActive = true;
     pointerX = event.clientX;
     pointerY = event.clientY;
+    // A deliberate tap can resume the effect immediately after scroll inertia.
+    if (scrolling) finishScroll();
   }, { passive: true });
   addEventListener('pointercancel', () => { touchTap = null; }, { passive: true });
   addEventListener('contextmenu', () => { touchTap = null; }, { passive: true });
-  addEventListener('scroll', () => { touchTap = null; }, { passive: true, capture: true });
+  function finishScroll() {
+    clearTimeout(scrollTimer);
+    scrollTimer = 0;
+    if (!scrolling) return;
+    scrolling = false;
+    updateAnimation();
+  }
+  addEventListener('scroll', () => {
+    touchTap = null;
+    // Leave native touch scrolling and inertia free of decorative canvas work.
+    if (!coarsePointer.matches || motion.matches || suspended || document.hidden) return;
+    scrolling = true;
+    pause();
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(finishScroll, 160);
+  }, { passive: true, capture: true });
+  coarsePointer.addEventListener('change', () => {
+    if (!coarsePointer.matches) finishScroll();
+  });
   addEventListener('pointerout', (event) => {
     if (event.pointerType === 'touch' || event.relatedTarget) return;
     pointerActive = false; pointerX = width / 2; pointerY = height / 2;
@@ -172,7 +194,13 @@
   });
   document.addEventListener('visibilitychange', updateAnimation);
   motion.addEventListener('change', updateAnimation);
-  addEventListener('pagehide', () => { suspended = true; pause(); });
+  addEventListener('pagehide', () => {
+    suspended = true;
+    clearTimeout(scrollTimer);
+    scrollTimer = 0;
+    scrolling = false;
+    pause();
+  });
   addEventListener('pageshow', () => { suspended = false; updateAnimation(); });
   updateAnimation();
 })();
