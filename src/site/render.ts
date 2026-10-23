@@ -2,6 +2,7 @@ import homeTemplate from "./home.html?raw";
 import { pageDefinitions } from "../workshop/pages";
 import { profileLinks, readingMap, site } from "./content";
 import { legacyTarget, routeEntries, type ShortcutPage } from "./routes";
+import { analyticsHead } from "./analytics";
 
 export { site, profileLinks, readingMap } from "./content";
 export { appPages, shortcutPages, canonicalLocalRoute, legacyTarget } from "./routes";
@@ -83,7 +84,8 @@ function homeHead(compatibilityScript: string) {
   <meta name="twitter:image" content="${image}" />
   <meta name="twitter:image:alt" content="Aditya (Adi) Singhal — Agentic AI, MCP, and evaluation" />
   <script type="application/ld+json">${safeJson(profileGraph())}</script>
-  <script src="${escapeHtml(compatibilityScript)}" defer></script>`;
+  <script src="${escapeHtml(compatibilityScript)}" defer></script>
+  ${analyticsHead()}`;
 }
 
 export function renderHome(compatibilityScript = "/__site/routes.js"): string {

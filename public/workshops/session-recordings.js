@@ -57,6 +57,7 @@
     let ready = false;
     let pendingSeek = false;
     let poller;
+    let recordedPlay = false;
 
     if (incoming.searchParams.get("recording") === recording.id) {
       const supplied = incoming.searchParams.get("t");
@@ -192,6 +193,11 @@
             onStateChange(event) {
               stopPolling();
               if (event.data !== 1) return;
+              if (!recordedPlay) {
+                recordedPlay = true;
+                const videoId = embedUrl.pathname.split("/").pop();
+                document.dispatchEvent(new CustomEvent("site:video-play", { detail: { videoId } }));
+              }
               pendingSeek = false;
               for (const other of players) {
                 if (other !== event.target && other.getPlayerState() === 1)

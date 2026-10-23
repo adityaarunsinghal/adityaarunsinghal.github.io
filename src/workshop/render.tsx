@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import AgenticAIWorkshop from "../components/AgenticAIWorkshop/AgenticAIWorkshop";
 import AgenticAIWorkshop2025 from "../components/AgenticAIWorkshop2025/AgenticAIWorkshop2025";
+import { analyticsMeasurementId } from "../site/analytics";
 import {
   course,
   courseAction,
@@ -102,6 +103,8 @@ export function renderWorkshop(
       : 2026;
   const canonical = `https://adityasinghal.com${page.canonical}`;
   const image = `https://adityasinghal.com/workshops/workshop-social-${year}.png`;
+  const measurementId = (page.kind === "current" || page.kind === "archive")
+    ? analyticsMeasurementId() : null;
   return (
     "<!DOCTYPE html>\n" +
     renderToStaticMarkup(
@@ -111,6 +114,9 @@ export function renderWorkshop(
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>{page.title}</title>
           <meta name="description" content={page.description} />
+          {measurementId && (
+            <script src="/site-analytics.js" data-measurement-id={measurementId} defer />
+          )}
           {page.kind === "current" && (
             <>
               <script src="/workshops/download-slides.js" defer />
