@@ -5,12 +5,12 @@ export const site = {
   title: "Aditya Singhal | Agentic AI, MCP & Applied Science",
   headline: "I build and evaluate production AI agents.",
   biography:
-    "I'm Adi, an Applied Scientist at Amazon and a former AWS Bedrock engineer. I work on agentic AI, Model Context Protocol (MCP), and RAG systems, and teach agentic AI at NYU.",
+    "I'm Adi, an Applied Scientist at Amazon and a former AWS Bedrock engineer. I work on agentic AI, Model Context Protocol (MCP), and RAG systems. I also teach an Agentic AI workshop every year at NYU.",
   description:
     "Aditya (Adi) Singhal builds and evaluates AI agents with MCP. Applied Scientist at Amazon, former AWS Bedrock engineer, and agentic AI instructor at NYU.",
   jobTitle: "Applied Scientist",
   employer: "Amazon",
-  modified: "2026-10-21",
+  modified: "2026-10-23",
   googleVerification: "Mu_M8rG9SHTJdAcpshMu76G6x_EwaOQaznwBRGdMSeI",
   portrait: "/static/images/adi-mcp-2026.webp",
   socialImage: "/social/adi-singhal.png",
