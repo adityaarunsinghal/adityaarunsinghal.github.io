@@ -1,163 +1,150 @@
-var canvasDots = function () {
-  var homeScreen = $('#one');
-  var canvas = document.querySelector('canvas'),
-    ctx = canvas.getContext('2d'),
-    colorDot = '#dddddd',
-    color = '#dddddd';
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  canvas.style.display = 'block';
-  ctx.fillStyle = colorDot;
-  ctx.lineWidth = 0.1;
-  ctx.strokeStyle = color;
+// A viewport-sized decoration: scrolling never changes its coordinate system.
+(() => {
+  const canvas = document.querySelector('.connecting-dots');
+  const context = canvas?.getContext('2d');
+  if (!context) return;
 
-  var mousePosition = {
-    x: (30 * canvas.width) / 100,
-    y: (30 * canvas.height) / 100,
-  };
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  const particles = [];
+  const frameDuration = 1000 / 30;
+  let nearby = new Uint8Array(0);
+  let width = 0, height = 0, ratio = 1;
+  let pointerX = 0, pointerY = 0, pointerActive = false;
+  let frame = 0, resizeFrame = 0, lastFrame = 0;
+  let accumulated = 0, suspended = false;
 
-  // window.innerWidth > window.innerHeight ? window.innerWidth/2 : window.innerHeight/2
-
-  var dots = {
-    nb:
-      window.innerWidth < window.innerHeight
-        ? window.innerWidth / 2
-        : window.innerHeight / 2,
-    distance:
-      window.innerWidth > window.innerHeight
-        ? window.innerWidth / 25
-        : window.innerHeight / 25,
-    d_radius:
-      window.innerWidth > window.innerHeight
-        ? window.innerWidth / 10
-        : window.innerHeight / 10,
-    array: [],
-  };
-
-  var resizeTimer;
-
-  $(window).on('resize', function (e) {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      ctx.fillStyle = colorDot;
-      ctx.lineWidth = 0.1;
-      ctx.strokeStyle = color;
-
-      dots = {
-        nb:
-          window.innerWidth < window.innerHeight
-            ? window.innerWidth / 1.25
-            : window.innerHeight / 1.25,
-        distance:
-          window.innerWidth > window.innerHeight
-            ? window.innerWidth / 25
-            : window.innerHeight / 25,
-        d_radius:
-          window.innerWidth > window.innerHeight
-            ? window.innerWidth / 10
-            : window.innerHeight / 10,
-        array: [],
-      };
-    }, 250);
-  });
-
-  function Dot() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-
-    this.vx = -0.5 + Math.random();
-    this.vy = -0.5 + Math.random();
-
-    this.radius = Math.random();
-  }
-
-  Dot.prototype = {
-    create: function () {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      ctx.fill();
-    },
-
-    animate: function () {
-      for (var i = 0; i < dots.nb; i++) {
-        var dot = dots.array[i];
-
-        if (dot.y < 0 || dot.y > canvas.height) {
-          dot.vx = dot.vx;
-          dot.vy = -dot.vy;
-        } else if (dot.x < 0 || dot.x > canvas.width) {
-          dot.vx = -dot.vx;
-          dot.vy = dot.vy;
-        }
-        dot.x += dot.vx;
-        dot.y += dot.vy;
-      }
-    },
-
-    line: function () {
-      for (var i = 0; i < dots.nb; i++) {
-        for (var j = 0; j < dots.nb; j++) {
-          var i_dot = dots.array[i];
-          var j_dot = dots.array[j];
-
-          if (
-            i_dot.x - j_dot.x < dots.distance &&
-            i_dot.y - j_dot.y < dots.distance &&
-            i_dot.x - j_dot.x > -dots.distance &&
-            i_dot.y - j_dot.y > -dots.distance
-          ) {
-            if (
-              i_dot.x - mousePosition.x < dots.d_radius &&
-              i_dot.y - mousePosition.y < dots.d_radius &&
-              i_dot.x - mousePosition.x > -dots.d_radius &&
-              i_dot.y - mousePosition.y > -dots.d_radius
-            ) {
-              ctx.beginPath();
-              ctx.moveTo(i_dot.x, i_dot.y);
-              ctx.lineTo(j_dot.x, j_dot.y);
-              ctx.stroke();
-              ctx.closePath();
-            }
-          }
-        }
-      }
-    },
-  };
-
-  function createDots() {
-    if (document.hidden) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (var i = 0; i < dots.nb; i++) {
-      // Reuse the active particles. Appending every frame kept thousands of
-      // unused particles alive until the next resize.
-      if (!dots.array[i]) dots.array.push(new Dot());
-      var dot = dots.array[i];
-
-      dot.create();
+  function draw() {
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = '#dddddd';
+    context.strokeStyle = '#dddddd';
+    context.beginPath();
+    const reach = Math.max(width, height) / 10;
+    for (let i = 0; i < particles.length; i++) {
+      const dot = particles[i];
+      context.moveTo(dot.x + dot.radius, dot.y);
+      context.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+      nearby[i] = Math.abs(dot.x - pointerX) < reach &&
+        Math.abs(dot.y - pointerY) < reach;
     }
+    context.fill();
 
-    dot.line();
-    dot.animate();
+    const distance = Math.max(width, height) / 25;
+    // The old effect drew each nearby pair twice. Match its fine line weight
+    // with one path, and avoid scanning pairs far from the pointer/centre.
+    for (const bothNearby of [false, true]) {
+      context.beginPath();
+      for (let i = 0; i < particles.length; i++) {
+        if (!nearby[i]) continue;
+        for (let j = 0; j < particles.length; j++) {
+          if (bothNearby ? !nearby[j] || j <= i : nearby[j]) continue;
+          const from = particles[i], to = particles[j];
+          if (Math.abs(from.x - to.x) >= distance ||
+              Math.abs(from.y - to.y) >= distance) continue;
+          context.moveTo(from.x, from.y);
+          context.lineTo(to.x, to.y);
+        }
+      }
+      context.lineWidth = bothNearby ? 0.2 : 0.1;
+      context.stroke();
+    }
   }
 
-  window.onmousemove = function (parameter) {
-    mousePosition.x = parameter.pageX;
-    mousePosition.y = parameter.pageY - $(window).scrollTop();
-  };
+  function resize() {
+    // CSS uses the large viewport height, so mobile browser bars and document
+    // scroll height do not make the field regenerate while someone scrolls.
+    const nextWidth = canvas.clientWidth;
+    const nextHeight = canvas.clientHeight;
+    const nextRatio = Math.min(devicePixelRatio || 1, 2);
+    if (!nextWidth || !nextHeight ||
+        (nextWidth === width && nextHeight === height && nextRatio === ratio)) return;
+    const widthChanged = width && nextWidth !== width;
+    for (const dot of particles) {
+      if (widthChanged) {
+        dot.x *= nextWidth / width;
+        dot.y *= nextHeight / height;
+      }
+    }
+    width = nextWidth;
+    height = nextHeight;
+    ratio = nextRatio;
+    canvas.width = Math.round(width * ratio);
+    canvas.height = Math.round(height * ratio);
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    const count = particles.length && !widthChanged
+      ? particles.length : Math.min(450, Math.ceil(Math.min(width, height) / 2));
+    particles.length = Math.min(particles.length, count);
+    while (particles.length < count) {
+      particles.push({ x: Math.random() * width, y: Math.random() * height,
+        vx: Math.random() - 0.5, vy: Math.random() - 0.5,
+        radius: Math.random() });
+    }
+    if (nearby.length !== count) nearby = new Uint8Array(count);
+    if (!pointerActive) { pointerX = width / 2; pointerY = height / 2; }
+    draw();
+  }
 
-  homeScreen.on('touchstart', function (event) {
-    mousePosition.x = event.changedTouches[0].pageX;
-    mousePosition.y = event.changedTouches[0].pageY;
+  function animate(now) {
+    frame = 0;
+    if (suspended || document.hidden || motion.matches) return;
+    if (lastFrame) accumulated += Math.min(now - lastFrame, frameDuration * 2);
+    lastFrame = now;
+    if (accumulated + 0.001 >= frameDuration) {
+      const step = Math.floor((accumulated + 0.001) / frameDuration);
+      accumulated = Math.max(0, accumulated - step * frameDuration);
+      for (const dot of particles) {
+        dot.x += dot.vx * step;
+        dot.y += dot.vy * step;
+        if (dot.x < 0 || dot.x > width) {
+          dot.x = Math.max(0, Math.min(width, dot.x)); dot.vx *= -1;
+        }
+        if (dot.y < 0 || dot.y > height) {
+          dot.y = Math.max(0, Math.min(height, dot.y)); dot.vy *= -1;
+        }
+      }
+      draw();
+    }
+    frame = requestAnimationFrame(animate);
+  }
+
+  function pause() {
+    cancelAnimationFrame(frame);
+    cancelAnimationFrame(resizeFrame);
+    frame = resizeFrame = 0;
+    lastFrame = accumulated = 0;
+  }
+
+  function updateAnimation() {
+    pause();
+    if (suspended || document.hidden) return;
+    resize();
+    if (motion.matches) draw();
+    else frame = requestAnimationFrame(animate);
+  }
+
+  function scheduleResize() {
+    if (suspended || document.hidden || resizeFrame) return;
+    resizeFrame = requestAnimationFrame(() => { resizeFrame = 0; resize(); });
+  }
+  addEventListener('resize', scheduleResize, { passive: true });
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(scheduleResize).observe(canvas);
+  addEventListener('pointermove', (event) => {
+    // Touch scrolling and synthetic mouse events must not drag the background.
+    if (!finePointer.matches || event.pointerType === 'touch' || motion.matches) return;
+    pointerActive = true;
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+  }, { passive: true });
+  addEventListener('pointerout', (event) => {
+    if (event.relatedTarget) return;
+    pointerActive = false; pointerX = width / 2; pointerY = height / 2;
+  }, { passive: true });
+  finePointer.addEventListener('change', () => {
+    pointerActive = false; pointerX = width / 2; pointerY = height / 2;
   });
-
-  mousePosition.x = window.innerWidth / 2;
-  mousePosition.y = window.innerHeight / 2;
-
-  setInterval(createDots, 1000 / 30);
-};
-
-window.onload = function () {
-  canvasDots();
-};
+  document.addEventListener('visibilitychange', updateAnimation);
+  motion.addEventListener('change', updateAnimation);
+  addEventListener('pagehide', () => { suspended = true; pause(); });
+  addEventListener('pageshow', () => { suspended = false; updateAnimation(); });
+  updateAnimation();
+})();
