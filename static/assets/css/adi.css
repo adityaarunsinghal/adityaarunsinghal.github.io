@@ -140,6 +140,32 @@
   color: #e0e5ef;
 }
 
+#header .content .profile-workshop-note {
+  margin: 0.85rem 0 0.65rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #e0e5ef;
+}
+
+#header .profile-workshop-cta {
+  height: auto;
+  min-height: 2.75rem;
+  max-width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: normal;
+}
+
+#header .profile-workshop-cta:focus-visible {
+  outline: 2px solid #c5d5ff;
+  outline-offset: 4px;
+}
+
 .wave-pair {
   width: min(100%, 29rem);
   margin: 2rem auto 1.5rem;
@@ -150,6 +176,18 @@
   width: 100%;
   height: auto;
   border-radius: 8px;
+}
+
+.wave-year-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.34375%;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #bac8e2;
 }
 
 @media (max-width: 736px) {
