@@ -54,7 +54,9 @@ async def check():
             assert await intro_link.count() == 1
             assert await intro_link.get_attribute("href") == "/agentic-ai-workshop/"
             assert await intro_link.inner_text() == "Explore the workshop"
-            assert await page.locator(".wave-pair button, .wave-pair figcaption").count() == 0
+            assert await page.locator(".wave-pair button").count() == 0
+            assert await page.locator(".wave-pair figcaption").count() == 1
+            assert await page.locator(".wave-year-labels span").all_text_contents() == ["2019", "2026"]
             assert await page.evaluate("document.documentElement.scrollWidth === innerWidth")
             assert not any(
                 token in url for url in requests
