@@ -21,7 +21,7 @@ His work includes production RAG infrastructure, MCP-based engineering automatio
 ## Public projects
 
 - [LLM-as-a-Judge Prompt Improver](https://github.com/adityaarunsinghal/LLM-As-A-Judge-Prompt-Improver): Prompt evaluation and improvement using scoring, cross-validation, error analysis, and an iterative optimization loop.
-- [cc-hindsight](https://github.com/adityaarunsinghal/cc-hindsight): Turns coding-agent session history into reusable prompts and preference files.
+- [Human Hindsight](https://github.com/adityaarunsinghal/human-hindsight): Turns Claude Code, Codex, Kiro, and OpenCode history into reusable first prompts and working preferences. Includes a guided CLI and a local Markdown library to browse, search, and copy; distillation uses your chosen agent CLI with consent.
 
 ## Technical writing
 
