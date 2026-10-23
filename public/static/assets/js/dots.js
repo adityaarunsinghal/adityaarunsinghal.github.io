@@ -11,6 +11,7 @@
   let nearby = new Uint8Array(0);
   let width = 0, height = 0, ratio = 1;
   let pointerX = 0, pointerY = 0, pointerActive = false;
+  let touchTap = null;
   let frame = 0, resizeFrame = 0, lastFrame = 0;
   let accumulated = 0, suspended = false;
 
@@ -108,6 +109,7 @@
   }
 
   function pause() {
+    touchTap = null;
     cancelAnimationFrame(frame);
     cancelAnimationFrame(resizeFrame);
     frame = resizeFrame = 0;
@@ -128,18 +130,44 @@
   }
   addEventListener('resize', scheduleResize, { passive: true });
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(scheduleResize).observe(canvas);
+  addEventListener('pointerdown', (event) => {
+    if (event.pointerType !== 'touch') return;
+    touchTap = event.isPrimary && event.button === 0 && !motion.matches
+      ? { id: event.pointerId, x: event.clientX, y: event.clientY,
+        started: performance.now(), scrollX, scrollY } : null;
+  }, { passive: true });
   addEventListener('pointermove', (event) => {
-    // Touch scrolling and synthetic mouse events must not drag the background.
-    if (!finePointer.matches || event.pointerType === 'touch' || motion.matches) return;
+    // A touch changes the connection region only after a tap, never during a swipe.
+    if (event.pointerType === 'touch') {
+      if (touchTap && (event.pointerId !== touchTap.id ||
+          Math.hypot(event.clientX - touchTap.x, event.clientY - touchTap.y) > 10)) touchTap = null;
+      return;
+    }
+    if (!finePointer.matches || motion.matches) return;
     pointerActive = true;
     pointerX = event.clientX;
     pointerY = event.clientY;
   }, { passive: true });
+  addEventListener('pointerup', (event) => {
+    if (event.pointerType !== 'touch') return;
+    const tap = touchTap;
+    touchTap = null;
+    if (!tap || event.pointerId !== tap.id || motion.matches ||
+        performance.now() - tap.started > 500 || scrollX !== tap.scrollX || scrollY !== tap.scrollY ||
+        Math.hypot(event.clientX - tap.x, event.clientY - tap.y) > 10) return;
+    pointerActive = true;
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+  }, { passive: true });
+  addEventListener('pointercancel', () => { touchTap = null; }, { passive: true });
+  addEventListener('contextmenu', () => { touchTap = null; }, { passive: true });
+  addEventListener('scroll', () => { touchTap = null; }, { passive: true, capture: true });
   addEventListener('pointerout', (event) => {
-    if (event.relatedTarget) return;
+    if (event.pointerType === 'touch' || event.relatedTarget) return;
     pointerActive = false; pointerX = width / 2; pointerY = height / 2;
   }, { passive: true });
   finePointer.addEventListener('change', () => {
+    touchTap = null;
     pointerActive = false; pointerX = width / 2; pointerY = height / 2;
   });
   document.addEventListener('visibilitychange', updateAnimation);
