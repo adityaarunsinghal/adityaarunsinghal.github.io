@@ -47,7 +47,7 @@ If a different global pnpm version is installed, run the repository's pinned ver
 | `src/router.tsx`, `app.html` | React application routing and entry template. |
 | `src/components/` | Application components and workshop presentation. |
 | `src/firebase.ts`, `src/contexts/`, `src/hooks/` | Firebase initialization and authentication state. |
-| `functions/` | Translation backend. |
+| `functions/` | Backend for the deprecated translation utility. |
 | `scripts/build-site-pages.mjs`, `scripts/build-workshop-pages.mjs` | Public document generators. |
 | `scripts/trmnl-sync.mjs`, `trmnl/` | Display synchronization and templates. |
 
@@ -62,7 +62,7 @@ Generated site files live in ignored `dist/`; temporary renderer output lives in
 | `/login/` | Google sign-in. |
 | `/progress/` | Authenticated daily tracker. |
 | `/lovesingy/` | Authenticated messaging and countdown utility. |
-| `/translate/` | Authenticated speech translation utility. |
+| `/translate/` | Deprecated speech translation utility; not currently configured for use. |
 | `/agentic-ai-workshop/` | Current course. |
 | `/agentic-ai-workshop-2025/` | Course archive. |
 | Workshop registration and feedback paths | Static information pages with their configured destinations. |
