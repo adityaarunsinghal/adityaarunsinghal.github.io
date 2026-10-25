@@ -426,6 +426,20 @@ export const resources: {
     ],
   },
   {
+    name: "Session 3: Multi-agent systems",
+    description: "Explore the slides and compare single-agent, graph and swarm fact-checking.",
+    links: [
+      {
+        url: `${course.publicRepositoryUrl}/blob/main/session-03-multi-agent-topologies/slides/session-03-multi-agent-topologies-2026-10-22.html`,
+        action: "Open Session 3 slides",
+      },
+      {
+        url: `${course.publicRepositoryUrl}/tree/main/session-03-multi-agent-topologies/demo-app`,
+        action: "Open starter code",
+      },
+    ],
+  },
+  {
     name: "Build and publish your agent",
     description: "Follow the setup, ZIP upload, peer feedback, and course-credit instructions.",
     links: [{ url: `${course.publicRepositoryUrl}#clone-and-build-your-own-agent`, action: "Read the project guide" }],

@@ -271,7 +271,7 @@ export default function AgenticAIWorkshop({
               </h2>
             </div>
             <p>
-              Session 1 and 2 slides and starter code are available in the{" "}
+              Slides and starter code for Sessions 1–3 are available in the{" "}
               <a href={course.publicRepositoryUrl}>public course repository</a>.
               Each session’s materials will be released the day before class.
             </p>
