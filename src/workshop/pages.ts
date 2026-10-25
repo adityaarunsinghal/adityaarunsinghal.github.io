@@ -416,8 +416,9 @@ export const resources: {
     description: "Explore the slides and demo app, then build an interactive agent.",
     links: [
       {
-        url: `${course.publicRepositoryUrl}/blob/main/session-02-beyond-chat-interfaces/slides/session-02-beyond-chat-interfaces-2026-10-15.html`,
-        action: "Open Session 2 slides",
+        url: "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-02-beyond-chat-interfaces/slides/session-02-beyond-chat-interfaces-2026-10-15.html",
+        action: "Download Session 2 slides",
+        download: "session-02-beyond-chat-interfaces-2026-10-15.html",
       },
       {
         url: `${course.publicRepositoryUrl}/tree/main/session-02-beyond-chat-interfaces/demo-app`,
@@ -430,8 +431,9 @@ export const resources: {
     description: "Explore the slides and compare single-agent, graph and swarm fact-checking.",
     links: [
       {
-        url: `${course.publicRepositoryUrl}/blob/main/session-03-multi-agent-topologies/slides/session-03-multi-agent-topologies-2026-10-22.html`,
-        action: "Open Session 3 slides",
+        url: "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-03-multi-agent-topologies/slides/session-03-multi-agent-topologies-2026-10-22.html",
+        action: "Download Session 3 slides",
+        download: "session-03-multi-agent-topologies-2026-10-22.html",
       },
       {
         url: `${course.publicRepositoryUrl}/tree/main/session-03-multi-agent-topologies/demo-app`,
