@@ -1,0 +1,2196 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Aditya Singhal public data API",
+    "version": "1.0.0",
+    "description": "Read-only public JSON documents generated from Aditya Singhal's personal website and workshop materials.\n\nNo account, API key, authentication flow or payment is required. This is a static information interface, not a model-inference or transactional service.\n\nUse the exact GET paths below. HEAD requests can inspect the host's response headers without a response body. Query parameters do not filter or change the documents; filter the returned arrays in your client.\n\nVersion 1 may gain additional public fields. Clients should tolerate unknown fields; existing documented field meanings and types remain stable within this version.\n\nRespect the live Cache-Control and conditional-request headers supplied by GitHub Pages. Data changes with site releases; there is no published application rate limit, freshness guarantee or service-level agreement.\n\nCheck the HTTP status and Content-Type before parsing JSON. Missing paths and host errors may return HTML. A generic JSON error envelope is not provided.\n\nLinks to other websites retain those websites' own availability and access requirements. The public data interface does not provide access to private site applications.",
+    "contact": {
+      "name": "Aditya Singhal",
+      "url": "https://adityasinghal.com/#contact"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://adityasinghal.com",
+      "description": "Public website hosted on GitHub Pages."
+    }
+  ],
+  "externalDocs": {
+    "description": "Public data documentation and usage examples.",
+    "url": "https://adityasinghal.com/developers/"
+  },
+  "security": [],
+  "tags": [
+    {
+      "name": "Public information",
+      "description": "Read the public biography, resources and teaching materials."
+    }
+  ],
+  "paths": {
+    "/api/v1/index.json": {
+      "get": {
+        "operationId": "getApiIndex",
+        "summary": "Read the public API index",
+        "description": "Discover the available public JSON documents and their documentation.",
+        "tags": [
+          "Public information"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The requested public JSON document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiIndex"
+                },
+                "example": {
+                  "apiVersion": "1",
+                  "sourceUrl": "https://adityasinghal.com/developers/",
+                  "modified": "2026-10-27",
+                  "name": "Aditya Singhal public data API",
+                  "description": "Read-only JSON documents generated from the public personal website and workshop materials. No account or API key is required.",
+                  "readOnly": true,
+                  "authentication": "none",
+                  "documentationUrl": "https://adityasinghal.com/developers/",
+                  "openApiUrl": "https://adityasinghal.com/openapi.json",
+                  "endpoints": [
+                    {
+                      "path": "/api/v1/index.json",
+                      "operationId": "getApiIndex",
+                      "summary": "Read the public API index",
+                      "description": "Discover the available public JSON documents and their documentation.",
+                      "url": "https://adityasinghal.com/api/v1/index.json",
+                      "method": "GET"
+                    },
+                    {
+                      "path": "/api/v1/profile.json",
+                      "operationId": "getProfile",
+                      "summary": "Read Aditya Singhal's public profile",
+                      "description": "Read the biography, professional interests and profile links published on the personal website.",
+                      "url": "https://adityasinghal.com/api/v1/profile.json",
+                      "method": "GET"
+                    },
+                    {
+                      "path": "/api/v1/resources.json",
+                      "operationId": "listResources",
+                      "summary": "List public projects, writing and teaching resources",
+                      "description": "Read the site's public reading map. Filter its small resource list in your client.",
+                      "url": "https://adityasinghal.com/api/v1/resources.json",
+                      "method": "GET"
+                    },
+                    {
+                      "path": "/api/v1/workshops.json",
+                      "operationId": "listWorkshops",
+                      "summary": "Read current and archived workshop resources",
+                      "description": "Read the published course information, material links and available recording chapters for the 2026 and 2025 workshops.",
+                      "url": "https://adityasinghal.com/api/v1/workshops.json",
+                      "method": "GET"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not modified in response to a conditional request. This response has no body; retain the previously cached document."
+          },
+          "default": {
+            "description": "A host-generated response, including HTML for an unknown path or server error. Check status and Content-Type before parsing.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "description": "Host-generated HTML error page. No JSON error shape is guaranteed."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/profile.json": {
+      "get": {
+        "operationId": "getProfile",
+        "summary": "Read Aditya Singhal's public profile",
+        "description": "Read the biography, professional interests and profile links published on the personal website.",
+        "tags": [
+          "Public information"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The requested public JSON document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profile"
+                },
+                "example": {
+                  "apiVersion": "1",
+                  "sourceUrl": "https://adityasinghal.com/",
+                  "modified": "2026-10-27",
+                  "name": "Aditya Singhal",
+                  "alternateName": "Adi Singhal",
+                  "description": "Aditya (Adi) Singhal builds and evaluates AI agents with MCP. Applied Scientist at Amazon, former AWS Bedrock engineer, and agentic AI instructor at NYU.",
+                  "biography": "I'm Adi, an Applied Scientist at Amazon and a former AWS Bedrock engineer. I work on agentic AI, Model Context Protocol (MCP), and RAG systems. I also teach an Agentic AI workshop every year at NYU.",
+                  "jobTitle": "Applied Scientist",
+                  "employer": "Amazon",
+                  "topics": [
+                    "Agentic AI",
+                    "Model Context Protocol (MCP)",
+                    "RAG systems",
+                    "LLM evaluation"
+                  ],
+                  "profiles": {
+                    "linkedin": "https://www.linkedin.com/in/adi-singhal/",
+                    "github": "https://github.com/adityaarunsinghal",
+                    "x": "https://x.com/dramebaazguy",
+                    "youtube": "https://www.youtube.com/@singhaladitya",
+                    "instagram": "https://www.instagram.com/that_dramebaaz_guy/",
+                    "facebook": "https://www.facebook.com/that.dramebaaz.guy"
+                  }
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not modified in response to a conditional request. This response has no body; retain the previously cached document."
+          },
+          "default": {
+            "description": "A host-generated response, including HTML for an unknown path or server error. Check status and Content-Type before parsing.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "description": "Host-generated HTML error page. No JSON error shape is guaranteed."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/resources.json": {
+      "get": {
+        "operationId": "listResources",
+        "summary": "List public projects, writing and teaching resources",
+        "description": "Read the site's public reading map. Filter its small resource list in your client.",
+        "tags": [
+          "Public information"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The requested public JSON document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resources"
+                },
+                "example": {
+                  "apiVersion": "1",
+                  "sourceUrl": "https://adityasinghal.com/",
+                  "modified": "2026-10-27",
+                  "resources": [
+                    {
+                      "category": "Profile",
+                      "name": "Personal website",
+                      "url": "https://adityasinghal.com/",
+                      "description": "Introduction, selected work, writing, and contact links."
+                    },
+                    {
+                      "category": "Profile",
+                      "name": "LinkedIn",
+                      "url": "https://www.linkedin.com/in/adi-singhal/",
+                      "description": "Professional profile and published writing."
+                    },
+                    {
+                      "category": "Profile",
+                      "name": "GitHub",
+                      "url": "https://github.com/adityaarunsinghal",
+                      "description": "Public repositories."
+                    },
+                    {
+                      "category": "Profile",
+                      "name": "X",
+                      "url": "https://x.com/dramebaazguy",
+                      "description": "Adi's profile as @dramebaazguy."
+                    },
+                    {
+                      "category": "Profile",
+                      "name": "YouTube",
+                      "url": "https://www.youtube.com/@singhaladitya",
+                      "description": "Films and conversations."
+                    },
+                    {
+                      "category": "Agentic AI and MCP teaching",
+                      "name": "NYU Agentic AI Workshop 2026",
+                      "url": "https://adityasinghal.com/agentic-ai-workshop/",
+                      "description": "Agent harnesses, tools and MCP, interfaces beyond chat, multi-agent systems, and evaluation. Taught with Luca Chang."
+                    },
+                    {
+                      "category": "Agentic AI and MCP teaching",
+                      "name": "2026 workshop code and materials",
+                      "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026",
+                      "description": "Released lessons, slides, and runnable examples."
+                    },
+                    {
+                      "category": "Agentic AI and MCP teaching",
+                      "name": "NYU Agentic AI Workshop 2025 archive",
+                      "url": "https://adityasinghal.com/agentic-ai-workshop-2025/",
+                      "description": "The earlier course, session recordings, chapters, and public code."
+                    },
+                    {
+                      "category": "Public projects",
+                      "name": "LLM-as-a-Judge Prompt Improver",
+                      "url": "https://github.com/adityaarunsinghal/LLM-As-A-Judge-Prompt-Improver",
+                      "description": "Prompt evaluation and improvement using scoring, cross-validation, error analysis, and an iterative optimization loop."
+                    },
+                    {
+                      "category": "Public projects",
+                      "name": "Human Hindsight",
+                      "url": "https://github.com/adityaarunsinghal/human-hindsight",
+                      "description": "Turns Claude Code, Codex, Kiro, and OpenCode history into reusable first prompts and working preferences. Includes a guided CLI and a local Markdown library to browse, search, and copy; distillation uses your chosen agent CLI with consent."
+                    },
+                    {
+                      "category": "Technical writing",
+                      "name": "Why 'Code Mode' is like Shaking a Tree",
+                      "url": "https://www.linkedin.com/pulse/why-code-mode-like-shaking-tree-aditya-singhal-gkzae",
+                      "description": "August 21, 2026. Coauthored with Patrick Kelly; explains programmatic tool use and intermediate data handling. Port of Context's benchmarks in the article are attributed to that team."
+                    },
+                    {
+                      "category": "Technical writing",
+                      "name": "What I learnt about the new MCP 2.0 release today at the NY Release Event",
+                      "url": "https://www.linkedin.com/pulse/what-i-learnt-new-mcp-20-release-today-ny-event-aditya-singhal-7vupe",
+                      "description": "July 29, 2026. Notes from the MCP release event on protocol changes and their implications for agent builders."
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not modified in response to a conditional request. This response has no body; retain the previously cached document."
+          },
+          "default": {
+            "description": "A host-generated response, including HTML for an unknown path or server error. Check status and Content-Type before parsing.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "description": "Host-generated HTML error page. No JSON error shape is guaranteed."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workshops.json": {
+      "get": {
+        "operationId": "listWorkshops",
+        "summary": "Read current and archived workshop resources",
+        "description": "Read the published course information, material links and available recording chapters for the 2026 and 2025 workshops.",
+        "tags": [
+          "Public information"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The requested public JSON document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workshops"
+                },
+                "example": {
+                  "apiVersion": "1",
+                  "sourceUrl": "https://adityasinghal.com/agentic-ai-workshop/",
+                  "modified": "2026-10-27",
+                  "workshops": [
+                    {
+                      "year": 2026,
+                      "status": "in-progress",
+                      "title": "Agentic AI Workshop 2026 | NYU CDS | Adi Singhal",
+                      "url": "https://adityasinghal.com/agentic-ai-workshop/",
+                      "description": "Four in-person Thursday sessions at NYU CDS, October 8–29, 2026. Learn agents, harnesses, interactive apps, and coordination through slides, demonstrations, and starter code.",
+                      "modified": "2026-10-27",
+                      "repositoryUrl": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026",
+                      "schedule": {
+                        "dates": "October 8, 15, 22 & 29, 2026",
+                        "time": "Thursdays, 5:30–7:00 PM ET",
+                        "timeZone": "America/New_York",
+                        "venue": "CDS 7th Floor Open Space",
+                        "address": "60 5th Ave, between 12th and 13th Streets"
+                      },
+                      "sessions": [
+                        {
+                          "date": "2026-10-08",
+                          "title": "Agents and harnesses",
+                          "description": "What an agent is, when to use one, and the machinery that runs its tools, context, and decisions.",
+                          "topics": [
+                            "Agent loops",
+                            "Tools & MCP",
+                            "Harnesses"
+                          ],
+                          "attendance": "Required"
+                        },
+                        {
+                          "date": "2026-10-15",
+                          "title": "Agents beyond chat",
+                          "description": "Give an agent an interactive surface. Explore generated interfaces, typed decisions, and experiments with feedback.",
+                          "topics": [
+                            "A2UI & MCP Apps",
+                            "Jev",
+                            "Auto-Research"
+                          ],
+                          "attendance": "Required"
+                        },
+                        {
+                          "date": "2026-10-22",
+                          "title": "Multi-agent systems",
+                          "description": "Decide when to divide work, what each agent needs to know, and how to coordinate handoffs and review.",
+                          "topics": [
+                            "Context management",
+                            "Coordination protocols",
+                            "Evaluation"
+                          ],
+                          "attendance": "Required"
+                        },
+                        {
+                          "date": "2026-10-29",
+                          "title": "Demo Day",
+                          "description": "Show what you built. Discuss your project with classmates and industry guests, and learn from their questions.",
+                          "topics": [
+                            "Student demos",
+                            "Industry feedback",
+                            "Coffee chats"
+                          ],
+                          "attendance": "Highly encouraged"
+                        }
+                      ],
+                      "materials": [
+                        {
+                          "name": "2026 public repository",
+                          "description": "The home for this year’s course materials.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026",
+                              "label": "Open the repository"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Session 1: Agents and harnesses",
+                          "description": "Download the slides and explore the starter code for your own agent.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-01-agent-harnesses/session-01-agent-harnesses-2026-10-07.html",
+                              "label": "Download Session 1 slides",
+                              "download": "session-01-agent-harnesses-2026-10-07.html"
+                            },
+                            {
+                              "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026/tree/main/session-01-agent-harnesses/demo-app",
+                              "label": "Open starter code"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Session 2: Agents beyond chat",
+                          "description": "Explore the slides and demo app, then build an interactive agent.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-02-beyond-chat-interfaces/slides/session-02-beyond-chat-interfaces-2026-10-15.html",
+                              "label": "Download Session 2 slides",
+                              "download": "session-02-beyond-chat-interfaces-2026-10-15.html"
+                            },
+                            {
+                              "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026/tree/main/session-02-beyond-chat-interfaces/demo-app",
+                              "label": "Open starter code"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Session 3: Multi-agent systems",
+                          "description": "Explore the slides and compare single-agent, graph and swarm fact-checking.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-03-multi-agent-topologies/slides/session-03-multi-agent-topologies-2026-10-22.html",
+                              "label": "Download Session 3 slides",
+                              "download": "session-03-multi-agent-topologies-2026-10-22.html"
+                            },
+                            {
+                              "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026/tree/main/session-03-multi-agent-topologies/demo-app",
+                              "label": "Open starter code"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Build and publish your agent",
+                          "description": "Follow the setup, ZIP upload, peer feedback, and course-credit instructions.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026#clone-and-build-your-own-agent",
+                              "label": "Read the project guide"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Class app store",
+                          "description": "Publish your project and explore what others in the workshop build.",
+                          "access": "registered-students",
+                          "links": [
+                            {
+                              "url": "https://nyu-workshop.adityasinghal.com/",
+                              "label": "Open the class app store"
+                            }
+                          ],
+                          "note": "(For registered students only)"
+                        }
+                      ],
+                      "recordings": [
+                        {
+                          "id": "session-1-recording",
+                          "session": 1,
+                          "date": "2026-10-08",
+                          "title": "Models, Tools & Agent Harnesses",
+                          "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk",
+                          "durationSeconds": 7352.321,
+                          "chapters": [
+                            {
+                              "title": "Welcome and workshop format",
+                              "startSeconds": 0,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=0s"
+                            },
+                            {
+                              "title": "Instructor introduction",
+                              "startSeconds": 182,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=182s"
+                            },
+                            {
+                              "title": "Tools, inference and the goals for Session 1",
+                              "startSeconds": 435,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=435s"
+                            },
+                            {
+                              "title": "Student project ideas and Demo Day",
+                              "startSeconds": 543,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=543s"
+                            },
+                            {
+                              "title": "From chat and tool use to personal agents",
+                              "startSeconds": 1036,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=1036s"
+                            },
+                            {
+                              "title": "The restaurant video",
+                              "startSeconds": 1327,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=1327s"
+                            },
+                            {
+                              "title": "Lalima, Harry and Tim: model, harness and tools",
+                              "startSeconds": 1408,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=1408s"
+                            },
+                            {
+                              "title": "Spotting the mistake in the analogy",
+                              "startSeconds": 1852,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=1852s"
+                            },
+                            {
+                              "title": "Live demo: asking an agent for the time",
+                              "startSeconds": 2105,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=2105s"
+                            },
+                            {
+                              "title": "Inspecting the request payload",
+                              "startSeconds": 2487,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=2487s"
+                            },
+                            {
+                              "title": "Streaming responses and tool execution",
+                              "startSeconds": 2675,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=2675s"
+                            },
+                            {
+                              "title": "Q&A: streaming and inference providers",
+                              "startSeconds": 2839,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=2839s"
+                            },
+                            {
+                              "title": "Visible reasoning and model decisions",
+                              "startSeconds": 3036,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=3036s"
+                            },
+                            {
+                              "title": "Who manages conversation history?",
+                              "startSeconds": 3250,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=3250s"
+                            },
+                            {
+                              "title": "Prompt caching and repeated context",
+                              "startSeconds": 3391,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=3391s"
+                            },
+                            {
+                              "title": "System prompts and instruction priority",
+                              "startSeconds": 3720,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=3720s"
+                            },
+                            {
+                              "title": "Eight dimensions of an agent",
+                              "startSeconds": 3940,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=3940s"
+                            },
+                            {
+                              "title": "Control: fixed steps or adaptive choices",
+                              "startSeconds": 3971,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=3971s"
+                            },
+                            {
+                              "title": "Trigger: a person, schedule or event",
+                              "startSeconds": 4029,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4029s"
+                            },
+                            {
+                              "title": "Authority: acting or asking for approval",
+                              "startSeconds": 4311,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4311s"
+                            },
+                            {
+                              "title": "Duration: one task or an ongoing responsibility",
+                              "startSeconds": 4425,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4425s"
+                            },
+                            {
+                              "title": "Environment: tools and browsers",
+                              "startSeconds": 4557,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4557s"
+                            },
+                            {
+                              "title": "Topology: one agent or an orchestrator",
+                              "startSeconds": 4585,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4585s"
+                            },
+                            {
+                              "title": "Memory across interactions",
+                              "startSeconds": 4665,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4665s"
+                            },
+                            {
+                              "title": "Interface beyond chat",
+                              "startSeconds": 4720,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4720s"
+                            },
+                            {
+                              "title": "The small Python harness and starter code",
+                              "startSeconds": 4778,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4778s"
+                            },
+                            {
+                              "title": "Class app store walkthrough",
+                              "startSeconds": 4843,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4843s"
+                            },
+                            {
+                              "title": "Homework: build an agent with a custom tool",
+                              "startSeconds": 4899,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=4899s"
+                            },
+                            {
+                              "title": "Launching apps and visitor-funded inference",
+                              "startSeconds": 5122,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=5122s"
+                            },
+                            {
+                              "title": "Exploring the harness dimensions in the demo",
+                              "startSeconds": 5226,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=5226s"
+                            },
+                            {
+                              "title": "Demo Day and coffee chats",
+                              "startSeconds": 5362,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=5362s"
+                            },
+                            {
+                              "title": "Packaging, publishing and feedback",
+                              "startSeconds": 5408,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=5408s"
+                            },
+                            {
+                              "title": "Open Q&A",
+                              "startSeconds": 5704,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=5704s"
+                            },
+                            {
+                              "title": "Prompt caching versus memory and handoffs",
+                              "startSeconds": 5761,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=5761s"
+                            },
+                            {
+                              "title": "Choosing designs and evaluating performance",
+                              "startSeconds": 5836,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=5836s"
+                            },
+                            {
+                              "title": "Last year's workshop and alternative harnesses",
+                              "startSeconds": 6136,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=6136s"
+                            },
+                            {
+                              "title": "External tools and MCP servers",
+                              "startSeconds": 6261,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=6261s"
+                            },
+                            {
+                              "title": "Building an application versus using a coding agent",
+                              "startSeconds": 6372,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=6372s"
+                            },
+                            {
+                              "title": "Can the harness call tools directly?",
+                              "startSeconds": 6551,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=6551s"
+                            },
+                            {
+                              "title": "Where LangGraph fits",
+                              "startSeconds": 6780,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=6780s"
+                            },
+                            {
+                              "title": "When a conventional pipeline may be enough",
+                              "startSeconds": 6841,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=6841s"
+                            },
+                            {
+                              "title": "Model behavior, safety and harness controls",
+                              "startSeconds": 6956,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=6956s"
+                            },
+                            {
+                              "title": "Keeping up with agentic AI",
+                              "startSeconds": 7244,
+                              "url": "https://www.youtube.com/watch?v=UtjOl-LPcCk&t=7244s"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "session-2-recording",
+                          "session": 2,
+                          "date": "2026-10-15",
+                          "title": "Beyond Chat, MCP Apps & Decision APIs",
+                          "url": "https://www.youtube.com/watch?v=CnrdDizVvV8",
+                          "durationSeconds": 5403.269958333333,
+                          "chapters": [
+                            {
+                              "title": "Welcome and recap",
+                              "startSeconds": 0,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=0s"
+                            },
+                            {
+                              "title": "Agent design choices",
+                              "startSeconds": 246,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=246s"
+                            },
+                            {
+                              "title": "The model request bubble",
+                              "startSeconds": 385,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=385s"
+                            },
+                            {
+                              "title": "Chat agent demonstration",
+                              "startSeconds": 585,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=585s"
+                            },
+                            {
+                              "title": "What the harness does",
+                              "startSeconds": 921,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=921s"
+                            },
+                            {
+                              "title": "Why tools require another request",
+                              "startSeconds": 1225,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=1225s"
+                            },
+                            {
+                              "title": "The newspaper demonstration",
+                              "startSeconds": 1402,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=1402s"
+                            },
+                            {
+                              "title": "MCP tools and resources",
+                              "startSeconds": 1721,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=1721s"
+                            },
+                            {
+                              "title": "Interactive newspaper layout",
+                              "startSeconds": 1805,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=1805s"
+                            },
+                            {
+                              "title": "MCP Apps and extensions",
+                              "startSeconds": 1961,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=1961s"
+                            },
+                            {
+                              "title": "The cost of formatting decisions",
+                              "startSeconds": 2093,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=2093s"
+                            },
+                            {
+                              "title": "Decision APIs",
+                              "startSeconds": 2342,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=2342s"
+                            },
+                            {
+                              "title": "Bag of words and embeddings",
+                              "startSeconds": 2522,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=2522s"
+                            },
+                            {
+                              "title": "Transformer classifiers",
+                              "startSeconds": 2744,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=2744s"
+                            },
+                            {
+                              "title": "Text classification and confidence",
+                              "startSeconds": 2848,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=2848s"
+                            },
+                            {
+                              "title": "Calibration",
+                              "startSeconds": 3039,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=3039s"
+                            },
+                            {
+                              "title": "Decision-model limits",
+                              "startSeconds": 3212,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=3212s"
+                            },
+                            {
+                              "title": "Jev in the newspaper",
+                              "startSeconds": 3433,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=3433s"
+                            },
+                            {
+                              "title": "Noul and factual verification",
+                              "startSeconds": 3472,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=3472s"
+                            },
+                            {
+                              "title": "Research and revision loops",
+                              "startSeconds": 3624,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=3624s"
+                            },
+                            {
+                              "title": "Autoresearch",
+                              "startSeconds": 3765,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=3765s"
+                            },
+                            {
+                              "title": "AlphaEvolve",
+                              "startSeconds": 3973,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=3973s"
+                            },
+                            {
+                              "title": "Recursive self-improvement",
+                              "startSeconds": 4035,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4035s"
+                            },
+                            {
+                              "title": "Open discussion",
+                              "startSeconds": 4202,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4202s"
+                            },
+                            {
+                              "title": "Classification probabilities",
+                              "startSeconds": 4372,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4372s"
+                            },
+                            {
+                              "title": "Domain-specific calibration",
+                              "startSeconds": 4491,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4491s"
+                            },
+                            {
+                              "title": "Consistent classification and caching",
+                              "startSeconds": 4616,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4616s"
+                            },
+                            {
+                              "title": "Local development and publishing",
+                              "startSeconds": 4660,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4660s"
+                            },
+                            {
+                              "title": "Jev, autoresearch and RSI",
+                              "startSeconds": 4741,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4741s"
+                            },
+                            {
+                              "title": "Changing open model behavior",
+                              "startSeconds": 4797,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4797s"
+                            },
+                            {
+                              "title": "MCP connections and extensions",
+                              "startSeconds": 4971,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=4971s"
+                            },
+                            {
+                              "title": "Classification heads and text generation",
+                              "startSeconds": 5118,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=5118s"
+                            },
+                            {
+                              "title": "The cost of autoresearch",
+                              "startSeconds": 5312,
+                              "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=5312s"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "year": 2025,
+                      "status": "archived",
+                      "title": "Agentic AI Workshop 2025 Archive | Adi Singhal",
+                      "url": "https://adityasinghal.com/agentic-ai-workshop-2025/",
+                      "description": "The 2025 NYU CDS workshop archive: full session recordings with searchable chapters, course outline, MCP newspaper project, highlights, and public code.",
+                      "modified": "2026-10-27",
+                      "repositoryUrl": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2025",
+                      "materials": [
+                        {
+                          "name": "2025 public repository",
+                          "description": "Public code and materials from the archived workshop.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2025",
+                              "label": "Open the repository"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "2025 recording playlist",
+                          "description": "The archived workshop's public video playlist.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://www.youtube.com/playlist?list=PLgF7i4LH-YxYvhXK-yywN7eFRjRjQrq89",
+                              "label": "Open the playlist"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "The restaurant analogy",
+                          "description": "A familiar way into the roles behind MCP.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://www.youtube.com/watch?v=LoTpDu_rSHE",
+                              "label": "Watch the clip"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Agents beyond chat",
+                          "description": "See how an agent can fit into a different interface.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://www.youtube.com/watch?v=VCDpMWg78iw",
+                              "label": "Watch the clip"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "When to split the work",
+                          "description": "Explore the decision to use multiple agents.",
+                          "access": "public",
+                          "links": [
+                            {
+                              "url": "https://www.youtube.com/watch?v=U5BMtOLvcTI",
+                              "label": "Watch the clip"
+                            }
+                          ]
+                        }
+                      ],
+                      "recordings": [
+                        {
+                          "id": "session-1-recording",
+                          "session": 1,
+                          "date": "2025-10-01",
+                          "title": "Introduction to MCP & Tool Use",
+                          "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ",
+                          "durationSeconds": 6631,
+                          "chapters": [
+                            {
+                              "title": "Welcome and introductions",
+                              "startSeconds": 0,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=0s"
+                            },
+                            {
+                              "title": "Workshop overview and instructor background",
+                              "startSeconds": 735,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=735s"
+                            },
+                            {
+                              "title": "From \"I have a Shih Tzu\" (2021) to Agentic AI (2024)",
+                              "startSeconds": 800,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=800s"
+                            },
+                            {
+                              "title": "Participant survey results and expectations",
+                              "startSeconds": 980,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=980s"
+                            },
+                            {
+                              "title": "What is Agentic AI? The perception-action loop explained",
+                              "startSeconds": 1260,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=1260s"
+                            },
+                            {
+                              "title": "ChatGPT breakthrough moment (Dec 2022)",
+                              "startSeconds": 1430,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=1430s"
+                            },
+                            {
+                              "title": "GPT-4 with vision capabilities (Mar 2023)",
+                              "startSeconds": 1470,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=1470s"
+                            },
+                            {
+                              "title": "Tool use emerges: Claude introduces structured tools (May 2024)",
+                              "startSeconds": 1500,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=1500s"
+                            },
+                            {
+                              "title": "The integration nightmare before MCP",
+                              "startSeconds": 1530,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=1530s"
+                            },
+                            {
+                              "title": "First tool demonstration: Getting current time",
+                              "startSeconds": 1680,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=1680s"
+                            },
+                            {
+                              "title": "Why do we need schemas? Bridging LLMs and code",
+                              "startSeconds": 1770,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=1770s"
+                            },
+                            {
+                              "title": "The breakthrough moment: MCP as universal standard",
+                              "startSeconds": 1920,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=1920s"
+                            },
+                            {
+                              "title": "Live demo: Building a weather tool with MCP",
+                              "startSeconds": 2100,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=2100s"
+                            },
+                            {
+                              "title": "Understanding MCP architecture through restaurants",
+                              "startSeconds": 2280,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=2280s"
+                            },
+                            {
+                              "title": "Setting up MCP tools in VS Code",
+                              "startSeconds": 2580,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=2580s"
+                            },
+                            {
+                              "title": "Brave Search integration demo",
+                              "startSeconds": 2820,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=2820s"
+                            },
+                            {
+                              "title": "Real-time tool calling with Claude",
+                              "startSeconds": 2940,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=2940s"
+                            },
+                            {
+                              "title": "Host (Application) = Restaurant Manager",
+                              "startSeconds": 3030,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=3030s"
+                            },
+                            {
+                              "title": "LLM = Head Chef (makes decisions)",
+                              "startSeconds": 3060,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=3060s"
+                            },
+                            {
+                              "title": "MCP Server = Kitchen (provides tools)",
+                              "startSeconds": 3090,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=3090s"
+                            },
+                            {
+                              "title": "MCP Client = Waiter (facilitates communication)",
+                              "startSeconds": 3120,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=3120s"
+                            },
+                            {
+                              "title": "Walking through the complete analogy",
+                              "startSeconds": 3210,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=3210s"
+                            },
+                            {
+                              "title": "Project overview: Personalized newspaper agent",
+                              "startSeconds": 3360,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=3360s"
+                            },
+                            {
+                              "title": "Use Case: \"Fit or Flaw\"",
+                              "startSeconds": 3600,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=3600s"
+                            },
+                            {
+                              "title": "Project vision and requirements",
+                              "startSeconds": 4020,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4020s"
+                            },
+                            {
+                              "title": "Personalized news aggregation use case",
+                              "startSeconds": 4050,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4050s"
+                            },
+                            {
+                              "title": "Live coding: Creating MCP tools with FastMCP",
+                              "startSeconds": 4140,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4140s"
+                            },
+                            {
+                              "title": "The importance of discoverability in tool design",
+                              "startSeconds": 4440,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4440s"
+                            },
+                            {
+                              "title": "Testing the agent with real news sources",
+                              "startSeconds": 4500,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4500s"
+                            },
+                            {
+                              "title": "Tool composition: From 40+ calls to 5 calls",
+                              "startSeconds": 4620,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4620s"
+                            },
+                            {
+                              "title": "Homework assignment overview",
+                              "startSeconds": 4800,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4800s"
+                            },
+                            {
+                              "title": "Finding your own agentic use case",
+                              "startSeconds": 4890,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4890s"
+                            },
+                            {
+                              "title": "Building two MCP tools",
+                              "startSeconds": 4920,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4920s"
+                            },
+                            {
+                              "title": "Session 2 preview: Resources, prompts, and memory",
+                              "startSeconds": 4980,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=4980s"
+                            },
+                            {
+                              "title": "Session 3 guest: Luca Chang (MCP core contributor)",
+                              "startSeconds": 5040,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=5040s"
+                            },
+                            {
+                              "title": "Questions about tool execution and LLM behavior",
+                              "startSeconds": 5100,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=5100s"
+                            },
+                            {
+                              "title": "Understanding the restaurant analogy deeper",
+                              "startSeconds": 5280,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=5280s"
+                            },
+                            {
+                              "title": "Context window management strategies",
+                              "startSeconds": 5400,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=5400s"
+                            },
+                            {
+                              "title": "Tools vs schemas: What the LLM actually sees",
+                              "startSeconds": 5520,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=5520s"
+                            },
+                            {
+                              "title": "Handling tool failures and validation",
+                              "startSeconds": 5700,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=5700s"
+                            },
+                            {
+                              "title": "Discovery and prompt engineering for tools",
+                              "startSeconds": 5880,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=5880s"
+                            },
+                            {
+                              "title": "Multiple tool orchestration patterns",
+                              "startSeconds": 6000,
+                              "url": "https://www.youtube.com/watch?v=jNj2PI5A6zQ&t=6000s"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "session-2-recording",
+                          "session": 2,
+                          "date": "2025-10-08",
+                          "title": "Advanced MCP Features",
+                          "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls",
+                          "durationSeconds": 7010,
+                          "chapters": [
+                            {
+                              "title": "Session start and overview",
+                              "startSeconds": 0,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=0s"
+                            },
+                            {
+                              "title": "Student project discussions",
+                              "startSeconds": 110,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=110s"
+                            },
+                            {
+                              "title": "Library agent for multimedia archives",
+                              "startSeconds": 157,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=157s"
+                            },
+                            {
+                              "title": "Restaurant recommender with visual AI",
+                              "startSeconds": 300,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=300s"
+                            },
+                            {
+                              "title": "Fashion outfit agent with weather integration",
+                              "startSeconds": 444,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=444s"
+                            },
+                            {
+                              "title": "Enhanced newspaper agent overview",
+                              "startSeconds": 930,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=930s"
+                            },
+                            {
+                              "title": "Server instructions and context",
+                              "startSeconds": 1300,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=1300s"
+                            },
+                            {
+                              "title": "Live demo: Creating personalized newspapers",
+                              "startSeconds": 1680,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=1680s"
+                            },
+                            {
+                              "title": "Understanding model \"laziness\"",
+                              "startSeconds": 2400,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=2400s"
+                            },
+                            {
+                              "title": "MCP Inspector walkthrough",
+                              "startSeconds": 2580,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=2580s"
+                            },
+                            {
+                              "title": "Interest management system",
+                              "startSeconds": 2910,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=2910s"
+                            },
+                            {
+                              "title": "Vector databases for article memory",
+                              "startSeconds": 3150,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=3150s"
+                            },
+                            {
+                              "title": "Server-suggested workflows",
+                              "startSeconds": 3210,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=3210s"
+                            },
+                            {
+                              "title": "Restaurant analogy: Weekend specials",
+                              "startSeconds": 3300,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=3300s"
+                            },
+                            {
+                              "title": "Creating reusable templates",
+                              "startSeconds": 3360,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=3360s"
+                            },
+                            {
+                              "title": "Restaurant analogy: Nutritional facts",
+                              "startSeconds": 3480,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=3480s"
+                            },
+                            {
+                              "title": "VS Code integration demo",
+                              "startSeconds": 3690,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=3690s"
+                            },
+                            {
+                              "title": "Preventing unwanted executions",
+                              "startSeconds": 3900,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=3900s"
+                            },
+                            {
+                              "title": "Direct server-to-user communication",
+                              "startSeconds": 4020,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=4020s"
+                            },
+                            {
+                              "title": "Live demo: User confirmations",
+                              "startSeconds": 4140,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=4140s"
+                            },
+                            {
+                              "title": "MCP Sampling introduction",
+                              "startSeconds": 4320,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=4320s"
+                            },
+                            {
+                              "title": "ChatGPT Apps SDK compatibility",
+                              "startSeconds": 4380,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=4380s"
+                            },
+                            {
+                              "title": "HTML resources as interfaces",
+                              "startSeconds": 4440,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=4440s"
+                            },
+                            {
+                              "title": "Smart tools architecture",
+                              "startSeconds": 4500,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=4500s"
+                            },
+                            {
+                              "title": "Content ID efficiency pattern",
+                              "startSeconds": 4560,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=4560s"
+                            },
+                            {
+                              "title": "Server-requested LLM reasoning",
+                              "startSeconds": 4740,
+                              "url": "https://www.youtube.com/watch?v=TZ_UVMsj9Ls&t=4740s"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "session-3-recording",
+                          "session": 3,
+                          "date": "2025-10-15",
+                          "title": "Multi-Agent Systems & Production Patterns",
+                          "url": "https://www.youtube.com/watch?v=4YrRODYnYHY",
+                          "durationSeconds": 5223,
+                          "chapters": [
+                            {
+                              "title": "Welcome and attendance",
+                              "startSeconds": 0,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=0s"
+                            },
+                            {
+                              "title": "Student project showcase begins",
+                              "startSeconds": 110,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=110s"
+                            },
+                            {
+                              "title": "Sports news agent with betting odds",
+                              "startSeconds": 240,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=240s"
+                            },
+                            {
+                              "title": "Restaurant recommender with visual AI",
+                              "startSeconds": 300,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=300s"
+                            },
+                            {
+                              "title": "Luca Chang introduction (MCP core contributor)",
+                              "startSeconds": 360,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=360s"
+                            },
+                            {
+                              "title": "Newspaper agent limitations review",
+                              "startSeconds": 480,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=480s"
+                            },
+                            {
+                              "title": "Token costs: Input vs output pricing",
+                              "startSeconds": 540,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=540s"
+                            },
+                            {
+                              "title": "Context length limits across models",
+                              "startSeconds": 600,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=600s"
+                            },
+                            {
+                              "title": "Context rot: Performance degradation with scale",
+                              "startSeconds": 720,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=720s"
+                            },
+                            {
+                              "title": "Needle in haystack problem: Tool selection",
+                              "startSeconds": 780,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=780s"
+                            },
+                            {
+                              "title": "Tool bloat: IBM research findings",
+                              "startSeconds": 960,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=960s"
+                            },
+                            {
+                              "title": "Real example: Claude tool confusion",
+                              "startSeconds": 1020,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=1020s"
+                            },
+                            {
+                              "title": "Similar-sounding tools problem",
+                              "startSeconds": 1140,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=1140s"
+                            },
+                            {
+                              "title": "Domain-specific agents concept",
+                              "startSeconds": 1380,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=1380s"
+                            },
+                            {
+                              "title": "Extracting preference agent from news agent",
+                              "startSeconds": 1500,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=1500s"
+                            },
+                            {
+                              "title": "Testing preference agent standalone",
+                              "startSeconds": 1620,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=1620s"
+                            },
+                            {
+                              "title": "Add/remove interests implementation",
+                              "startSeconds": 1680,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=1680s"
+                            },
+                            {
+                              "title": "Decoupling: No news mentions in preference tools",
+                              "startSeconds": 1920,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=1920s"
+                            },
+                            {
+                              "title": "Vector DB for semantic preference search",
+                              "startSeconds": 2040,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=2040s"
+                            },
+                            {
+                              "title": "Store preference with metadata (time, depth)",
+                              "startSeconds": 2220,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=2220s"
+                            },
+                            {
+                              "title": "Semantic distance and relevance scoring",
+                              "startSeconds": 2400,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=2400s"
+                            },
+                            {
+                              "title": "MCP client testing without LLM calls",
+                              "startSeconds": 2580,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=2580s"
+                            },
+                            {
+                              "title": "Embedding functions and distance metrics",
+                              "startSeconds": 2700,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=2700s"
+                            },
+                            {
+                              "title": "Reviewing agent specialization benefits",
+                              "startSeconds": 2880,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=2880s"
+                            },
+                            {
+                              "title": "Wrapping preference agent as MCP server",
+                              "startSeconds": 3000,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=3000s"
+                            },
+                            {
+                              "title": "Chat tool: Exposing agent capabilities",
+                              "startSeconds": 3060,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=3060s"
+                            },
+                            {
+                              "title": "Producer-reviewer pattern explained",
+                              "startSeconds": 3180,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=3180s"
+                            },
+                            {
+                              "title": "Content quality gates and validation",
+                              "startSeconds": 3240,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=3240s"
+                            },
+                            {
+                              "title": "Reusability: Domain-agnostic design",
+                              "startSeconds": 3300,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=3300s"
+                            },
+                            {
+                              "title": "Running news + preference agents together",
+                              "startSeconds": 3360,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=3360s"
+                            },
+                            {
+                              "title": "News agent queries preferences at start",
+                              "startSeconds": 3600,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=3600s"
+                            },
+                            {
+                              "title": "Preference agent performs semantic searches",
+                              "startSeconds": 4020,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4020s"
+                            },
+                            {
+                              "title": "Review process: Approve vs deny workflow",
+                              "startSeconds": 4200,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4200s"
+                            },
+                            {
+                              "title": "Haiku 4.5 vs 3.5 capability comparison",
+                              "startSeconds": 4380,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4380s"
+                            },
+                            {
+                              "title": "Preference agent denies initial report",
+                              "startSeconds": 4440,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4440s"
+                            },
+                            {
+                              "title": "News agent revision based on feedback",
+                              "startSeconds": 4500,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4500s"
+                            },
+                            {
+                              "title": "When to split agents: Three questions",
+                              "startSeconds": 4560,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4560s"
+                            },
+                            {
+                              "title": "Domain boundaries and security isolation",
+                              "startSeconds": 4620,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4620s"
+                            },
+                            {
+                              "title": "Complexity thresholds for separation",
+                              "startSeconds": 4680,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4680s"
+                            },
+                            {
+                              "title": "Parallel tool execution in agents",
+                              "startSeconds": 4740,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4740s"
+                            },
+                            {
+                              "title": "Multi-agent relationships and dominance",
+                              "startSeconds": 4800,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4800s"
+                            },
+                            {
+                              "title": "Crew AI vs Langchain comparison",
+                              "startSeconds": 4860,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4860s"
+                            },
+                            {
+                              "title": "Vector DB necessity for multi-agent",
+                              "startSeconds": 4980,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=4980s"
+                            },
+                            {
+                              "title": "Context compaction strategies and quality",
+                              "startSeconds": 5100,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=5100s"
+                            },
+                            {
+                              "title": "Claude vs Amazon Q compaction approaches",
+                              "startSeconds": 5220,
+                              "url": "https://www.youtube.com/watch?v=4YrRODYnYHY&t=5220s"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not modified in response to a conditional request. This response has no body; retain the previously cached document."
+          },
+          "default": {
+            "description": "A host-generated response, including HTML for an unknown path or server error. Check status and Content-Type before parsing.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "description": "Host-generated HTML error page. No JSON error shape is guaranteed."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Endpoint": {
+        "type": "object",
+        "description": "One available public JSON document.",
+        "additionalProperties": true,
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Exact same-origin path, including the .json suffix."
+          },
+          "url": {
+            "type": "string",
+            "description": "Absolute URL of the JSON document.",
+            "format": "uri"
+          },
+          "method": {
+            "type": "string",
+            "description": "HTTP method used to retrieve the document.",
+            "const": "GET"
+          },
+          "operationId": {
+            "type": "string",
+            "description": "Unique operation identifier from the OpenAPI document."
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short explanation of the document."
+          },
+          "description": {
+            "type": "string",
+            "description": "What the document contains and how it can be used."
+          }
+        },
+        "required": [
+          "path",
+          "url",
+          "method",
+          "operationId",
+          "summary",
+          "description"
+        ]
+      },
+      "ApiIndex": {
+        "type": "object",
+        "description": "Index of the static public data API.",
+        "additionalProperties": true,
+        "properties": {
+          "apiVersion": {
+            "type": "string",
+            "description": "Version of this public data contract.",
+            "const": "1"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "Canonical public HTML source for this document.",
+            "format": "uri"
+          },
+          "modified": {
+            "type": "string",
+            "description": "Date of the last deliberate update to the source content or its public metadata.",
+            "format": "date"
+          },
+          "name": {
+            "type": "string",
+            "description": "Public name of this data interface."
+          },
+          "description": {
+            "type": "string",
+            "description": "Purpose and access requirements of this interface."
+          },
+          "readOnly": {
+            "type": "boolean",
+            "const": true,
+            "description": "All listed operations retrieve public information."
+          },
+          "authentication": {
+            "type": "string",
+            "description": "No credentials are needed to read these documents.",
+            "const": "none"
+          },
+          "documentationUrl": {
+            "type": "string",
+            "description": "Human-readable API documentation.",
+            "format": "uri"
+          },
+          "openApiUrl": {
+            "type": "string",
+            "description": "Machine-readable OpenAPI contract.",
+            "format": "uri"
+          },
+          "endpoints": {
+            "type": "array",
+            "description": "The complete list of available JSON documents.",
+            "items": {
+              "$ref": "#/components/schemas/Endpoint"
+            }
+          }
+        },
+        "required": [
+          "apiVersion",
+          "sourceUrl",
+          "modified",
+          "name",
+          "description",
+          "readOnly",
+          "authentication",
+          "documentationUrl",
+          "openApiUrl",
+          "endpoints"
+        ]
+      },
+      "Profile": {
+        "type": "object",
+        "description": "Identity and professional biography published by Aditya Singhal.",
+        "additionalProperties": true,
+        "properties": {
+          "apiVersion": {
+            "type": "string",
+            "description": "Version of this public data contract.",
+            "const": "1"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "Canonical public HTML source for this document.",
+            "format": "uri"
+          },
+          "modified": {
+            "type": "string",
+            "description": "Date of the last deliberate update to the source content or its public metadata.",
+            "format": "date"
+          },
+          "name": {
+            "type": "string",
+            "description": "Full public name."
+          },
+          "alternateName": {
+            "type": "string",
+            "description": "Publicly used alternate name."
+          },
+          "description": {
+            "type": "string",
+            "description": "Concise public profile description."
+          },
+          "biography": {
+            "type": "string",
+            "description": "Biography from the homepage."
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Current professional title as stated on the website."
+          },
+          "employer": {
+            "type": "string",
+            "description": "Employer named in the public biography."
+          },
+          "topics": {
+            "type": "array",
+            "description": "Professional interests described on the site.",
+            "items": {
+              "type": "string",
+              "description": "A topic covered by the public biography and work."
+            }
+          },
+          "profiles": {
+            "type": "object",
+            "description": "Official public profile destinations linked by the website.",
+            "additionalProperties": true,
+            "properties": {
+              "linkedin": {
+                "type": "string",
+                "description": "Public linkedin profile linked from the website.",
+                "format": "uri"
+              },
+              "github": {
+                "type": "string",
+                "description": "Public github profile linked from the website.",
+                "format": "uri"
+              },
+              "x": {
+                "type": "string",
+                "description": "Public x profile linked from the website.",
+                "format": "uri"
+              },
+              "youtube": {
+                "type": "string",
+                "description": "Public youtube profile linked from the website.",
+                "format": "uri"
+              },
+              "instagram": {
+                "type": "string",
+                "description": "Public instagram profile linked from the website.",
+                "format": "uri"
+              },
+              "facebook": {
+                "type": "string",
+                "description": "Public facebook profile linked from the website.",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "linkedin",
+              "github",
+              "x",
+              "youtube",
+              "instagram",
+              "facebook"
+            ]
+          }
+        },
+        "required": [
+          "apiVersion",
+          "sourceUrl",
+          "modified",
+          "name",
+          "alternateName",
+          "description",
+          "biography",
+          "jobTitle",
+          "employer",
+          "topics",
+          "profiles"
+        ]
+      },
+      "Resource": {
+        "type": "object",
+        "description": "A public destination from the site's reading map.",
+        "additionalProperties": true,
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Reading-map section containing this resource."
+          },
+          "name": {
+            "type": "string",
+            "description": "Published resource name."
+          },
+          "url": {
+            "type": "string",
+            "description": "Canonical destination of the resource; may be an external website.",
+            "format": "uri"
+          },
+          "description": {
+            "type": "string",
+            "description": "Published description of the resource."
+          }
+        },
+        "required": [
+          "category",
+          "name",
+          "url",
+          "description"
+        ]
+      },
+      "Resources": {
+        "type": "object",
+        "description": "The site's public reading map.",
+        "additionalProperties": true,
+        "properties": {
+          "apiVersion": {
+            "type": "string",
+            "description": "Version of this public data contract.",
+            "const": "1"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "Canonical public HTML source for this document.",
+            "format": "uri"
+          },
+          "modified": {
+            "type": "string",
+            "description": "Date of the last deliberate update to the source content or its public metadata.",
+            "format": "date"
+          },
+          "resources": {
+            "type": "array",
+            "description": "All published reading-map destinations. Filter locally by category, name or description.",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            }
+          }
+        },
+        "required": [
+          "apiVersion",
+          "sourceUrl",
+          "modified",
+          "resources"
+        ]
+      },
+      "MaterialLink": {
+        "type": "object",
+        "description": "A released workshop material destination.",
+        "additionalProperties": true,
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Published URL. The destination controls its own access requirements.",
+            "format": "uri"
+          },
+          "label": {
+            "type": "string",
+            "description": "Action label shown on the workshop page."
+          },
+          "download": {
+            "type": "string",
+            "description": "Suggested filename for an available download."
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "Material": {
+        "type": "object",
+        "description": "A group of published workshop material links, with their access requirements.",
+        "additionalProperties": true,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Published material name."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the material."
+          },
+          "access": {
+            "type": "string",
+            "description": "Whether the linked material is public or reserved for registered students.",
+            "enum": [
+              "public",
+              "registered-students"
+            ]
+          },
+          "links": {
+            "type": "array",
+            "description": "Published destinations; unreleased links are omitted.",
+            "items": {
+              "$ref": "#/components/schemas/MaterialLink"
+            },
+            "minItems": 1
+          },
+          "note": {
+            "type": "string",
+            "description": "Published qualification, including any restriction to registered students."
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "access",
+          "links"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "access": {
+                  "const": "registered-students"
+                }
+              },
+              "required": [
+                "access"
+              ]
+            },
+            "then": {
+              "properties": {
+                "note": {
+                  "type": "string",
+                  "description": "Published restriction on access to this material.",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "note"
+              ]
+            }
+          }
+        ]
+      },
+      "Chapter": {
+        "type": "object",
+        "description": "One chapter in an available workshop recording.",
+        "additionalProperties": true,
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Chapter title from the published recording index."
+          },
+          "startSeconds": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Chapter start measured in seconds from the beginning of the recording."
+          },
+          "url": {
+            "type": "string",
+            "description": "Public recording URL with this chapter's start time.",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "title",
+          "startSeconds",
+          "url"
+        ]
+      },
+      "Recording": {
+        "type": "object",
+        "description": "An available public workshop recording.",
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Recording identifier within its workshop year."
+          },
+          "session": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Session number within the workshop."
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of the workshop session.",
+            "format": "date"
+          },
+          "title": {
+            "type": "string",
+            "description": "Published recording title."
+          },
+          "url": {
+            "type": "string",
+            "description": "Public YouTube watch URL.",
+            "format": "uri"
+          },
+          "durationSeconds": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Duration of the source recording in seconds."
+          },
+          "chapters": {
+            "type": "array",
+            "description": "Published chapters in chronological order.",
+            "items": {
+              "$ref": "#/components/schemas/Chapter"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "session",
+          "date",
+          "title",
+          "url",
+          "durationSeconds",
+          "chapters"
+        ]
+      },
+      "Schedule": {
+        "type": "object",
+        "description": "Published current-workshop schedule and venue.",
+        "additionalProperties": true,
+        "properties": {
+          "dates": {
+            "type": "string",
+            "description": "Human-readable workshop dates."
+          },
+          "time": {
+            "type": "string",
+            "description": "Human-readable recurring session time."
+          },
+          "timeZone": {
+            "type": "string",
+            "description": "IANA time-zone name for the session times."
+          },
+          "venue": {
+            "type": "string",
+            "description": "Published meeting location."
+          },
+          "address": {
+            "type": "string",
+            "description": "Public course venue address; not a personal or business address for Aditya Singhal."
+          }
+        },
+        "required": [
+          "dates",
+          "time",
+          "timeZone",
+          "venue",
+          "address"
+        ]
+      },
+      "Session": {
+        "type": "object",
+        "description": "A session from the published current-workshop schedule.",
+        "additionalProperties": true,
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Scheduled date of the session.",
+            "format": "date"
+          },
+          "title": {
+            "type": "string",
+            "description": "Published session title."
+          },
+          "description": {
+            "type": "string",
+            "description": "What the session covers."
+          },
+          "topics": {
+            "type": "array",
+            "description": "Published session topics.",
+            "items": {
+              "type": "string",
+              "description": "One scheduled topic."
+            }
+          },
+          "attendance": {
+            "type": "string",
+            "description": "Published attendance guidance."
+          }
+        },
+        "required": [
+          "date",
+          "title",
+          "description",
+          "topics",
+          "attendance"
+        ]
+      },
+      "Workshop": {
+        "type": "object",
+        "description": "One current or archived workshop, with published resources and access notes.",
+        "additionalProperties": true,
+        "properties": {
+          "year": {
+            "type": "integer",
+            "enum": [
+              2025,
+              2026
+            ],
+            "description": "Calendar year of this workshop edition."
+          },
+          "status": {
+            "type": "string",
+            "description": "Editorial course state. It is updated deliberately rather than inferred from a visitor's clock.",
+            "enum": [
+              "registration-open",
+              "registration-closed",
+              "in-progress",
+              "complete",
+              "archived"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the canonical workshop page."
+          },
+          "url": {
+            "type": "string",
+            "description": "Canonical public HTML page for this workshop.",
+            "format": "uri"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of this workshop edition."
+          },
+          "modified": {
+            "type": "string",
+            "description": "Date of the last deliberate update to this workshop's content or public metadata.",
+            "format": "date"
+          },
+          "repositoryUrl": {
+            "type": "string",
+            "description": "Official public course repository.",
+            "format": "uri"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/Schedule"
+          },
+          "sessions": {
+            "type": "array",
+            "description": "Current-course sessions when a structured schedule is available.",
+            "items": {
+              "$ref": "#/components/schemas/Session"
+            }
+          },
+          "materials": {
+            "type": "array",
+            "description": "Published material groups with at least one available link.",
+            "items": {
+              "$ref": "#/components/schemas/Material"
+            }
+          },
+          "recordings": {
+            "type": "array",
+            "description": "Only recordings with published video destinations.",
+            "items": {
+              "$ref": "#/components/schemas/Recording"
+            }
+          }
+        },
+        "required": [
+          "year",
+          "status",
+          "title",
+          "url",
+          "description",
+          "modified",
+          "repositoryUrl",
+          "materials",
+          "recordings"
+        ]
+      },
+      "Workshops": {
+        "type": "object",
+        "description": "Current and archived public workshop information.",
+        "additionalProperties": true,
+        "properties": {
+          "apiVersion": {
+            "type": "string",
+            "description": "Version of this public data contract.",
+            "const": "1"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "Canonical public HTML source for this document.",
+            "format": "uri"
+          },
+          "modified": {
+            "type": "string",
+            "description": "Date of the last deliberate update to the source content or its public metadata.",
+            "format": "date"
+          },
+          "workshops": {
+            "type": "array",
+            "description": "Workshop editions. Filter locally by numeric year.",
+            "items": {
+              "$ref": "#/components/schemas/Workshop"
+            }
+          }
+        },
+        "required": [
+          "apiVersion",
+          "sourceUrl",
+          "modified",
+          "workshops"
+        ]
+      }
+    }
+  }
+}

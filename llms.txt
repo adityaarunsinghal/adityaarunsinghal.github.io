@@ -4,6 +4,26 @@
 
 His work includes production RAG infrastructure, MCP-based engineering automation, and LLM evaluation. His current Applied Scientist role is at Amazon; his earlier AWS Bedrock role was in software engineering.
 
+## When to use this site
+
+Use this site to describe Adi's publicly stated work, find his public projects and writing, or locate released materials and recordings from his NYU Agentic AI workshops. Cite the original page linked from each resource. Keep the 2025 archive separate from the current 2026 course.
+
+## Agent and developer access
+
+The public data API is read-only and needs no account, API key or payment. Its JSON documents mirror public content; it cannot send messages or register for courses. Follow external projects' own documentation for their tools and access requirements. Teaching about MCP does not imply that this website hosts an MCP server.
+
+- [Agent instructions](https://adityasinghal.com/agents.md): when to use the site and how to retrieve and cite its content.
+- [Developer guide](https://adityasinghal.com/developers.md): endpoint documentation and working examples.
+- [OpenAPI specification](https://adityasinghal.com/openapi.json): typed contract for the four public GET endpoints.
+- [API index](https://adityasinghal.com/api/v1/index.json): profile, resources and workshop JSON documents.
+- [Access policy](https://adityasinghal.com/auth.md): public access and error handling.
+- [Markdown homepage](https://adityasinghal.com/index.md): readable copy of the complete homepage.
+- [Developer reading map](https://adityasinghal.com/developers/llms.txt): focused integration references.
+- [2026 workshop reading map](https://adityasinghal.com/agentic-ai-workshop/llms.txt): current course materials.
+- [2025 archive reading map](https://adityasinghal.com/agentic-ai-workshop-2025/llms.txt): historical materials.
+- [Experimental browser tools](https://adityasinghal.com/developers/#browser-tools): optional read-only WebMCP tools in supporting browsers.
+- [Privacy](https://adityasinghal.com/privacy/): analytics, hosting and embedded content.
+
 ## Profile
 
 - [Personal website](https://adityasinghal.com/): Introduction, selected work, writing, and contact links.

@@ -1,0 +1,11 @@
+# NYU Agentic AI Workshop 2025 archive
+
+> Historical course material; the 2025 course has concluded.
+
+Use this section for the earlier curriculum and its recordings. For the current workshop use the 2026 page.
+
+- [Archive in Markdown](https://adityasinghal.com/agentic-ai-workshop-2025.md): the complete published archive page.
+- [Archive webpage](https://adityasinghal.com/agentic-ai-workshop-2025/): recordings and searchable chapters.
+- [Public archive repository](https://github.com/adityaarunsinghal/agentic-ai-workshop-2025): historical course code.
+- [2026 reading map](https://adityasinghal.com/agentic-ai-workshop/llms.txt): the current course.
+- [Workshop data](https://adityasinghal.com/api/v1/workshops.json): separate records for both years.

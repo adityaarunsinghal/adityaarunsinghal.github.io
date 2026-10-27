@@ -1,0 +1,45 @@
+{
+  "apiVersion": "1",
+  "sourceUrl": "https://adityasinghal.com/developers/",
+  "modified": "2026-10-27",
+  "name": "Aditya Singhal public data API",
+  "description": "Read-only JSON documents generated from the public personal website and workshop materials. No account or API key is required.",
+  "readOnly": true,
+  "authentication": "none",
+  "documentationUrl": "https://adityasinghal.com/developers/",
+  "openApiUrl": "https://adityasinghal.com/openapi.json",
+  "endpoints": [
+    {
+      "path": "/api/v1/index.json",
+      "operationId": "getApiIndex",
+      "summary": "Read the public API index",
+      "description": "Discover the available public JSON documents and their documentation.",
+      "url": "https://adityasinghal.com/api/v1/index.json",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile.json",
+      "operationId": "getProfile",
+      "summary": "Read Aditya Singhal's public profile",
+      "description": "Read the biography, professional interests and profile links published on the personal website.",
+      "url": "https://adityasinghal.com/api/v1/profile.json",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/resources.json",
+      "operationId": "listResources",
+      "summary": "List public projects, writing and teaching resources",
+      "description": "Read the site's public reading map. Filter its small resource list in your client.",
+      "url": "https://adityasinghal.com/api/v1/resources.json",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/workshops.json",
+      "operationId": "listWorkshops",
+      "summary": "Read current and archived workshop resources",
+      "description": "Read the published course information, material links and available recording chapters for the 2026 and 2025 workshops.",
+      "url": "https://adityasinghal.com/api/v1/workshops.json",
+      "method": "GET"
+    }
+  ]
+}

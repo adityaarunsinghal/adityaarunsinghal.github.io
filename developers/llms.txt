@@ -1,0 +1,14 @@
+# Aditya Singhal: developer resources
+
+> Public, read-only access to profile, project, writing and workshop information.
+
+## When to use
+
+Use these resources to integrate the public information into a directory, learning assistant or profile summary. No account or API key is needed.
+
+- [Developer guide](https://adityasinghal.com/developers.md): examples, response handling and version policy.
+- [OpenAPI specification](https://adityasinghal.com/openapi.json): exact GET operations and response schemas.
+- [API index](https://adityasinghal.com/api/v1/index.json): the four available data documents.
+- [Agent instructions](https://adityasinghal.com/agents.md): source selection and citation guidance.
+- [Access policy](https://adityasinghal.com/auth.md): unauthenticated, read-only access and errors.
+- [Root reading map](https://adityasinghal.com/llms.txt): profile, projects, writing and teaching.

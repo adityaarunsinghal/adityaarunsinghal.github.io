@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ard-entry.schema.json#/$defs/ArdManifest",
+  "entries": [
+    {
+      "identifier": "urn:air:adityasinghal.com:api:public-data",
+      "displayName": "Aditya Singhal public data API",
+      "description": "Read-only public profile, projects, writing and NYU workshop data. No credentials required.",
+      "type": "application/vnd.oai.openapi+json;version=3.1.1",
+      "url": "https://adityasinghal.com/openapi.json",
+      "representativeQueries": [
+        "Retrieve Aditya Singhal's public profile and projects",
+        "Find released NYU Agentic AI workshop recordings and materials"
+      ]
+    },
+    {
+      "identifier": "urn:air:adityasinghal.com:docs:agent-guidance",
+      "displayName": "Aditya Singhal agent guidance",
+      "description": "When to use the public site, retrieve its data and cite the original sources.",
+      "type": "text/markdown",
+      "url": "https://adityasinghal.com/agents.md",
+      "representativeQueries": [
+        "How can an agent read Aditya Singhal's website?",
+        "Which sources describe Adi Singhal's work and teaching?"
+      ]
+    },
+    {
+      "identifier": "urn:air:adityasinghal.com:docs:workshop-2026",
+      "displayName": "NYU Agentic AI Workshop 2026",
+      "description": "Current curriculum, schedule, released slides, code and recordings.",
+      "type": "text/markdown",
+      "url": "https://adityasinghal.com/agentic-ai-workshop.md",
+      "representativeQueries": [
+        "Where can I learn about agent harnesses and MCP?",
+        "Find the 2026 NYU multi-agent systems workshop materials"
+      ]
+    }
+  ]
+}

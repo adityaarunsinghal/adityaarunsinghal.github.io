@@ -1,0 +1,25 @@
+{
+  "apiVersion": "1",
+  "sourceUrl": "https://adityasinghal.com/",
+  "modified": "2026-10-27",
+  "name": "Aditya Singhal",
+  "alternateName": "Adi Singhal",
+  "description": "Aditya (Adi) Singhal builds and evaluates AI agents with MCP. Applied Scientist at Amazon, former AWS Bedrock engineer, and agentic AI instructor at NYU.",
+  "biography": "I'm Adi, an Applied Scientist at Amazon and a former AWS Bedrock engineer. I work on agentic AI, Model Context Protocol (MCP), and RAG systems. I also teach an Agentic AI workshop every year at NYU.",
+  "jobTitle": "Applied Scientist",
+  "employer": "Amazon",
+  "topics": [
+    "Agentic AI",
+    "Model Context Protocol (MCP)",
+    "RAG systems",
+    "LLM evaluation"
+  ],
+  "profiles": {
+    "linkedin": "https://www.linkedin.com/in/adi-singhal/",
+    "github": "https://github.com/adityaarunsinghal",
+    "x": "https://x.com/dramebaazguy",
+    "youtube": "https://www.youtube.com/@singhaladitya",
+    "instagram": "https://www.instagram.com/that_dramebaaz_guy/",
+    "facebook": "https://www.facebook.com/that.dramebaaz.guy"
+  }
+}

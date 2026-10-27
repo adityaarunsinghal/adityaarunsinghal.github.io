@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aditya Singhal developer resources | Public JSON &amp; Markdown</title>
+  <meta name="description" content="Read Aditya Singhal&#39;s public profile, projects and NYU workshop materials as JSON or Markdown. Endpoint documentation, OpenAPI and examples; no API key needed." />
+  <meta name="author" content="Aditya Singhal" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://adityasinghal.com/developers/" />
+  <link rel="alternate" type="text/markdown" href="https://adityasinghal.com/developers.md" />
+  <link rel="service-desc" type="application/vnd.oai.openapi+json" href="https://adityasinghal.com/openapi.json" />
+  <link rel="ard" type="application/json" href="https://adityasinghal.com/.well-known/ard.json" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="stylesheet" href="/site-documents.css" />
+  <meta name="theme-color" content="#f6f8fb" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#101827" media="(prefers-color-scheme: dark)" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://adityasinghal.com/developers/" />
+  <meta property="og:title" content="Aditya Singhal developer resources | Public JSON &amp; Markdown" />
+  <meta property="og:description" content="Read Aditya Singhal&#39;s public profile, projects and NYU workshop materials as JSON or Markdown. Endpoint documentation, OpenAPI and examples; no API key needed." />
+  <meta property="og:image" content="https://adityasinghal.com/social/adi-singhal.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://adityasinghal.com/developers/","url":"https://adityasinghal.com/developers/","name":"Aditya Singhal developer resources | Public JSON & Markdown","description":"Read Aditya Singhal's public profile, projects and NYU workshop materials as JSON or Markdown. Endpoint documentation, OpenAPI and examples; no API key needed.","dateModified":"2026-10-27","isPartOf":{"@id":"https://adityasinghal.com/#website"},"author":{"@id":"https://adityasinghal.com/#person"}}</script>
+  <script src="/site-agent-tools.js" defer></script>
+</head>
+<body class="site-document">
+  <a class="document-skip-link" href="#main-content">Skip to content</a>
+  <header class="document-header">
+    <a class="document-home" href="/">Aditya Singhal</a>
+    <nav aria-label="Site">
+      <a href="/agentic-ai-workshop/">Workshop</a>
+      <a href="/developers/" aria-current="page">Developers</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </header>
+  <main id="main-content">
+    <article class="document-content"><header class="document-intro">
+    <p class="document-eyebrow">Public content</p>
+    <h1>Aditya Singhal for developers &amp; agents</h1>
+    <p class="document-lead">Read my public profile, projects and workshop materials as JSON or Markdown.</p>
+    <p>These resources mirror the public website. Reading them is free and requires no account or API key.</p>
+    <div class="document-actions">
+      <a class="document-button" href="/openapi.json">OpenAPI specification <span aria-hidden="true">↗</span></a>
+      <a href="/llms.txt">Reading guide for agents</a>
+    </div>
+  </header>
+
+  <section aria-labelledby="when-to-use">
+    <h2 id="when-to-use">When to use these resources</h2>
+    <ul>
+      <li>Check my public background, areas of work and official profile links.</li>
+      <li>Find my published projects and writing, then follow their original sources.</li>
+      <li>Look up the current NYU Agentic AI workshop, released materials, recordings and chapter links.</li>
+      <li>Consult the separately labeled 2025 archive for that year's course.</li>
+    </ul>
+    <p>Use the canonical page linked in each record when citing a fact. Chapter names help locate a recording; they are not a transcript. This site describes my work and teaching, and does not speak for Amazon, AWS or NYU.</p>
+  </section>
+
+  <section aria-labelledby="json-endpoints">
+    <h2 id="json-endpoints">JSON endpoints</h2>
+    <p>Send a public <code>GET</code> request to an endpoint below. Responses use <code>application/json</code>. All operations are read-only and return complete documents; filter them in your own client.</p>
+    <div class="endpoint-table-wrap">
+      <table class="endpoint-table">
+        <caption>Public content API, version 1</caption>
+        <thead><tr><th scope="col">Endpoint</th><th scope="col">Contents</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><a href="/api/v1/index.json"><code>/api/v1/index.json</code></a></th><td>Discover the available public JSON documents and their documentation.</td></tr>
+          <tr><th scope="row"><a href="/api/v1/profile.json"><code>/api/v1/profile.json</code></a></th><td>Read the biography, professional interests and profile links published on the personal website.</td></tr>
+          <tr><th scope="row"><a href="/api/v1/resources.json"><code>/api/v1/resources.json</code></a></th><td>Read the site&#39;s public reading map. Filter its small resource list in your client.</td></tr>
+          <tr><th scope="row"><a href="/api/v1/workshops.json"><code>/api/v1/workshops.json</code></a></th><td>Read the published course information, material links and available recording chapters for the 2026 and 2025 workshops.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Each response identifies its <code>apiVersion</code>, canonical <code>sourceUrl</code> and content modification date in <code>modified</code>. The <a href="/openapi.json">OpenAPI specification</a> documents response fields and operation IDs.</p>
+    <p>There are no write operations, registration actions or account-data endpoints in this public API. Some linked materials require registered-student access, as labeled in each record.</p>
+  </section>
+
+  <section aria-labelledby="quickstart">
+    <h2 id="quickstart">Fetch the public profile</h2>
+    <p>Check the status and content type before parsing a response. An unavailable path can return an HTML error page, even if the request asks for JSON.</p>
+    <div class="code-example"><h3>curl and a POSIX shell</h3><pre tabindex="0" aria-label="curl and a POSIX shell example"><code>body=$(mktemp)
+trap &#39;rm -f &quot;$body&quot;&#39; EXIT
+response=$(curl --silent --show-error --location \
+  --output &quot;$body&quot; --write-out &#39;%{http_code} %{content_type}&#39; \
+  https://adityasinghal.com/api/v1/profile.json) || exit 1
+case &quot;$response&quot; in
+  &quot;200 application/json&quot;|&quot;200 application/json;&quot;*) cat &quot;$body&quot; ;;
+  *) printf &#39;%s\n&#39; &quot;Unexpected response: $response&quot; &gt;&amp;2; exit 1 ;;
+esac</code></pre></div>
+    <div class="code-example"><h3>Browser JavaScript</h3><pre tabindex="0" aria-label="Browser JavaScript example"><code>const response = await fetch(&quot;https://adityasinghal.com/api/v1/profile.json&quot;, {
+  credentials: &quot;omit&quot;,
+});
+const type = response.headers.get(&quot;content-type&quot;) || &quot;&quot;;
+if (!response.ok || type.split(&quot;;&quot;)[0].trim() !== &quot;application/json&quot;) {
+  throw new Error(&quot;Expected JSON; received HTTP &quot; + response.status);
+}
+const profile = await response.json();
+console.log(profile.name);</code></pre></div>
+    <div class="code-example"><h3>Python standard library</h3><pre tabindex="0" aria-label="Python standard library example"><code>import json
+from urllib.request import urlopen
+
+url = &quot;https://adityasinghal.com/api/v1/profile.json&quot;
+with urlopen(url, timeout=15) as response:
+    if response.status != 200:
+        raise RuntimeError(&quot;Unexpected HTTP status&quot;)
+    if response.headers.get_content_type() != &quot;application/json&quot;:
+        raise RuntimeError(&quot;Expected a JSON response&quot;)
+    profile = json.load(response)
+print(profile[&quot;name&quot;])</code></pre></div>
+  </section>
+
+  <section aria-labelledby="reliable-use">
+    <h2 id="reliable-use">Caching, errors and versions</h2>
+    <p>These are static files on GitHub Pages. Respect the response's cache headers and use conditional requests when the host supplies <code>ETag</code> or <code>Last-Modified</code>. Content changes when the site is published; <code>modified</code> is a content date, not a live-data timestamp.</p>
+    <p>For a missing document, check the <a href="/api/v1/index.json">API index</a> and your path. Do not retry a <code>404</code> in a loop. Retry temporary network or server failures sparingly, with a delay that increases between attempts; honor <code>Retry-After</code> when present. The hosting provider controls availability and request limits.</p>
+    <p>Version 1 may gain fields or records. Clients should tolerate unknown fields and empty lists. A future breaking contract will use a new versioned path.</p>
+  </section>
+
+  <section aria-labelledby="reading-formats">
+    <h2 id="reading-formats">Read the pages directly</h2>
+    <p>Markdown is useful for reading and quoting the page's content. JSON is useful for selecting individual profile, resource and workshop records.</p>
+    <ul class="document-link-list">
+      <li><a href="/index.md">Homepage in Markdown</a></li>
+      <li><a href="/agentic-ai-workshop.md">2026 workshop in Markdown</a></li>
+      <li><a href="/agentic-ai-workshop-2025.md">2025 archive in Markdown</a></li>
+      <li><a href="/developers.md">This guide in Markdown</a></li>
+      <li><a href="/llms.txt">Public reading map</a></li>
+    </ul>
+    <p>Public project links describe those projects' own capabilities. A workshop that teaches MCP, or a linked project with a CLI, is not an MCP server or CLI for this website.</p>
+  </section>
+
+  <section aria-labelledby="browser-tools">
+    <h2 id="browser-tools">Experimental browser tools</h2>
+    <p>Browsers that expose <a href="https://webmachinelearning.github.io/webmcp/">WebMCP</a> can discover three read-only tools on this guide, the homepage and both workshop pages: <code>get_public_profile</code>, <code>find_public_resources</code> and <code>get_public_workshops</code>.</p>
+    <p>They read the same JSON documents listed above. Resource filtering happens locally in the browser. Support is experimental and depends on the browser; ordinary HTTPS requests and Markdown work without it.</p>
+  </section>
+
+  <section aria-labelledby="source">
+    <h2 id="source">Website source</h2>
+    <p>The <a href="https://github.com/adityaarunsinghal/adityaarunsinghal.github.io">public website repository</a> contains the document generators and source data. See <a href="https://github.com/adityaarunsinghal/adityaarunsinghal.github.io/blob/master/CLAUDE.md">repository development instructions</a> and the <a href="https://github.com/adityaarunsinghal/adityaarunsinghal.github.io/blob/master/src/workshop/AGENTS.md">workshop contribution instructions</a> before proposing changes.</p>
+  </section></article>
+  </main>
+  <footer class="document-footer">
+    <a href="/">Back to the homepage</a>
+    <a href="/developers.md">Read as Markdown</a>
+  </footer>
+</body>
+</html>
