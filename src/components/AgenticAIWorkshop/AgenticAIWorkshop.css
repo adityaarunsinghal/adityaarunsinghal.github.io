@@ -705,8 +705,31 @@
   font-size: 15px;
 }
 .workshop-2026 .course-faq summary {
+  position: relative;
+  display: block;
+  padding-left: 24px;
   cursor: pointer;
   font-weight: 550;
+  line-height: 1.6;
+  list-style: none;
+}
+.workshop-2026 .course-faq summary::-webkit-details-marker {
+  display: none;
+}
+.workshop-2026 .course-faq summary::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(0.8em - 4px);
+  width: 12px;
+  height: 8px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px 8px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px 8px no-repeat;
+  transform: rotate(-90deg);
+}
+.workshop-2026 .course-faq details[open] > summary::before {
+  transform: none;
 }
 .workshop-2026 .course-faq p {
   margin-top: 14px;

@@ -942,7 +942,33 @@
 .workshop-2025 .session-number { background: #263d52; }
 .workshop-2025 .word-cloud-section { margin-top: 70px; }
 .workshop-2025 .archive-quotes { padding: 24px; border: 1px solid #7a8c9e; border-radius: 12px; }
-.workshop-2025 .archive-quotes summary { cursor: pointer; font-size: 18px; }
+.workshop-2025 .archive-quotes summary {
+  position: relative;
+  display: block;
+  padding-left: 24px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1.6;
+  list-style: none;
+}
+.workshop-2025 .archive-quotes summary::-webkit-details-marker {
+  display: none;
+}
+.workshop-2025 .archive-quotes summary::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(0.8em - 4px);
+  width: 12px;
+  height: 8px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px 8px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px 8px no-repeat;
+  transform: rotate(-90deg);
+}
+.workshop-2025 .archive-quotes[open] > summary::before {
+  transform: none;
+}
 .workshop-2025 .archive-quotes ul { padding: 0; list-style: none; }
 .workshop-2025 .archive-quotes li { padding: 24px 0; border-bottom: 1px solid #7a8c9e; }
 .workshop-2025 blockquote { margin: 0 0 12px; }
