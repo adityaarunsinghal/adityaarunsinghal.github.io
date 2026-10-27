@@ -1,17 +1,35 @@
 import homeTemplate from "./home.html?raw";
-import { pageDefinitions } from "../workshop/pages";
+import { course, historical, pageDefinitions } from "../workshop/pages";
+import { workshopSchema } from "../workshop/schema";
 import { profileLinks, readingMap, site } from "./content";
 import { legacyTarget, routeEntries, type ShortcutPage } from "./routes";
 import { analyticsHead } from "./analytics";
+import { documentPages } from "./documents";
+import { apiDocuments, openApiDocument } from "./agent-data";
+import { accessInstructions, agentInstructions, markdownPath, resourceCatalog, schemaMap, sectionReadingMaps } from "./discovery";
 
 export { site, profileLinks, readingMap } from "./content";
 export { appPages, shortcutPages, canonicalLocalRoute, legacyTarget } from "./routes";
+export { documentPages, renderDocument } from "./documents";
+export { apiDocuments, apiEndpoints, openApiDocument } from "./agent-data";
+export { markdownPath } from "./discovery";
 
 export const publicPages = [
   { path: "/", modified: site.modified },
   ...pageDefinitions
     .filter((page) => page.kind === "current" || page.kind === "archive")
-    .map((page) => ({ path: page.path, modified: undefined })),
+    .map((page) => ({
+      path: page.path,
+      modified: page.kind === "current" ? course.modified : historical.modified,
+    })),
+  ...documentPages.map(({ path, modified }) => ({ path, modified })),
+];
+
+export const markdownPages = [
+  { path: "/", markdown: "/index.md" },
+  ...documentPages.map(({ path }) => ({ path, markdown: markdownPath(path) })),
+  ...pageDefinitions.filter((page) => page.path === page.canonical)
+    .map(({ path }) => ({ path, markdown: markdownPath(path) })),
 ];
 
 export function escapeHtml(value: string): string {
@@ -49,6 +67,14 @@ export function profileGraph() {
         knowsAbout: ["Agentic AI", "Model Context Protocol (MCP)", "RAG systems", "AI evaluation"],
         sameAs: Object.values(profileLinks),
       },
+      {
+        "@type": "Book", "@id": `${home}#book`,
+        name: "I's till you're 18",
+        url: `${home}#book`,
+        author: { "@id": person },
+        image: `${site.origin}/static/images/book_cover.jpg`,
+        description: "A collection of poems and short stories following Ahaan from age twelve to eighteen.",
+      },
     ],
   };
 }
@@ -64,6 +90,10 @@ function homeHead(compatibilityScript: string) {
   <meta name="author" content="${escapeHtml(site.name)}" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="${site.origin}/" />
+  <link rel="alternate" type="text/markdown" href="${site.origin}/index.md" />
+  <link rel="service-desc" type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json" />
+  <link rel="service-doc" type="text/html" href="${site.origin}/developers/" />
+  <link rel="ard" type="application/json" href="${site.origin}/.well-known/ard.json" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
   <meta name="theme-color" content="#091126" />
@@ -85,6 +115,7 @@ function homeHead(compatibilityScript: string) {
   <meta name="twitter:image:alt" content="Aditya (Adi) Singhal — Agentic AI, MCP, and evaluation" />
   <script type="application/ld+json">${safeJson(profileGraph())}</script>
   <script src="${escapeHtml(compatibilityScript)}" defer></script>
+  <script src="/site-agent-tools.js" defer></script>
   ${analyticsHead()}`;
 }
 
@@ -172,11 +203,55 @@ export function renderNotFound(compatibilityScript = "/__site/routes.js"): strin
 }
 
 export function renderReadingMap(): string {
-  return `# Aditya (Adi) Singhal\n\n> ${site.description}\n\nHis work includes production RAG infrastructure, MCP-based engineering automation, and LLM evaluation. His current Applied Scientist role is at Amazon; his earlier AWS Bedrock role was in software engineering.\n\n${readingMap.map((group) =>
+  return `# Aditya (Adi) Singhal\n\n> ${site.description}\n\nHis work includes production RAG infrastructure, MCP-based engineering automation, and LLM evaluation. His current Applied Scientist role is at Amazon; his earlier AWS Bedrock role was in software engineering.
+
+## When to use this site
+
+Use this site to describe Adi's publicly stated work, find his public projects and writing, or locate released materials and recordings from his NYU Agentic AI workshops. Cite the original page linked from each resource. Keep the 2025 archive separate from the current 2026 course.
+
+## Agent and developer access
+
+The public data API is read-only and needs no account, API key or payment. Its JSON documents mirror public content; it cannot send messages or register for courses. Follow external projects' own documentation for their tools and access requirements. Teaching about MCP does not imply that this website hosts an MCP server.
+
+- [Agent instructions](${site.origin}/agents.md): when to use the site and how to retrieve and cite its content.
+- [Developer guide](${site.origin}/developers.md): endpoint documentation and working examples.
+- [OpenAPI specification](${site.origin}/openapi.json): typed contract for the four public GET endpoints.
+- [API index](${site.origin}/api/v1/index.json): profile, resources and workshop JSON documents.
+- [Access policy](${site.origin}/auth.md): public access and error handling.
+- [Markdown homepage](${site.origin}/index.md): readable copy of the complete homepage.
+- [Developer reading map](${site.origin}/developers/llms.txt): focused integration references.
+- [2026 workshop reading map](${site.origin}${course.path}llms.txt): current course materials.
+- [2025 archive reading map](${site.origin}${course.archivePath}llms.txt): historical materials.
+- [Experimental browser tools](${site.origin}/developers/#browser-tools): optional read-only WebMCP tools in supporting browsers.
+- [Privacy](${site.origin}/privacy/): analytics, hosting and embedded content.
+
+${readingMap.map((group) =>
     `## ${group.heading}\n\n${group.links.map((link) =>
       `- [${link.name}](${link.url}): ${link.description}`,
     ).join("\n")}`,
   ).join("\n\n")}\n`;
+}
+
+export function renderMachineDocuments(): Record<string, string> {
+  const json = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
+  const graphs = [profileGraph(), workshopSchema(course.path), workshopSchema(course.archivePath)];
+  const schemaFeed = graphs.flatMap((graph) =>
+    graph ? graph["@graph"].map((node) => ({ "@context": graph["@context"], ...node })) : [],
+  ).map((node) => JSON.stringify(node)).join("\n") + "\n";
+  const latest = publicPages.map((page) => page.modified).sort().slice(-1)[0];
+  return {
+    "/llms.txt": renderReadingMap(),
+    "/sitemap.xml": renderSitemap(),
+    "/sitemap.txt": publicPages.map((page) => `${site.origin}${page.path}`).join("\n") + "\n",
+    "/agents.md": agentInstructions(),
+    "/auth.md": accessInstructions(),
+    "/openapi.json": json(openApiDocument()),
+    "/.well-known/ard.json": json(resourceCatalog()),
+    "/feeds/site-schema.jsonl": schemaFeed,
+    "/schemamap.xml": schemaMap(latest),
+    ...sectionReadingMaps(),
+    ...Object.fromEntries(Object.entries(apiDocuments).map(([url, data]) => [url, json(data)])),
+  };
 }
 
 export function renderSitemap(): string {

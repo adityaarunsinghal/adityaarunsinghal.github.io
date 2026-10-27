@@ -3,6 +3,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
 import { build } from "vite";
+import { htmlToMarkdown } from "./markdown.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -53,10 +54,17 @@ await write("404.html", site.renderNotFound(script));
 for (const page of site.shortcutPages) {
   await write(`${page.path}/index.html`, site.renderShortcut(page));
 }
-await write("llms.txt", site.renderReadingMap());
-await write("sitemap.xml", site.renderSitemap());
-await write(
-  "sitemap.txt",
-  site.publicPages.map((page) => `${site.site.origin}${page.path}`).join("\n") + "\n",
-);
-console.log(`Generated the public homepage, ${site.appPages.length} app entries, ${site.shortcutPages.length} shortcuts, discovery files, and 404 page.`);
+for (const page of site.documentPages) {
+  await write(`${page.path}/index.html`, site.renderDocument(page.path));
+}
+for (const [name, content] of Object.entries(site.renderMachineDocuments())) {
+  await write(name, content);
+}
+for (const page of site.markdownPages) {
+  const htmlPath = page.path === "/" ? "index.html" : `${page.path}/index.html`;
+  const html = await readFile(path.join(output, htmlPath), "utf8");
+  await write(page.markdown, htmlToMarkdown(html, `${site.site.origin}${page.path}`));
+}
+// Preserve dot-directories such as .well-known when Pages serves this artifact.
+await write(".nojekyll", "");
+console.log(`Generated the public homepage, ${site.documentPages.length} information pages, ${site.appPages.length} app entries, ${site.shortcutPages.length} shortcuts, ${site.markdownPages.length} Markdown twins, discovery files, and 404 page.`);

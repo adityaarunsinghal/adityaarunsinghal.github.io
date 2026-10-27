@@ -17,3 +17,22 @@
 .workshop-skip-link:focus {
   top: 12px;
 }
+.workshop-document .workshop-resource-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.5rem;
+  padding: 1rem 1.5rem 1.5rem;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.workshop-document .workshop-resource-links a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+.workshop-document .workshop-resource-links a:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 4px;
+}

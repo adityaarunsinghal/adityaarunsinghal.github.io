@@ -2,6 +2,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import AgenticAIWorkshop from "../components/AgenticAIWorkshop/AgenticAIWorkshop";
 import AgenticAIWorkshop2025 from "../components/AgenticAIWorkshop2025/AgenticAIWorkshop2025";
 import { analyticsMeasurementId } from "../site/analytics";
+import { markdownPath } from "../site/discovery";
+import { workshopSchema } from "./schema";
 import {
   course,
   courseAction,
@@ -104,6 +106,7 @@ export function renderWorkshop(
       : 2026;
   const canonical = `https://adityasinghal.com${page.canonical}`;
   const image = `https://adityasinghal.com/workshops/workshop-social-${year}.png`;
+  const schema = workshopSchema(page.canonical);
   const measurementId = (page.kind === "current" || page.kind === "archive")
     ? analyticsMeasurementId() : null;
   return (
@@ -127,6 +130,9 @@ export function renderWorkshop(
           {measurementId && (
             <script src="/site-analytics.js" data-measurement-id={measurementId} defer />
           )}
+          {(page.kind === "current" || page.kind === "archive") && (
+            <script src="/site-agent-tools.js" defer />
+          )}
           {page.kind === "current" && (
             <>
               <script src="/workshops/download-slides.js" defer />
@@ -138,6 +144,11 @@ export function renderWorkshop(
               <script src="/workshops/session-recordings.js" defer />
             )}
           <link rel="canonical" href={canonical} />
+          <link rel="alternate" type="text/markdown" href={`https://adityasinghal.com${markdownPath(page.canonical)}`} />
+          <link rel="service-desc" type="application/vnd.oai.openapi+json" href="https://adityasinghal.com/openapi.json" />
+          {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+          }} />}
           <link
             rel="icon"
             type="image/svg+xml"
@@ -181,6 +192,10 @@ export function renderWorkshop(
           ) : (
             <InformationPage kind={page.kind} state={state} />
           )}
+          <nav className="workshop-resource-links" aria-label="Site resources">
+            <a href="/developers/">For developers</a>
+            <a href="/privacy/">Privacy</a>
+          </nav>
         </body>
       </html>,
     )

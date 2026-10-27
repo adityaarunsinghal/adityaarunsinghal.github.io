@@ -4,6 +4,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import PrivateRoute from "@/components/PrivateRoute";
 import { pageDefinitions } from "./workshop/pages";
 import { shortcutPages } from "./site/routes";
+import { documentPages } from "./site/document-pages";
 import PublicDocumentBridge from "@/components/PublicDocumentBridge";
 
 // Eager: tiny components on hot paths (login, simple redirects).
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
         <WorkshopRouteBridge destination={page.path} />
       </ErrorBoundary>
     ),
+  })),
+  ...documentPages.map((page) => ({
+    path: page.path,
+    element: <PublicDocumentBridge destination={page.path} />,
   })),
   ...shortcutPages.map((page) => ({
     path: page.path,

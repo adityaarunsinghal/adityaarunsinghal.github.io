@@ -74,6 +74,8 @@ async def check(args):
             )
             if recordings:
                 expected_scripts.append("/workshops/session-recordings.js")
+            if current_course or await page.locator(".workshop-2025").count() == 1:
+                expected_scripts.append("/site-agent-tools.js")
             # Configured analytics is limited to the current course and archive.
             analytics = page.locator('script[src="/site-analytics.js"]')
             if await analytics.count():
@@ -83,7 +85,7 @@ async def check(args):
                 expected_scripts.append("/site-analytics.js")
             # The recording enhancement may already have requested the player API.
             actual_scripts = await page.locator(
-                'script:not([src^="https://"])'
+                'script:not([src^="https://"]):not([type="application/ld+json"])'
             ).evaluate_all("(scripts) => scripts.map(script => script.getAttribute('src')).sort()")
             assert actual_scripts == sorted(expected_scripts), (route, actual_scripts)
             report["routes"].append(

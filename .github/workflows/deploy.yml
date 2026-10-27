@@ -76,6 +76,7 @@ jobs:
         pnpm lint
         pnpm check:site
         pnpm check:workshop
+        pnpm check:agents
 
     - name: Check public artifacts
       run: pnpm check:public

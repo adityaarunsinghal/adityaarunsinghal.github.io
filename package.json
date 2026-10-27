@@ -16,6 +16,7 @@
     "build": "tsc && vite build && node scripts/build-workshop-pages.mjs && node scripts/build-site-pages.mjs",
     "check:workshop": "node scripts/check-workshop-pages.mjs",
     "check:site": "node scripts/check-site-pages.mjs",
+    "check:agents": "node --test scripts/markdown.test.mjs scripts/site-agent-tools.test.mjs && node scripts/check-agent-data.mjs && node scripts/check-agent-pages.mjs",
     "analyze": "pnpm run build && node -e \"console.log('Bundle report: temp/build-reports/stats.html')\"",
     "check:public": "node --test scripts/check-public-artifacts.test.mjs && node scripts/check-public-artifacts.mjs",
     "lint": "eslint src --max-warnings 0",
@@ -39,7 +40,8 @@
       "@humanfs/node": "0.16.8",
       "baseline-browser-mapping": "2.11.0",
       "pre-commit>cross-spawn": "6.0.6",
-      "js-yaml": "5.4.1"
+      "js-yaml": "5.4.1",
+      "zod@>=4.0.0 <4.6.6": "4.6.6"
     }
   },
   "dependencies": {
@@ -64,6 +66,8 @@
     "@typescript-eslint/eslint-plugin": "^8.58.1",
     "@typescript-eslint/parser": "^8.58.1",
     "@vitejs/plugin-react": "^6.0.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "axe-core": "4.13.0",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -75,6 +79,8 @@
     "rimraf": "^6.0.1",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-visualizer": "^7.0.1",
+    "turndown": "7.2.4",
+    "turndown-plugin-gfm": "1.0.2",
     "typescript": "^6.0.2",
     "vite": "8.1.6"
   }

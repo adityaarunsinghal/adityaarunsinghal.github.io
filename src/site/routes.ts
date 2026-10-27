@@ -1,5 +1,6 @@
 import { pageDefinitions } from "../workshop/pages";
 import { profileLinks } from "./content";
+import { documentPages } from "./document-pages";
 
 export const appPages = [
   { path: "/login/", title: "Sign in" },
@@ -37,6 +38,7 @@ export const routeEntries: [string, string][] = [
   ...appPages.map((page): [string, string] => [routeKey(page.path), page.path]),
   ...shortcutPages.map((page): [string, string] => [routeKey(page.path), page.path]),
   ...pageDefinitions.map((page): [string, string] => [routeKey(page.path), page.canonical]),
+  ...documentPages.map((page): [string, string] => [routeKey(page.path), page.path]),
 ];
 
 const canonicalRoutes = new Map(routeEntries);

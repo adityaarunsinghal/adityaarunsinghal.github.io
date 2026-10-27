@@ -18,10 +18,11 @@ export const course = {
   venue: "CDS 7th Floor Open Space",
   address: "60 5th Ave, between 12th and 13th Streets",
   contact: "tb116@nyu.edu",
-  modified: "2026-09-27",
+  modified: "2026-10-27",
 };
 
 export const historical = {
+  modified: "2026-10-27",
   playlist:
     "https://www.youtube.com/playlist?list=PLgF7i4LH-YxYvhXK-yywN7eFRjRjQrq89",
   repository: "https://github.com/adityaarunsinghal/agentic-ai-workshop-2025",

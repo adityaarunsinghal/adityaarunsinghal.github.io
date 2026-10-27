@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import path from "path";
 import { readFile } from "node:fs/promises";
+import { htmlToMarkdown } from "./scripts/markdown.mjs";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -23,6 +24,30 @@ export default defineConfig({
               response.end(request.method === "HEAD" ? undefined : site.renderCompatibilityScript());
               return;
             }
+            const machine = site.renderMachineDocuments()[url.pathname];
+            if (machine !== undefined) {
+              const type = url.pathname.endsWith(".md") ? "text/markdown"
+                : url.pathname.endsWith(".json") ? "application/json"
+                : url.pathname.endsWith(".jsonl") ? "application/x-ndjson"
+                : url.pathname.endsWith(".xml") ? "application/xml" : "text/plain";
+              response.setHeader("Content-Type", `${type}; charset=utf-8`);
+              response.end(request.method === "HEAD" ? undefined : machine);
+              return;
+            }
+            const markdown = site.markdownPages.find(
+              (page: { markdown: string }) => page.markdown === url.pathname,
+            );
+            if (markdown) {
+              let html = markdown.path === "/" ? site.renderHome() : site.renderDocument(markdown.path);
+              if (!html) {
+                const workshop = await server.ssrLoadModule("/src/workshop/render.tsx");
+                html = workshop.renderWorkshop(markdown.path, "/__workshop/2026.css");
+              }
+              response.setHeader("Content-Type", "text/markdown; charset=utf-8");
+              response.end(request.method === "HEAD" ? undefined
+                : htmlToMarkdown(html, `${site.site.origin}${markdown.path}`));
+              return;
+            }
             const canonical = site.canonicalLocalRoute(url.pathname);
             if (canonical && canonical !== url.pathname) {
               response.statusCode = 308;
@@ -33,6 +58,8 @@ export default defineConfig({
             let html: string | undefined;
             if (canonical === "/" || canonical === "/static/") {
               html = site.renderHome();
+            } else if (canonical && site.renderDocument(canonical)) {
+              html = site.renderDocument(canonical);
             } else {
               const app = site.appPages.find((page: { path: string }) => page.path === canonical);
               const shortcut = site.shortcutPages.find((page: { path: string }) => page.path === canonical);

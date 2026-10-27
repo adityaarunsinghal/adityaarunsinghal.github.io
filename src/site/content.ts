@@ -10,7 +10,7 @@ export const site = {
     "Aditya (Adi) Singhal builds and evaluates AI agents with MCP. Applied Scientist at Amazon, former AWS Bedrock engineer, and agentic AI instructor at NYU.",
   jobTitle: "Applied Scientist",
   employer: "Amazon",
-  modified: "2026-10-23",
+  modified: "2026-10-27",
   googleVerification: "Mu_M8rG9SHTJdAcpshMu76G6x_EwaOQaznwBRGdMSeI",
   portrait: "/static/images/adi-mcp-2026.webp",
   socialImage: "/social/adi-singhal.png",

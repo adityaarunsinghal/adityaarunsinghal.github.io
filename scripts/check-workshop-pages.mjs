@@ -39,8 +39,9 @@ for (const page of pageDefinitions) {
   const analyticsScript = measurementId !== null
     && (page.kind === "current" || page.kind === "archive");
   assert.equal(
-    (html.match(/<script\b/g) || []).length,
-    (page.kind === "current" ? 2 : 0) + Number(recordingScript) + Number(analyticsScript),
+    (html.match(/<script\b(?![^>]*type="application\/ld\+json")/g) || []).length,
+    (page.kind === "current" ? 2 : 0) + Number(recordingScript) + Number(analyticsScript)
+      + Number(page.kind === "current" || page.kind === "archive"),
     `${page.path} should use only its independent enhancements`,
   );
   assert.equal((html.match(/src="\/site-analytics\.js"/g) || []).length, Number(analyticsScript));

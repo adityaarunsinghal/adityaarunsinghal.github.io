@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://adityasinghal.com/sitemap.xml
+schemamap: https://adityasinghal.com/schemamap.xml

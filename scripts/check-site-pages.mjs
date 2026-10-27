@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
@@ -119,8 +119,11 @@ for (const name of ["sitemap.xml", "sitemap.txt", "llms.txt"]) {
   assert.ok(!/latest-resume|Aditya_Singhal_Resume|\/login|\/progress|\/lovesingy|\/translate|\/wife|stats\.html/.test(content), name);
 }
 assert.ok((await read("llms.txt")).includes(site.description));
+// Production paths are case-sensitive; macOS may resolve the intentionally
+// public agents.md when checking for the unrelated private AGENTS.md file.
+const rootFiles = await readdir(output);
 for (const name of ["app.html", "stats.html", "src", ".local", "AGENTS.md"]) {
-  await assert.rejects(stat(path.join(output, name)), { code: "ENOENT" });
+  assert.ok(!rootFiles.includes(name), `${name} must not enter the build.`);
 }
 await stat(path.join(root, "temp/build-reports/stats.html"));
 console.log(`Passed: direct public HTML and schema; ${appPages.length} app entries; ${shortcutPages.length} shortcuts; ${scenarios.length} legacy-route scenarios; unlisted résumé; discovery files; private build report.`);

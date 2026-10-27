@@ -28,6 +28,7 @@ If a different global pnpm version is installed, run the repository's pinned ver
 | `pnpm build` | Type-check, build the applications, and generate public/workshop HTML and discovery files. |
 | `pnpm lint` | Run ESLint. |
 | `pnpm check:site` | Check public HTML, metadata, app isolation, shortcuts and legacy routes. |
+| `pnpm check:agents` | Validate the public JSON contract, generated Markdown, discovery files, schema feeds and optional browser tools. |
 | `pnpm check:workshop` | Check workshop content, resources, assets and registration states. |
 | `pnpm check:public` | Check tracked source and build output for known private-artifact and credential patterns. |
 | `pnpm preview` | Preview the production build through Vite. |
@@ -40,6 +41,9 @@ If a different global pnpm version is installed, run the repository's pinned ver
 | `src/site/content.ts` | Public identity, profile links and reading map. |
 | `src/site/home.html` | Homepage template. |
 | `src/site/render.ts` | Homepage, shortcuts, 404, metadata and discovery rendering. |
+| `src/site/agent-data.ts` | Public read-only JSON documents and their OpenAPI contract. |
+| `src/site/documents.ts`, `src/site/discovery.ts` | Developer/privacy pages and public reading guidance. |
+| `scripts/markdown.mjs` | Generate Markdown twins from the same public HTML. |
 | `src/site/routes.ts` | App/shortcut paths and legacy URL normalization. |
 | `public/static/assets/` | Homepage styles and native browser enhancements. |
 | `src/workshop/pages.ts` | Course facts, resource availability, recordings and chapter metadata. |
@@ -59,6 +63,9 @@ Generated site files live in ignored `dist/`; temporary renderer output lives in
 | --- | --- |
 | `/` | Static personal homepage. |
 | `/static/` | Compatibility copy of the homepage, canonicalized to `/`. |
+| `/developers/`, `/privacy/` | Static public documentation and privacy information. |
+| `/api/v1/*.json`, `/openapi.json` | Read-only public data and its typed API description. |
+| `/index.md`, `/agentic-ai-workshop.md` | Generated Markdown views of public pages. |
 | `/login/` | Google sign-in. |
 | `/progress/` | Authenticated daily tracker. |
 | `/lovesingy/` | Authenticated messaging and countdown utility. |
@@ -77,6 +84,7 @@ Public pages work without JavaScript. App entry documents are `noindex`; Firebas
 pnpm lint
 pnpm build
 pnpm check:site
+pnpm check:agents
 pnpm check:workshop
 pnpm check:public
 ```
@@ -113,10 +121,12 @@ Source lives on `master`; GitHub Pages serves `gh-pages`. A source push does not
 Run the build checks above and review the intended output before publishing. For an incremental release, the existing publisher supports additive mode:
 
 ```bash
-pnpm exec gh-pages --dist dist --add --nojekyll --message "Update website"
+pnpm exec gh-pages --dist dist --add --dotfiles --nojekyll --message "Update website"
 ```
 
 Additive publication retains prior assets needed by already-open pages. Remove obsolete documents deliberately, and review the complete resulting file set. After the Pages build succeeds, verify the changed documents, assets, routes and HTTP status codes on the live site.
+
+Include dotfiles when publishing (`--dotfiles` with the CLI, or `dotfiles: true` through its API) so the generated `.well-known/ard.json` is deployed. Public Markdown and JSON are physical files. The current host does not provide custom Accept-based content negotiation, API authentication, or JSON error responses; the developer documentation describes those limits.
 
 `pnpm run deploy` remains a build-and-publish helper using the publisher's defaults. It does not perform the full checks or additive retention shown above. Firestore rules and Firebase Functions are separate deployments.
 
