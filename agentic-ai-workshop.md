@@ -435,6 +435,12 @@ Fictional voices based on replies as of October 6, 2026. Approximate counts over
     I know whom I want to help: someone waiting for care, learning support or a service they struggle to access. My idea might still be a large ambition. I'm excited by the possibility of making help easier to get. I worry about privacy, unfairness and mistakes, so people need a way to question the result.
     
 
+## How was the workshop?
+
+Share what worked and what we can improve.
+
+[Workshop feedback](https://forms.gle/ce6MF1g3DAKRyoWh7)
+
 NYU CDS · AGENTIC AI WORKSHOP 2026
 
 ## Bring your curiosity and build an agent of your own.
