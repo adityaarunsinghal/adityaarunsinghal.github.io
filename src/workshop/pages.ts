@@ -5,7 +5,8 @@ export const course = {
   // Change deliberately with the form owner. A visitor's clock cannot establish acceptance.
   state: "in-progress" as CourseState,
   year: 2026,
-  path: "/agentic-ai-workshop/",
+  path: "/agentic-ai-workshop-2026/",
+  currentPath: "/agentic-ai-workshop/",
   archivePath: "/agentic-ai-workshop-2025/",
   appStoreUrl: "https://nyu-workshop.adityasinghal.com/",
   feedbackUrl: "https://forms.gle/ce6MF1g3DAKRyoWh7",
@@ -446,7 +447,7 @@ export const resources: {
   {
     name: "Build and publish your agent",
     description: "Follow the setup, ZIP upload, peer feedback, and course-credit instructions.",
-    links: [{ url: `${course.publicRepositoryUrl}#clone-and-build-your-own-agent`, action: "Read the project guide" }],
+    links: [{ url: `${course.publicRepositoryUrl}#run-your-first-app`, action: "Read the project guide" }],
   },
   {
     name: "Class app store",
@@ -471,6 +472,15 @@ export function courseAction(state: CourseState) {
 export const pageDefinitions = [
   {
     path: course.path,
+    kind: "current",
+    title: "Agentic AI Workshop 2026 | NYU CDS | Adi Singhal",
+    description:
+      "Four in-person Thursday sessions at NYU CDS, October 8–29, 2026. Learn agents, harnesses, interactive apps, and coordination through slides, demonstrations, and starter code.",
+    canonical: course.path,
+  },
+  {
+    // Keep the edition URL independent when the current-course alias moves to a later year.
+    path: course.currentPath,
     kind: "current",
     title: "Agentic AI Workshop 2026 | NYU CDS | Adi Singhal",
     description:

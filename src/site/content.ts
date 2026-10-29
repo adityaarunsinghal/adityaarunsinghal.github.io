@@ -39,7 +39,7 @@ export const readingMap = [
   {
     heading: "Agentic AI and MCP teaching",
     links: [
-      { name: "NYU Agentic AI Workshop 2026", url: `${site.origin}/agentic-ai-workshop/`, description: "Agent harnesses, tools and MCP, interfaces beyond chat, multi-agent systems, and evaluation. Taught with Luca Chang." },
+      { name: "NYU Agentic AI Workshop 2026", url: `${site.origin}/agentic-ai-workshop-2026/`, description: "Agent harnesses, tools and MCP, interfaces beyond chat, multi-agent systems, and evaluation. Taught with Luca Chang." },
       { name: "2026 workshop code and materials", url: "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026", description: "Released lessons, slides, and runnable examples." },
       { name: "NYU Agentic AI Workshop 2025 archive", url: `${site.origin}/agentic-ai-workshop-2025/`, description: "The earlier course, session recordings, chapters, and public code." },
     ],

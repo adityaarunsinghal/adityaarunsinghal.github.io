@@ -16,7 +16,7 @@ const output = path.join(root, "dist");
 const read = (name) => readFile(path.join(output, name), "utf8");
 const form =
   "https://docs.google.com/forms/d/e/1FAIpQLSd_lhxUjjw0NMCvsf5qojymmS8Wur0tA26rqOnSCZarhkV31g/viewform";
-const currentPath = "/agentic-ai-workshop/";
+const currentPath = "/agentic-ai-workshop-2026/";
 const archivePath = "/agentic-ai-workshop-2025/";
 const measurementId = analyticsMeasurementId();
 let checked = 0;
@@ -72,6 +72,14 @@ for (const page of pageDefinitions) {
 }
 
 const current = await read(`${currentPath}/index.html`);
+assert.equal(currentPath, course.path);
+assert.equal(
+  await read(`${course.currentPath}/index.html`),
+  current,
+  "The current-course alias must retain the complete 2026 page.",
+);
+assert.ok(current.includes('href="https://forms.gle/ce6MF1g3DAKRyoWh7"'));
+assert.ok(current.includes(`${course.publicRepositoryUrl}#run-your-first-app`));
 assert.ok(!current.includes("Pause wave"));
 assert.ok(!current.includes("data-wave-toggle"));
 for (const text of [
@@ -141,13 +149,14 @@ for (const state of [
 ]) {
   for (const route of [
     currentPath,
+    course.currentPath,
     "/registration-form/",
     "/agentic-ai-workshop/registration-form/",
   ]) {
     const html = renderWorkshop(route, "/test.css", state);
     assert.equal(
       html.includes(form),
-      route === currentPath,
+      route === currentPath || route === course.currentPath,
       `Wrong registration action in ${state} at ${route}`,
     );
     assert.equal(

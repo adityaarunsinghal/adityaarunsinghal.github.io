@@ -66,7 +66,7 @@ Public workshop information and code can link to third-party services. Course re
 }
 
 export function sectionReadingMaps(): Record<string, string> {
-  return {
+  const maps = {
     "/developers/llms.txt": `# Aditya Singhal: developer resources
 
 > Public, read-only access to profile, project, writing and workshop information.
@@ -106,6 +106,10 @@ Use this section for the earlier curriculum and its recordings. For the current 
 - [2026 reading map](${site.origin}${course.path}llms.txt): the current course.
 - [Workshop data](${site.origin}/api/v1/workshops.json): separate records for both years.
 `,
+  };
+  return {
+    ...maps,
+    [`${course.currentPath}llms.txt`]: maps[`${course.path}llms.txt`],
   };
 }
 

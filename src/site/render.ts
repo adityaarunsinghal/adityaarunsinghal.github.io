@@ -17,7 +17,8 @@ export { markdownPath } from "./discovery";
 export const publicPages = [
   { path: "/", modified: site.modified },
   ...pageDefinitions
-    .filter((page) => page.kind === "current" || page.kind === "archive")
+    .filter((page) => page.path === page.canonical
+      && (page.kind === "current" || page.kind === "archive"))
     .map((page) => ({
       path: page.path,
       modified: page.kind === "current" ? course.modified : historical.modified,
@@ -28,7 +29,8 @@ export const publicPages = [
 export const markdownPages = [
   { path: "/", markdown: "/index.md" },
   ...documentPages.map(({ path }) => ({ path, markdown: markdownPath(path) })),
-  ...pageDefinitions.filter((page) => page.path === page.canonical)
+  ...pageDefinitions.filter((page) => page.path === page.canonical
+    || page.path === course.currentPath)
     .map(({ path }) => ({ path, markdown: markdownPath(path) })),
 ];
 

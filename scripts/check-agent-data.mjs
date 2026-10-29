@@ -123,7 +123,7 @@ assert.deepEqual(workshops.map(({ year }) => year).sort(), [2025, 2026]);
 assert.equal(workshops.find(({ year }) => year === 2025).status, "archived");
 const restrictedMaterials = [];
 for (const workshop of workshops) {
-  assert.equal(workshop.url, `${origin}/agentic-ai-workshop${workshop.year === 2025 ? "-2025" : ""}/`);
+  assert.equal(workshop.url, `${origin}/agentic-ai-workshop-${workshop.year}/`);
   const recordingIds = new Set();
   for (const recording of workshop.recordings) {
     assert.ok(!recordingIds.has(recording.id), "Duplicate recording within a workshop.");
