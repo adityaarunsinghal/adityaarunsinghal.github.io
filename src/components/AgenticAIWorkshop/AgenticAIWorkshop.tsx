@@ -98,6 +98,7 @@ export default function AgenticAIWorkshop({
             <a href="#schedule">Schedule</a>
             <a href="#format">Format</a>
             <a href="#materials">Materials</a>
+            <a href="#feedback">Feedback</a>
             {recordings.length > 0 && <a href="#recordings">Recordings</a>}
             <a href={course.appStoreUrl}>App store <Arrow /></a>
             <a href={course.archivePath}>
@@ -439,6 +440,26 @@ export default function AgenticAIWorkshop({
           </div>
         </section>
         <StudentCrowd />
+        <section
+          className="course-wrap course-section"
+          id="feedback"
+          aria-labelledby="feedback-title"
+        >
+          <div className="section-heading">
+            <div>
+              <h2 id="feedback-title">How was the workshop?</h2>
+              <p>Share what worked and what we can improve.</p>
+            </div>
+            <a
+              className="course-button"
+              href={course.feedbackUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Workshop feedback <Arrow />
+            </a>
+          </div>
+        </section>
         <section className="closing-band" id="register">
           <div className="course-wrap closing-inner">
             <div>

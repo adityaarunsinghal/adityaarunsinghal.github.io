@@ -8,6 +8,7 @@ export const course = {
   path: "/agentic-ai-workshop/",
   archivePath: "/agentic-ai-workshop-2025/",
   appStoreUrl: "https://nyu-workshop.adityasinghal.com/",
+  feedbackUrl: "https://forms.gle/ce6MF1g3DAKRyoWh7",
   publicRepositoryUrl:
     "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026",
   registrationUrl:
@@ -18,7 +19,7 @@ export const course = {
   venue: "CDS 7th Floor Open Space",
   address: "60 5th Ave, between 12th and 13th Streets",
   contact: "tb116@nyu.edu",
-  modified: "2026-10-27",
+  modified: "2026-10-29",
 };
 
 export const historical = {
