@@ -14,7 +14,7 @@ Watch an agent choose a tool and see what runs it. Then build one around a probl
 
 **October 8, 15, 22 & 29, 2026** Thursdays, 5:30–7:00 PM ET  CDS 7th Floor Open Space 
 
-[Watch the recordings](https://adityasinghal.com/agentic-ai-workshop/#recordings)
+[Watch the recordings](https://adityasinghal.com/agentic-ai-workshop-2026/#recordings)
 
 Registration has closed.
 
@@ -200,7 +200,7 @@ Explore the slides and compare single-agent, graph and swarm fact-checking.
 
 Follow the setup, ZIP upload, peer feedback, and course-credit instructions.
 
-[Read the project guide](https://github.com/adityaarunsinghal/agentic-ai-workshop-2026#clone-and-build-your-own-agent)
+[Read the project guide](https://github.com/adityaarunsinghal/agentic-ai-workshop-2026#run-your-first-app)
 
  06 
 
@@ -447,4 +447,4 @@ NYU CDS · AGENTIC AI WORKSHOP 2026
 
 Registration has closed.
 
-[Watch the recordings](https://adityasinghal.com/agentic-ai-workshop/#recordings)
+[Watch the recordings](https://adityasinghal.com/agentic-ai-workshop-2026/#recordings)

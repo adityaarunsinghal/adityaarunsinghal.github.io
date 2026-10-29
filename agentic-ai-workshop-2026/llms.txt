@@ -1,0 +1,11 @@
+# NYU Agentic AI Workshop 2026
+
+> The current workshop taught by Adi Singhal and Luca Chang.
+
+Use this section for the 2026 curriculum, schedule, released slides, starter code and recordings. Do not substitute the 2025 archive for current course information.
+
+- [Course in Markdown](https://adityasinghal.com/agentic-ai-workshop-2026.md): the complete published course page.
+- [Course webpage](https://adityasinghal.com/agentic-ai-workshop-2026/): interactive recordings and current information.
+- [Public course repository](https://github.com/adityaarunsinghal/agentic-ai-workshop-2026): released lessons and runnable examples.
+- [Workshop data](https://adityasinghal.com/api/v1/workshops.json): structured course data and published resources.
+- [2025 archive reading map](https://adityasinghal.com/agentic-ai-workshop-2025/llms.txt): the earlier course.

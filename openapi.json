@@ -226,7 +226,7 @@
                     {
                       "category": "Agentic AI and MCP teaching",
                       "name": "NYU Agentic AI Workshop 2026",
-                      "url": "https://adityasinghal.com/agentic-ai-workshop/",
+                      "url": "https://adityasinghal.com/agentic-ai-workshop-2026/",
                       "description": "Agent harnesses, tools and MCP, interfaces beyond chat, multi-agent systems, and evaluation. Taught with Luca Chang."
                     },
                     {
@@ -306,14 +306,14 @@
                 },
                 "example": {
                   "apiVersion": "1",
-                  "sourceUrl": "https://adityasinghal.com/agentic-ai-workshop/",
+                  "sourceUrl": "https://adityasinghal.com/agentic-ai-workshop-2026/",
                   "modified": "2026-10-29",
                   "workshops": [
                     {
                       "year": 2026,
                       "status": "in-progress",
                       "title": "Agentic AI Workshop 2026 | NYU CDS | Adi Singhal",
-                      "url": "https://adityasinghal.com/agentic-ai-workshop/",
+                      "url": "https://adityasinghal.com/agentic-ai-workshop-2026/",
                       "description": "Four in-person Thursday sessions at NYU CDS, October 8–29, 2026. Learn agents, harnesses, interactive apps, and coordination through slides, demonstrations, and starter code.",
                       "modified": "2026-10-29",
                       "repositoryUrl": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026",
@@ -436,7 +436,7 @@
                           "access": "public",
                           "links": [
                             {
-                              "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026#clone-and-build-your-own-agent",
+                              "url": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026#run-your-first-app",
                               "label": "Read the project guide"
                             }
                           ]

@@ -19,7 +19,7 @@ The public data API is read-only and needs no account, API key or payment. Its J
 - [Access policy](https://adityasinghal.com/auth.md): public access and error handling.
 - [Markdown homepage](https://adityasinghal.com/index.md): readable copy of the complete homepage.
 - [Developer reading map](https://adityasinghal.com/developers/llms.txt): focused integration references.
-- [2026 workshop reading map](https://adityasinghal.com/agentic-ai-workshop/llms.txt): current course materials.
+- [2026 workshop reading map](https://adityasinghal.com/agentic-ai-workshop-2026/llms.txt): current course materials.
 - [2025 archive reading map](https://adityasinghal.com/agentic-ai-workshop-2025/llms.txt): historical materials.
 - [Experimental browser tools](https://adityasinghal.com/developers/#browser-tools): optional read-only WebMCP tools in supporting browsers.
 - [Privacy](https://adityasinghal.com/privacy/): analytics, hosting and embedded content.
@@ -34,7 +34,7 @@ The public data API is read-only and needs no account, API key or payment. Its J
 
 ## Agentic AI and MCP teaching
 
-- [NYU Agentic AI Workshop 2026](https://adityasinghal.com/agentic-ai-workshop/): Agent harnesses, tools and MCP, interfaces beyond chat, multi-agent systems, and evaluation. Taught with Luca Chang.
+- [NYU Agentic AI Workshop 2026](https://adityasinghal.com/agentic-ai-workshop-2026/): Agent harnesses, tools and MCP, interfaces beyond chat, multi-agent systems, and evaluation. Taught with Luca Chang.
 - [2026 workshop code and materials](https://github.com/adityaarunsinghal/agentic-ai-workshop-2026): Released lessons, slides, and runnable examples.
 - [NYU Agentic AI Workshop 2025 archive](https://adityasinghal.com/agentic-ai-workshop-2025/): The earlier course, session recordings, chapters, and public code.
 
