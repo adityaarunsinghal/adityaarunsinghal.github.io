@@ -123,6 +123,8 @@ From the first tool call to a project you can share. Sessions 1–3 are required
     -   Industry feedback
     -   Coffee chats
     
+    [Watch the recording](https://adityasinghal.com/agentic-ai-workshop-2026/#session-4-recording)
+    
      THURSDAY  
     5:30–7 PM ET 
 
@@ -360,6 +362,35 @@ Chapter links open YouTube at that moment.
 18.  [1:18:08  Knowledge bases and task scope](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=4688s)
 19.  [1:22:23  Frameworks](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=4943s)
 20.  [1:24:03  Demo presentation format](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=5043s)
+
+SESSION 4  October 29, 2026 
+
+### Demo Day & Student Projects
+
+[View on YouTube](https://www.youtube.com/watch?v=CkiYnxC5-5g)
+
+Full session · 1:45:17
+
+#### Find a moment
+
+Chapter links open YouTube at that moment.
+
+14 chapters
+
+1.  [00:00  Welcome and demo format](https://www.youtube.com/watch?v=CkiYnxC5-5g)
+2.  [05:52  Meet the professionals](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=352s)
+3.  [21:39  ASL Bridge · Kikki Liu](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=1299s)
+4.  [29:30  Condere · Arthur Lok](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=1770s)
+5.  [37:31  Sonic Journey · Yue Li](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=2251s)
+6.  [45:04  Shortlist · Yuqi Liu](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=2704s)
+7.  [52:02  Sonar User Research · Irene Wang](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=3122s)
+8.  [59:25  Learning Agent · Lucas Carbognin Pizani](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=3565s)
+9.  [1:08:29  Gatekeeper · Arham Bafna](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4109s)
+10.  [1:18:08  Job Agent · Mohammed Shaz Furniturewala](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4688s)
+11.  [1:28:36  Class selfie](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5316s)
+12.  [1:29:43  Care Navigation Assistant · Yuhe "Zoe" Tan](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5383s)
+13.  [1:37:54  Closing advice](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5874s)
+14.  [1:44:39  Thanks and close](https://www.youtube.com/watch?v=CkiYnxC5-5g&t=6279s)
 
  OCTOBER **29** DEMO DAY 
 

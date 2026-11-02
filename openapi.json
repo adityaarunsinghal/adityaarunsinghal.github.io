@@ -964,6 +964,86 @@
                               "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=5043s"
                             }
                           ]
+                        },
+                        {
+                          "id": "session-4-recording",
+                          "session": 4,
+                          "date": "2026-10-29",
+                          "title": "Demo Day & Student Projects",
+                          "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g",
+                          "durationSeconds": 6317.8,
+                          "chapters": [
+                            {
+                              "title": "Welcome and demo format",
+                              "startSeconds": 0,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=0s"
+                            },
+                            {
+                              "title": "Meet the professionals",
+                              "startSeconds": 352,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=352s"
+                            },
+                            {
+                              "title": "ASL Bridge · Kikki Liu",
+                              "startSeconds": 1299,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=1299s"
+                            },
+                            {
+                              "title": "Condere · Arthur Lok",
+                              "startSeconds": 1770,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=1770s"
+                            },
+                            {
+                              "title": "Sonic Journey · Yue Li",
+                              "startSeconds": 2251,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=2251s"
+                            },
+                            {
+                              "title": "Shortlist · Yuqi Liu",
+                              "startSeconds": 2704,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=2704s"
+                            },
+                            {
+                              "title": "Sonar User Research · Irene Wang",
+                              "startSeconds": 3122,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=3122s"
+                            },
+                            {
+                              "title": "Learning Agent · Lucas Carbognin Pizani",
+                              "startSeconds": 3565,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=3565s"
+                            },
+                            {
+                              "title": "Gatekeeper · Arham Bafna",
+                              "startSeconds": 4109,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4109s"
+                            },
+                            {
+                              "title": "Job Agent · Mohammed Shaz Furniturewala",
+                              "startSeconds": 4688,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4688s"
+                            },
+                            {
+                              "title": "Class selfie",
+                              "startSeconds": 5316,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5316s"
+                            },
+                            {
+                              "title": "Care Navigation Assistant · Yuhe \"Zoe\" Tan",
+                              "startSeconds": 5383,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5383s"
+                            },
+                            {
+                              "title": "Closing advice",
+                              "startSeconds": 5874,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5874s"
+                            },
+                            {
+                              "title": "Thanks and close",
+                              "startSeconds": 6279,
+                              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=6279s"
+                            }
+                          ]
                         }
                       ]
                     },
