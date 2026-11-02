@@ -326,8 +326,8 @@ export const sessionRecordings: SessionRecording[] = [
     "date": "2026-10-29",
     "title": "Demo Day & Student Projects",
     "youtubeId": "CkiYnxC5-5g",
-    "durationSeconds": 6317.8,
-    "searchPlaceholder": "Try “ASL”, “Shortlist” or “Gatekeeper”",
+    "durationSeconds": 5906.533333333334,
+    "searchPlaceholder": "Try “ASL”, “Sonar” or “Gatekeeper”",
     "chapters": [
       {
         "startSeconds": 0,
@@ -350,39 +350,35 @@ export const sessionRecordings: SessionRecording[] = [
         "title": "Sonic Journey · Yue Li"
       },
       {
-        "startSeconds": 2704,
-        "title": "Shortlist · Yuqi Liu"
-      },
-      {
-        "startSeconds": 3122,
+        "startSeconds": 2711,
         "title": "Sonar User Research · Irene Wang"
       },
       {
-        "startSeconds": 3565,
+        "startSeconds": 3154,
         "title": "Learning Agent · Lucas Carbognin Pizani"
       },
       {
-        "startSeconds": 4109,
+        "startSeconds": 3698,
         "title": "Gatekeeper · Arham Bafna"
       },
       {
-        "startSeconds": 4688,
+        "startSeconds": 4277,
         "title": "Job Agent · Mohammed Shaz Furniturewala"
       },
       {
-        "startSeconds": 5316,
+        "startSeconds": 4905,
         "title": "Class selfie"
       },
       {
-        "startSeconds": 5383,
+        "startSeconds": 4972,
         "title": "Care Navigation Assistant · Yuhe \"Zoe\" Tan"
       },
       {
-        "startSeconds": 5874,
+        "startSeconds": 5463,
         "title": "Closing advice"
       },
       {
-        "startSeconds": 6279,
+        "startSeconds": 5867,
         "title": "Thanks and close"
       }
     ]
