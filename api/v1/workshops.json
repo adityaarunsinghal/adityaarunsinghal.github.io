@@ -665,7 +665,7 @@
           "date": "2026-10-29",
           "title": "Demo Day & Student Projects",
           "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g",
-          "durationSeconds": 6317.8,
+          "durationSeconds": 5906.533333333334,
           "chapters": [
             {
               "title": "Welcome and demo format",
@@ -693,49 +693,44 @@
               "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=2251s"
             },
             {
-              "title": "Shortlist · Yuqi Liu",
-              "startSeconds": 2704,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=2704s"
-            },
-            {
               "title": "Sonar User Research · Irene Wang",
-              "startSeconds": 3122,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=3122s"
+              "startSeconds": 2711,
+              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=2711s"
             },
             {
               "title": "Learning Agent · Lucas Carbognin Pizani",
-              "startSeconds": 3565,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=3565s"
+              "startSeconds": 3154,
+              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=3154s"
             },
             {
               "title": "Gatekeeper · Arham Bafna",
-              "startSeconds": 4109,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4109s"
+              "startSeconds": 3698,
+              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=3698s"
             },
             {
               "title": "Job Agent · Mohammed Shaz Furniturewala",
-              "startSeconds": 4688,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4688s"
+              "startSeconds": 4277,
+              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4277s"
             },
             {
               "title": "Class selfie",
-              "startSeconds": 5316,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5316s"
+              "startSeconds": 4905,
+              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4905s"
             },
             {
               "title": "Care Navigation Assistant · Yuhe \"Zoe\" Tan",
-              "startSeconds": 5383,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5383s"
+              "startSeconds": 4972,
+              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=4972s"
             },
             {
               "title": "Closing advice",
-              "startSeconds": 5874,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5874s"
+              "startSeconds": 5463,
+              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5463s"
             },
             {
               "title": "Thanks and close",
-              "startSeconds": 6279,
-              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=6279s"
+              "startSeconds": 5867,
+              "url": "https://www.youtube.com/watch?v=CkiYnxC5-5g&t=5867s"
             }
           ]
         }
