@@ -320,6 +320,73 @@ export const sessionRecordings: SessionRecording[] = [
       }
     ]
   },
+  {
+    "id": "session-4-recording",
+    "session": 4,
+    "date": "2026-10-29",
+    "title": "Demo Day & Student Projects",
+    "youtubeId": "CkiYnxC5-5g",
+    "durationSeconds": 6317.8,
+    "searchPlaceholder": "Try “ASL”, “Shortlist” or “Gatekeeper”",
+    "chapters": [
+      {
+        "startSeconds": 0,
+        "title": "Welcome and demo format"
+      },
+      {
+        "startSeconds": 352,
+        "title": "Meet the professionals"
+      },
+      {
+        "startSeconds": 1299,
+        "title": "ASL Bridge · Kikki Liu"
+      },
+      {
+        "startSeconds": 1770,
+        "title": "Condere · Arthur Lok"
+      },
+      {
+        "startSeconds": 2251,
+        "title": "Sonic Journey · Yue Li"
+      },
+      {
+        "startSeconds": 2704,
+        "title": "Shortlist · Yuqi Liu"
+      },
+      {
+        "startSeconds": 3122,
+        "title": "Sonar User Research · Irene Wang"
+      },
+      {
+        "startSeconds": 3565,
+        "title": "Learning Agent · Lucas Carbognin Pizani"
+      },
+      {
+        "startSeconds": 4109,
+        "title": "Gatekeeper · Arham Bafna"
+      },
+      {
+        "startSeconds": 4688,
+        "title": "Job Agent · Mohammed Shaz Furniturewala"
+      },
+      {
+        "startSeconds": 5316,
+        "title": "Class selfie"
+      },
+      {
+        "startSeconds": 5383,
+        "title": "Care Navigation Assistant · Yuhe \"Zoe\" Tan"
+      },
+      {
+        "startSeconds": 5874,
+        "title": "Closing advice"
+      },
+      {
+        "startSeconds": 6279,
+        "title": "Thanks and close"
+      }
+    ]
+  },
 ];
 
 // Chapter wording and times come from the supplied YouTube descriptions,
