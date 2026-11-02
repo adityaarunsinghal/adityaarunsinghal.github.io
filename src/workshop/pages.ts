@@ -20,7 +20,7 @@ export const course = {
   venue: "CDS 7th Floor Open Space",
   address: "60 5th Ave, between 12th and 13th Streets",
   contact: "tb116@nyu.edu",
-  modified: "2026-10-29",
+  modified: "2026-11-02",
 };
 
 export const historical = {
@@ -228,6 +228,97 @@ export const sessionRecordings: SessionRecording[] = [
       { startSeconds: 5118, title: "Classification heads and text generation" },
       { startSeconds: 5312, title: "The cost of autoresearch" },
     ],
+  },
+  {
+    "id": "session-3-recording",
+    "session": 3,
+    "date": "2026-10-22",
+    "title": "Multi-Agent Systems, Graphs, Hooks & Swarms",
+    "youtubeId": "hkv7OHHdQ9s",
+    "durationSeconds": 5152.333333333333,
+    "searchPlaceholder": "Try “graphs”, “evaluation” or “knowledge bases”",
+    "chapters": [
+      {
+        "startSeconds": 0,
+        "title": "Opening"
+      },
+      {
+        "startSeconds": 41,
+        "title": "Luca's introduction and recap"
+      },
+      {
+        "startSeconds": 130,
+        "title": "More cooks in the kitchen"
+      },
+      {
+        "startSeconds": 221,
+        "title": "Limits of one agent"
+      },
+      {
+        "startSeconds": 373,
+        "title": "The single-agent fact checker"
+      },
+      {
+        "startSeconds": 735,
+        "title": "Topologies and graphs"
+      },
+      {
+        "startSeconds": 931,
+        "title": "Checking claims in parallel"
+      },
+      {
+        "startSeconds": 1789,
+        "title": "Hooks and guardrails"
+      },
+      {
+        "startSeconds": 1850,
+        "title": "Codex approver case study"
+      },
+      {
+        "startSeconds": 2062,
+        "title": "Agent swarms"
+      },
+      {
+        "startSeconds": 2350,
+        "title": "Dynamic topologies"
+      },
+      {
+        "startSeconds": 2670,
+        "title": "Shared workspaces and messages"
+      },
+      {
+        "startSeconds": 2823,
+        "title": "Claude Code agent teams"
+      },
+      {
+        "startSeconds": 3213,
+        "title": "Choosing the right pattern"
+      },
+      {
+        "startSeconds": 3453,
+        "title": "Demo day guidelines"
+      },
+      {
+        "startSeconds": 3998,
+        "title": "Self-improving agents"
+      },
+      {
+        "startSeconds": 4467,
+        "title": "Evaluation tools"
+      },
+      {
+        "startSeconds": 4688,
+        "title": "Knowledge bases and task scope"
+      },
+      {
+        "startSeconds": 4943,
+        "title": "Frameworks"
+      },
+      {
+        "startSeconds": 5043,
+        "title": "Demo presentation format"
+      }
+    ]
   },
 ];
 

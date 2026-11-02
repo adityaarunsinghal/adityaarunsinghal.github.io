@@ -114,7 +114,11 @@ for (const recording of sessionRecordings.filter((item) => item.youtubeId)) {
 assert.equal((current.match(new RegExp(`href="${form}"`, "g")) || []).length, 1);
 assert.ok(current.includes("Watch the recordings"));
 assert.ok(current.includes("Registration has closed."));
-assert.ok(!/notebook|codex|openai|—/i.test(current), "Unexpected 2026 wording");
+assert.ok(!/notebook|—/i.test(current), "Unexpected 2026 wording");
+// The course introduction stays vendor-neutral. Recording chapters retain the
+// names of the tools actually demonstrated in class.
+const courseCopy = renderWorkshop(currentPath, "/copy-check.css", course.state, []);
+assert.ok(!/codex|openai/i.test(courseCopy), "Unexpected vendor in course introduction");
 for (const destination of [
   course.publicRepositoryUrl,
   "https://raw.githubusercontent.com/adityaarunsinghal/agentic-ai-workshop-2026/refs/heads/main/session-01-agent-harnesses/session-01-agent-harnesses-2026-10-07.html",
