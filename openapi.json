@@ -307,7 +307,7 @@
                 "example": {
                   "apiVersion": "1",
                   "sourceUrl": "https://adityasinghal.com/agentic-ai-workshop-2026/",
-                  "modified": "2026-10-29",
+                  "modified": "2026-11-02",
                   "workshops": [
                     {
                       "year": 2026,
@@ -315,7 +315,7 @@
                       "title": "Agentic AI Workshop 2026 | NYU CDS | Adi Singhal",
                       "url": "https://adityasinghal.com/agentic-ai-workshop-2026/",
                       "description": "Four in-person Thursday sessions at NYU CDS, October 8–29, 2026. Learn agents, harnesses, interactive apps, and coordination through slides, demonstrations, and starter code.",
-                      "modified": "2026-10-29",
+                      "modified": "2026-11-02",
                       "repositoryUrl": "https://github.com/adityaarunsinghal/agentic-ai-workshop-2026",
                       "schedule": {
                         "dates": "October 8, 15, 22 & 29, 2026",
@@ -852,6 +852,116 @@
                               "title": "The cost of autoresearch",
                               "startSeconds": 5312,
                               "url": "https://www.youtube.com/watch?v=CnrdDizVvV8&t=5312s"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "session-3-recording",
+                          "session": 3,
+                          "date": "2026-10-22",
+                          "title": "Multi-Agent Systems, Graphs, Hooks & Swarms",
+                          "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s",
+                          "durationSeconds": 5152.333333333333,
+                          "chapters": [
+                            {
+                              "title": "Opening",
+                              "startSeconds": 0,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=0s"
+                            },
+                            {
+                              "title": "Luca's introduction and recap",
+                              "startSeconds": 41,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=41s"
+                            },
+                            {
+                              "title": "More cooks in the kitchen",
+                              "startSeconds": 130,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=130s"
+                            },
+                            {
+                              "title": "Limits of one agent",
+                              "startSeconds": 221,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=221s"
+                            },
+                            {
+                              "title": "The single-agent fact checker",
+                              "startSeconds": 373,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=373s"
+                            },
+                            {
+                              "title": "Topologies and graphs",
+                              "startSeconds": 735,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=735s"
+                            },
+                            {
+                              "title": "Checking claims in parallel",
+                              "startSeconds": 931,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=931s"
+                            },
+                            {
+                              "title": "Hooks and guardrails",
+                              "startSeconds": 1789,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=1789s"
+                            },
+                            {
+                              "title": "Codex approver case study",
+                              "startSeconds": 1850,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=1850s"
+                            },
+                            {
+                              "title": "Agent swarms",
+                              "startSeconds": 2062,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=2062s"
+                            },
+                            {
+                              "title": "Dynamic topologies",
+                              "startSeconds": 2350,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=2350s"
+                            },
+                            {
+                              "title": "Shared workspaces and messages",
+                              "startSeconds": 2670,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=2670s"
+                            },
+                            {
+                              "title": "Claude Code agent teams",
+                              "startSeconds": 2823,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=2823s"
+                            },
+                            {
+                              "title": "Choosing the right pattern",
+                              "startSeconds": 3213,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=3213s"
+                            },
+                            {
+                              "title": "Demo day guidelines",
+                              "startSeconds": 3453,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=3453s"
+                            },
+                            {
+                              "title": "Self-improving agents",
+                              "startSeconds": 3998,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=3998s"
+                            },
+                            {
+                              "title": "Evaluation tools",
+                              "startSeconds": 4467,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=4467s"
+                            },
+                            {
+                              "title": "Knowledge bases and task scope",
+                              "startSeconds": 4688,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=4688s"
+                            },
+                            {
+                              "title": "Frameworks",
+                              "startSeconds": 4943,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=4943s"
+                            },
+                            {
+                              "title": "Demo presentation format",
+                              "startSeconds": 5043,
+                              "url": "https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=5043s"
                             }
                           ]
                         }

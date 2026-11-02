@@ -107,6 +107,8 @@ From the first tool call to a project you can share. Sessions 1–3 are required
     -   Coordination protocols
     -   Evaluation
     
+    [Watch the recording](https://adityasinghal.com/agentic-ai-workshop-2026/#session-3-recording)
+    
      THURSDAY  
     5:30–7 PM ET 
 4.   OCT **29**
@@ -323,6 +325,41 @@ Chapter links open YouTube at that moment.
 31.  [1:22:51  MCP connections and extensions](https://www.youtube.com/watch?v=CnrdDizVvV8&t=4971s)
 32.  [1:25:18  Classification heads and text generation](https://www.youtube.com/watch?v=CnrdDizVvV8&t=5118s)
 33.  [1:28:32  The cost of autoresearch](https://www.youtube.com/watch?v=CnrdDizVvV8&t=5312s)
+
+SESSION 3  October 22, 2026 
+
+### Multi-Agent Systems, Graphs, Hooks & Swarms
+
+[View on YouTube](https://www.youtube.com/watch?v=hkv7OHHdQ9s)
+
+Full session · 1:25:52
+
+#### Find a moment
+
+Chapter links open YouTube at that moment.
+
+20 chapters
+
+1.  [00:00  Opening](https://www.youtube.com/watch?v=hkv7OHHdQ9s)
+2.  [00:41  Luca's introduction and recap](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=41s)
+3.  [02:10  More cooks in the kitchen](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=130s)
+4.  [03:41  Limits of one agent](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=221s)
+5.  [06:13  The single-agent fact checker](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=373s)
+6.  [12:15  Topologies and graphs](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=735s)
+7.  [15:31  Checking claims in parallel](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=931s)
+8.  [29:49  Hooks and guardrails](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=1789s)
+9.  [30:50  Codex approver case study](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=1850s)
+10.  [34:22  Agent swarms](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=2062s)
+11.  [39:10  Dynamic topologies](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=2350s)
+12.  [44:30  Shared workspaces and messages](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=2670s)
+13.  [47:03  Claude Code agent teams](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=2823s)
+14.  [53:33  Choosing the right pattern](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=3213s)
+15.  [57:33  Demo day guidelines](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=3453s)
+16.  [1:06:38  Self-improving agents](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=3998s)
+17.  [1:14:27  Evaluation tools](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=4467s)
+18.  [1:18:08  Knowledge bases and task scope](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=4688s)
+19.  [1:22:23  Frameworks](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=4943s)
+20.  [1:24:03  Demo presentation format](https://www.youtube.com/watch?v=hkv7OHHdQ9s&t=5043s)
 
  OCTOBER **29** DEMO DAY 
 
