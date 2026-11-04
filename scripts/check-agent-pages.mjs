@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { htmlToMarkdown } from "./markdown.mjs";
 import {
-  documentPages, markdownPages, publicPages, site,
+  documentPages, markdownPages, publicPages, site, websiteAssistant,
 } from "../dist-ssr/site/render.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -85,16 +85,57 @@ for (const node of feed) {
 }
 
 const catalog = JSON.parse(await read(".well-known/ard.json"));
-assert.ok(catalog.entries.length > 0);
+assert.deepEqual(catalog.entries.map((entry) => entry.identifier), [
+  websiteAssistant.catalogIdentifier,
+  "urn:air:adityasinghal.com:api:public-data",
+  "urn:air:adityasinghal.com:docs:agent-guidance",
+  "urn:air:adityasinghal.com:docs:workshop-2026",
+], "Assistant discovery must be first and preserve the three existing public resources.");
 assert.equal(new Set(catalog.entries.map((entry) => entry.identifier)).size, catalog.entries.length);
 for (const entry of catalog.entries) {
   assert.match(entry.identifier, /^urn:air:adityasinghal\.com:[a-z0-9:_-]+$/);
   assert.ok(entry.displayName && entry.description && entry.type);
   assert.ok(entry.url && !("data" in entry));
   assert.ok(entry.representativeQueries.length >= 2 && entry.representativeQueries.length <= 5);
-  assert.equal(new URL(entry.url).origin, site.origin);
-  assert.ok((await actualFile(new URL(entry.url).pathname)).trim().length > 0);
+  if (entry.identifier === websiteAssistant.catalogIdentifier) {
+    assert.equal(entry.type, "application/json");
+    assert.equal(entry.url, websiteAssistant.discoveryUrl);
+    assert.equal(new URL(entry.url).protocol, "https:");
+    assert.match(entry.description, /signed PAP session/);
+    assert.match(entry.description, /compatible client/);
+  } else {
+    assert.equal(new URL(entry.url).origin, site.origin);
+    assert.ok((await actualFile(new URL(entry.url).pathname)).trim().length > 0);
+  }
 }
+
+for (const name of ["index.html", "static/index.html", "developers/index.html"]) {
+  const html = await read(name);
+  const head = html.match(/<head>([\s\S]*?)<\/head>/)[1];
+  assert.equal(head.split(`<link rel="service-desc" type="application/json" href="${websiteAssistant.discoveryUrl}"`).length - 1,
+    1, `One canonical assistant discovery link in the static head: ${name}`);
+  assert.ok(head.includes(`type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json"`),
+    `Public data discovery remains available: ${name}`);
+}
+
+for (const name of ["llms.txt", "agents.md", "auth.md", "developers/llms.txt", "developers.md", "developers/index.html"]) {
+  const content = await read(name);
+  for (const url of [websiteAssistant.discoveryUrl, websiteAssistant.mcpUrl, websiteAssistant.conversationsUrl]) {
+    assert.ok(content.includes(url), `Canonical assistant connection URL missing: ${name}`);
+  }
+  assert.match(content, /PAP/);
+  assert.match(content, /session/i);
+  assert.doesNotMatch(content, /does not (?:mean|imply) that (?:this domain|this website) hosts an MCP server/);
+}
+for (const name of ["agents.md", "auth.md", "developers.md", "developers/index.html"]) {
+  assert.ok((await read(name)).includes(websiteAssistant.issuerUrl),
+    `Assistant issuer must be available with connection instructions: ${name}`);
+}
+const wellKnownFiles = await readdir(path.join(output, ".well-known"));
+for (const facade of ["poppy.json", "agent-card.json", "agent.json"]) {
+  assert.ok(!wellKnownFiles.includes(facade), `Do not publish a protocol facade on the static origin: ${facade}`);
+}
+assert.ok(!(await readdir(output)).includes("agent.json"), "No unsupported A2A facade.");
 
 for (const name of ["llms.txt", "agents.md", "auth.md", "openapi.json",
   ".well-known/ard.json", "schemamap.xml", "feeds/site-schema.jsonl",
@@ -111,4 +152,4 @@ for (const forbidden of [".local", "temp", ".env", "AGENTS.md", "CLAUDE.md"]) {
   assert.ok(!(await readdir(output)).includes(forbidden), forbidden);
 }
 
-console.log(`Passed: ${markdownPages.length} generated Markdown twins; ${publicPages.length} dated canonical pages; real alternates and local links; ${feed.length} matching schema-feed entities; ${catalog.entries.length} ARD resources; public-only discovery and no private app bootstrap.`);
+console.log(`Passed: ${markdownPages.length} generated Markdown twins; ${publicPages.length} dated canonical pages; real alternates and local links; ${feed.length} matching schema-feed entities; ${catalog.entries.length} ARD resources with canonical PAP discovery and separate public data; public-only discovery and no private app bootstrap.`);

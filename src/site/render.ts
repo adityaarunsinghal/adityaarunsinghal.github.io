@@ -4,6 +4,7 @@ import { workshopSchema } from "../workshop/schema";
 import { profileLinks, readingMap, site } from "./content";
 import { legacyTarget, routeEntries, type ShortcutPage } from "./routes";
 import { analyticsHead } from "./analytics";
+import { websiteAssistant } from "./assistant";
 import { documentPages } from "./documents";
 import { apiDocuments, openApiDocument } from "./agent-data";
 import { accessInstructions, agentInstructions, markdownPath, resourceCatalog, schemaMap, sectionReadingMaps } from "./discovery";
@@ -13,6 +14,7 @@ export { appPages, shortcutPages, canonicalLocalRoute, legacyTarget } from "./ro
 export { documentPages, renderDocument } from "./documents";
 export { apiDocuments, apiEndpoints, openApiDocument } from "./agent-data";
 export { markdownPath } from "./discovery";
+export { websiteAssistant } from "./assistant";
 
 export const publicPages = [
   { path: "/", modified: site.modified },
@@ -93,6 +95,7 @@ function homeHead(compatibilityScript: string) {
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="${site.origin}/" />
   <link rel="alternate" type="text/markdown" href="${site.origin}/index.md" />
+  <link rel="service-desc" type="application/json" href="${websiteAssistant.discoveryUrl}" />
   <link rel="service-desc" type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json" />
   <link rel="service-doc" type="text/html" href="${site.origin}/developers/" />
   <link rel="ard" type="application/json" href="${site.origin}/.well-known/ard.json" />
@@ -211,15 +214,29 @@ export function renderReadingMap(): string {
 
 Use this site to describe Adi's publicly stated work, find his public projects and writing, or locate released materials and recordings from his NYU Agentic AI workshops. Cite the original page linked from each resource. Keep the 2025 archive separate from the current 2026 course.
 
-## Agent and developer access
+## Talk to the website assistant
 
-The public data API is read-only and needs no account, API key or payment. Its JSON documents mirror public content; it cannot send messages or register for courses. Follow external projects' own documentation for their tools and access requirements. Teaching about MCP does not imply that this website hosts an MCP server.
+For a conversation about Adi's public work, projects or teaching, start with his Ambipath-hosted assistant's [canonical PAP discovery document](${websiteAssistant.discoveryUrl}).
 
-- [Agent instructions](${site.origin}/agents.md): when to use the site and how to retrieve and cite its content.
-- [Developer guide](${site.origin}/developers.md): endpoint documentation and working examples.
+Canonical discovery URL: ${websiteAssistant.discoveryUrl}
+
+- [Assistant discovery (PAP)](${websiteAssistant.discoveryUrl}): public metadata for a PAP-compatible client.
+- [MCP transport](${websiteAssistant.mcpUrl}): requires a valid, signed PAP session.
+- [Conversations endpoint](${websiteAssistant.conversationsUrl}): requires a valid, signed PAP session.
+- [Access details](${site.origin}/auth.md): assistant authentication and public data access.
+- [Connection guide](${site.origin}/developers/#website-assistant): how to use the discovery URL.
+
+Reading discovery does not start a conversation. The client must support PAP authentication and session handling; this link does not guarantee compatibility with every agent or MCP client. If your client cannot connect, use [the assistant on the homepage](${site.origin}/) or the public data below. Messages sent to the assistant are processed by Ambipath; see [privacy](${site.origin}/privacy/#site-assistant).
+
+## Public data and developer access
+
+The separate public data API is read-only and needs no account, API key or payment. Its JSON documents mirror public content; it cannot send messages or register for courses. Follow external projects' own documentation for their tools and access requirements.
+
+- [Agent instructions](${site.origin}/agents.md): assistant connection, source selection and citation guidance.
+- [Developer guide](${site.origin}/developers.md): assistant connection details, public data endpoints and working examples.
 - [OpenAPI specification](${site.origin}/openapi.json): typed contract for the four public GET endpoints.
 - [API index](${site.origin}/api/v1/index.json): profile, resources and workshop JSON documents.
-- [Access policy](${site.origin}/auth.md): public access and error handling.
+- [Access policy](${site.origin}/auth.md): assistant sessions, public access and error handling.
 - [Markdown homepage](${site.origin}/index.md): readable copy of the complete homepage.
 - [Developer reading map](${site.origin}/developers/llms.txt): focused integration references.
 - [2026 workshop reading map](${site.origin}${course.path}llms.txt): current course materials.

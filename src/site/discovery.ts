@@ -1,4 +1,5 @@
 import { course, historical } from "../workshop/pages";
+import { websiteAssistant } from "./assistant";
 import { site } from "./content";
 
 /** A physical Markdown file, independent of content negotiation or JavaScript. */
@@ -13,7 +14,24 @@ export function agentInstructions(): string {
 
 Use this site to describe Aditya (Adi) Singhal's publicly stated work, find his public projects and writing, or locate lessons, released slides, starter code and recordings from his NYU Agentic AI workshops. It is useful for questions about the workshop curriculum and where to learn about agent harnesses, MCP, evaluation and multi-agent systems.
 
-Start with [the reading map](${site.origin}/llms.txt). For a programmatic integration, read [the developer guide](${site.origin}/developers/) and [OpenAPI specification](${site.origin}/openapi.json).
+To ask Adi's website assistant a question, start with its [canonical PAP discovery document](${websiteAssistant.discoveryUrl}). For reading and retrieving public information, use [the reading map](${site.origin}/llms.txt), [developer guide](${site.origin}/developers/) and [OpenAPI specification](${site.origin}/openapi.json).
+
+## Connect to the website assistant
+
+${websiteAssistant.name} is hosted by Ambipath and can answer questions about his public work, projects and teaching. A PAP (Personal Agent Protocol) client can discover it at this exact URL:
+
+\`\`\`text
+${websiteAssistant.discoveryUrl}
+\`\`\`
+
+- [PAP discovery](${websiteAssistant.discoveryUrl}): public connection metadata.
+- [MCP transport](${websiteAssistant.mcpUrl}): requires a valid PAP session.
+- [Conversations endpoint](${websiteAssistant.conversationsUrl}): requires a valid PAP session.
+- [Authentication issuer](${websiteAssistant.issuerUrl}): follow the authentication advertised in the discovery document.
+
+Fetch the discovery document first and follow its current endpoints and authentication requirements. Conversation and MCP requests require a signed Poppy-Session; reading discovery does not create one. The client must support PAP authentication and session handling. Discovery alone does not guarantee compatibility with every agent or MCP client. If your client cannot establish a session, use [the assistant on the homepage](${site.origin}/) or read the public data below.
+
+Messages sent to the assistant are processed by Ambipath. See [access details](${site.origin}/auth.md) and [privacy](${site.origin}/privacy/#site-assistant). Do not report that a conversation started unless the service confirms it.
 
 ## Read public data
 
@@ -36,14 +54,27 @@ When a browser exposes WebMCP, the homepage, developer guide and both course pag
 
 Use the canonical sourceUrl or workshop url in a response for readers. Keep the 2025 archive separate from the 2026 course. A missing recording or material is unavailable; do not invent a destination. Follow a linked project's own documentation for installation and authentication requirements. Course dates describe scheduled sessions, while modified dates describe published content updates.
 
-The biography is Adi's first-party account, not independent verification of every claim. This site does not speak for his employer or provide Amazon account support. His teaching about MCP does not mean this domain hosts an MCP server. Public data access cannot send messages, register for a class or make changes.
+The biography is Adi's first-party account, not independent verification of every claim. This site does not speak for his employer or provide Amazon account support. The static public data API is separate from the Ambipath-hosted assistant and cannot send messages, register for a class or make changes.
 
 See [access details](${site.origin}/auth.md) and [privacy](${site.origin}/privacy/).
 `;
 }
 
 export function accessInstructions(): string {
-  return `# Access to Aditya Singhal's public resources
+  return `# Access to Aditya Singhal's assistant and public resources
+
+## Website assistant
+
+The Ambipath-hosted assistant has a public [PAP discovery document](${websiteAssistant.discoveryUrl}). Fetching it requires no credentials. Use its advertised authentication and endpoints for a conversation:
+
+- Canonical discovery URL: ${websiteAssistant.discoveryUrl}
+- MCP transport: ${websiteAssistant.mcpUrl}
+- Conversations endpoint: ${websiteAssistant.conversationsUrl}
+- Authentication issuer: ${websiteAssistant.issuerUrl}
+
+The MCP and conversations endpoints require a valid, signed Poppy-Session. Use a PAP-compatible client's authentication and session flow; a plain unauthenticated MCP connection or a successful discovery fetch is insufficient. Follow the current discovery document if its connection details change. Do not send a public data API request or a Firebase sign-in token as assistant authentication.
+
+Client support varies. If your agent cannot complete PAP authentication, use [the homepage assistant](${site.origin}/) or the public reading resources below. Do not claim a conversation succeeded until the service confirms it. Messages you send to the assistant are processed by Ambipath; see [the privacy disclosure](${site.origin}/privacy/#site-assistant).
 
 ## Public access
 
@@ -53,7 +84,7 @@ The [public data API](${site.origin}/developers/) and the public reading documen
 curl --fail --show-error https://adityasinghal.com/api/v1/profile.json
 \`\`\`
 
-The API is read-only. You can try its documented GET requests directly; there are no writes to undo and no separate sandbox. Do not send secrets in URLs or Authorization headers. This document describes the public API's access policy, not an OAuth authorization server.
+The static public data API is read-only. You can try its documented GET requests directly; there are no writes to undo and no separate sandbox. Do not send secrets in its URLs or Authorization headers. Its unauthenticated access policy does not apply to the separate assistant endpoints above.
 
 ## Responses and failures
 
@@ -67,11 +98,20 @@ Public workshop information and code can link to third-party services. Course re
 
 export function sectionReadingMaps(): Record<string, string> {
   const maps = {
-    "/developers/llms.txt": `# Aditya Singhal: developer resources
+    "/developers/llms.txt": `# Aditya Singhal: assistant and developer resources
 
-> Public, read-only access to profile, project, writing and workshop information.
+> Connect to Adi's Ambipath website assistant, or read public profile, project, writing and workshop information.
 
-## When to use
+## Website assistant
+
+- [Canonical PAP discovery](${websiteAssistant.discoveryUrl}): start here for a conversation with the website assistant.
+- [MCP transport](${websiteAssistant.mcpUrl}): requires a signed PAP session and a compatible client.
+- [Conversations endpoint](${websiteAssistant.conversationsUrl}): requires a signed PAP session.
+- [Access details](${site.origin}/auth.md): assistant authentication and separate public data access.
+
+Discovery is public. Conversation and MCP access require PAP authentication and session handling; not every agent client supports them. Use [the homepage assistant](${site.origin}/) if your client cannot connect.
+
+## Public data
 
 Use these resources to integrate the public information into a directory, learning assistant or profile summary. No account or API key is needed.
 
@@ -79,7 +119,7 @@ Use these resources to integrate the public information into a directory, learni
 - [OpenAPI specification](${site.origin}/openapi.json): exact GET operations and response schemas.
 - [API index](${site.origin}/api/v1/index.json): the four available data documents.
 - [Agent instructions](${site.origin}/agents.md): source selection and citation guidance.
-- [Access policy](${site.origin}/auth.md): unauthenticated, read-only access and errors.
+- [Access policy](${site.origin}/auth.md): assistant session requirements, unauthenticated public data and errors.
 - [Root reading map](${site.origin}/llms.txt): profile, projects, writing and teaching.
 `,
     [`${course.path}llms.txt`]: `# NYU Agentic AI Workshop 2026
@@ -113,11 +153,22 @@ Use this section for the earlier curriculum and its recordings. For the current 
   };
 }
 
-/** ARD is a draft resource-discovery convention, not a hosted agent service. */
+/** ARD is a draft resource catalog; the linked PAP document describes the assistant. */
 export function resourceCatalog() {
   return {
     "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ard-entry.schema.json#/$defs/ArdManifest",
     entries: [
+      {
+        identifier: websiteAssistant.catalogIdentifier,
+        displayName: websiteAssistant.name,
+        description: "Ambipath-hosted assistant for questions about Adi's public work, projects and teaching. Public PAP discovery; conversation and MCP access require a signed PAP session and a compatible client.",
+        type: "application/json",
+        url: websiteAssistant.discoveryUrl,
+        representativeQueries: [
+          "Ask Adi's website assistant about his work and projects",
+          "Ask the website assistant about Adi's NYU Agentic AI teaching",
+        ],
+      },
       {
         identifier: "urn:air:adityasinghal.com:api:public-data",
         displayName: "Aditya Singhal public data API",

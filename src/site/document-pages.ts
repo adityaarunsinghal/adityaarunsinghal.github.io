@@ -2,10 +2,10 @@
 export const documentPages = [
   {
     path: "/developers/",
-    title: "Aditya Singhal developer resources | Public JSON & Markdown",
+    title: "Aditya Singhal developer resources | Assistant & public data",
     description:
-      "Read Aditya Singhal's public profile, projects and NYU workshop materials as JSON or Markdown. Endpoint documentation, OpenAPI and examples; no API key needed.",
-    modified: "2026-10-27",
+      "Connect to Adi's Ambipath website assistant with PAP, or read his public profile, projects and NYU workshop materials through the separate public JSON API.",
+    modified: "2026-11-04",
   },
   {
     path: "/privacy/",
