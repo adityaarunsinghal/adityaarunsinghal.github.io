@@ -171,7 +171,14 @@
       article.append(button);
     }
 
+    function isAssistantEvent(event) {
+      return event.composedPath().some((node) =>
+        node instanceof Element && node.hasAttribute('data-ambipath-root')
+      );
+    }
+
     body.addEventListener('click', (event) => {
+      if (isAssistantEvent(event)) return;
       // Use the original event path: launching a video replaces its clicked link.
       if (desired && !event.composedPath().some((node) => articles.includes(node))) {
         close();
@@ -179,7 +186,7 @@
     });
 
     addEventListener('keydown', (event) => {
-      if (!desired) return;
+      if (!desired || isAssistantEvent(event)) return;
       if (event.key === 'Escape') {
         event.preventDefault();
         close();
