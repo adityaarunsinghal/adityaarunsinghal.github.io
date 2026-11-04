@@ -129,7 +129,7 @@ function privacyBody(): string {
     <h1>Privacy</h1>
     <p class="document-lead">How this website handles visits, analytics and embedded content.</p>
     <p>This is ${escapeHtml(site.name)}'s personal website. Public pages and content downloads can be read without signing in. This page describes the services used here and the choices available in your browser.</p>
-    <p class="document-updated">Last reviewed <time datetime="2026-10-27">October 27, 2026</time>.</p>
+    <p class="document-updated">Last reviewed <time datetime="2026-11-04">November 4, 2026</time>.</p>
   </header>
 
   <section aria-labelledby="hosting">
@@ -155,6 +155,11 @@ function privacyBody(): string {
     <h2 id="external-services">Forms, messages and other websites</h2>
     <p>Workshop forms open Google Forms, and information submitted there goes to the form owner. Social profiles, code repositories, publications and book-purchase links open their respective services. Their privacy practices apply when you visit, sign in or submit information there.</p>
     <p>Choosing a contact link does not send a message on your behalf. You decide what to share in the destination service.</p>
+  </section>
+
+  <section aria-labelledby="site-assistant">
+    <h2 id="site-assistant">Website assistant</h2>
+    <p>The homepage includes an assistant provided by Ambipath. Your browser connects to Ambipath to load the assistant. Messages you send are processed by Ambipath to generate replies.</p>
   </section>
 
   <section aria-labelledby="signed-in">

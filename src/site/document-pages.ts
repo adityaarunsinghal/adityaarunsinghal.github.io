@@ -11,7 +11,7 @@ export const documentPages = [
     path: "/privacy/",
     title: "Privacy | Aditya Singhal",
     description:
-      "How Aditya Singhal's website uses GitHub Pages, Google Analytics, fonts, video embeds and browser storage.",
-    modified: "2026-10-27",
+      "How Aditya Singhal's website uses GitHub Pages, Google Analytics, fonts, video embeds, the Ambipath assistant and browser storage.",
+    modified: "2026-11-04",
   },
 ] as const;
