@@ -2,15 +2,34 @@
 
 Source: https://adityasinghal.com/developers/
 
-Public content
+Assistant & public content
 
 
 
-Read my public profile, projects and workshop materials as JSON or Markdown.
+Connect to my website assistant, or read my public profile, projects and workshop materials as JSON or Markdown.
 
-These resources mirror the public website. Reading them is free and requires no account or API key.
+The Ambipath-hosted assistant uses PAP authentication. The separate public data API is free to read and requires no account or API key.
 
-[OpenAPI specification](https://adityasinghal.com/openapi.json) [Reading guide for agents](https://adityasinghal.com/llms.txt)
+[Assistant discovery (PAP)](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json) [Public data OpenAPI](https://adityasinghal.com/openapi.json) [Reading guide for agents](https://adityasinghal.com/llms.txt)
+
+## Connect to the website assistant
+
+Ask the assistant about my public work, projects and teaching. For a PAP (Personal Agent Protocol) client, use this canonical discovery URL:
+
+### Canonical PAP discovery URL
+
+```
+https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json
+```
+
+-   [PAP discovery document](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json): public connection metadata.
+-   [MCP transport](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp): requires a valid PAP session.
+-   [Conversations endpoint](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations): requires a valid PAP session.
+-   [Authentication issuer](https://auth-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/): follow the authentication advertised in discovery.
+
+Fetch the discovery document first and follow its current endpoints and authentication. Conversation and MCP requests require a signed `Poppy-Session`; reading discovery does not create one. Your client must support PAP authentication and session handling. A plain MCP client may not support this connection.
+
+If your client cannot connect, use [the assistant on the homepage](https://adityasinghal.com/) or read the public data below. Messages sent to the assistant are processed by Ambipath; see [access details](https://adityasinghal.com/auth.md) and [privacy](https://adityasinghal.com/privacy/#site-assistant).
 
 ## When to use these resources
 
@@ -103,7 +122,7 @@ Markdown is useful for reading and quoting the page's content. JSON is useful fo
 -   [This guide in Markdown](https://adityasinghal.com/developers.md)
 -   [Public reading map](https://adityasinghal.com/llms.txt)
 
-Public project links describe those projects' own capabilities. A workshop that teaches MCP, or a linked project with a CLI, is not an MCP server or CLI for this website.
+Public project links describe those projects' own capabilities. Their tools and access requirements are separate from both the Ambipath-hosted assistant and this site's public data API.
 
 ## Experimental browser tools
 

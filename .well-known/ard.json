@@ -2,6 +2,17 @@
   "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ard-entry.schema.json#/$defs/ArdManifest",
   "entries": [
     {
+      "identifier": "urn:air:adityasinghal.com:agent:website-assistant",
+      "displayName": "Adi's website assistant",
+      "description": "Ambipath-hosted assistant for questions about Adi's public work, projects and teaching. Public PAP discovery; conversation and MCP access require a signed PAP session and a compatible client.",
+      "type": "application/json",
+      "url": "https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json",
+      "representativeQueries": [
+        "Ask Adi's website assistant about his work and projects",
+        "Ask the website assistant about Adi's NYU Agentic AI teaching"
+      ]
+    },
+    {
       "identifier": "urn:air:adityasinghal.com:api:public-data",
       "displayName": "Aditya Singhal public data API",
       "description": "Read-only public profile, projects, writing and NYU workshop data. No credentials required.",

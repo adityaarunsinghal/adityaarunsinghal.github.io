@@ -1,8 +1,17 @@
-# Aditya Singhal: developer resources
+# Aditya Singhal: assistant and developer resources
 
-> Public, read-only access to profile, project, writing and workshop information.
+> Connect to Adi's Ambipath website assistant, or read public profile, project, writing and workshop information.
 
-## When to use
+## Website assistant
+
+- [Canonical PAP discovery](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json): start here for a conversation with the website assistant.
+- [MCP transport](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp): requires a signed PAP session and a compatible client.
+- [Conversations endpoint](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations): requires a signed PAP session.
+- [Access details](https://adityasinghal.com/auth.md): assistant authentication and separate public data access.
+
+Discovery is public. Conversation and MCP access require PAP authentication and session handling; not every agent client supports them. Use [the homepage assistant](https://adityasinghal.com/) if your client cannot connect.
+
+## Public data
 
 Use these resources to integrate the public information into a directory, learning assistant or profile summary. No account or API key is needed.
 
@@ -10,5 +19,5 @@ Use these resources to integrate the public information into a directory, learni
 - [OpenAPI specification](https://adityasinghal.com/openapi.json): exact GET operations and response schemas.
 - [API index](https://adityasinghal.com/api/v1/index.json): the four available data documents.
 - [Agent instructions](https://adityasinghal.com/agents.md): source selection and citation guidance.
-- [Access policy](https://adityasinghal.com/auth.md): unauthenticated, read-only access and errors.
+- [Access policy](https://adityasinghal.com/auth.md): assistant session requirements, unauthenticated public data and errors.
 - [Root reading map](https://adityasinghal.com/llms.txt): profile, projects, writing and teaching.

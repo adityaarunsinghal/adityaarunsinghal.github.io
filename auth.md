@@ -1,4 +1,17 @@
-# Access to Aditya Singhal's public resources
+# Access to Aditya Singhal's assistant and public resources
+
+## Website assistant
+
+The Ambipath-hosted assistant has a public [PAP discovery document](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json). Fetching it requires no credentials. Use its advertised authentication and endpoints for a conversation:
+
+- Canonical discovery URL: https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json
+- MCP transport: https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp
+- Conversations endpoint: https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations
+- Authentication issuer: https://auth-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com
+
+The MCP and conversations endpoints require a valid, signed Poppy-Session. Use a PAP-compatible client's authentication and session flow; a plain unauthenticated MCP connection or a successful discovery fetch is insufficient. Follow the current discovery document if its connection details change. Do not send a public data API request or a Firebase sign-in token as assistant authentication.
+
+Client support varies. If your agent cannot complete PAP authentication, use [the homepage assistant](https://adityasinghal.com/) or the public reading resources below. Do not claim a conversation succeeded until the service confirms it. Messages you send to the assistant are processed by Ambipath; see [the privacy disclosure](https://adityasinghal.com/privacy/#site-assistant).
 
 ## Public access
 
@@ -8,7 +21,7 @@ The [public data API](https://adityasinghal.com/developers/) and the public read
 curl --fail --show-error https://adityasinghal.com/api/v1/profile.json
 ```
 
-The API is read-only. You can try its documented GET requests directly; there are no writes to undo and no separate sandbox. Do not send secrets in URLs or Authorization headers. This document describes the public API's access policy, not an OAuth authorization server.
+The static public data API is read-only. You can try its documented GET requests directly; there are no writes to undo and no separate sandbox. Do not send secrets in its URLs or Authorization headers. Its unauthenticated access policy does not apply to the separate assistant endpoints above.
 
 ## Responses and failures
 

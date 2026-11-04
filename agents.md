@@ -4,7 +4,24 @@
 
 Use this site to describe Aditya (Adi) Singhal's publicly stated work, find his public projects and writing, or locate lessons, released slides, starter code and recordings from his NYU Agentic AI workshops. It is useful for questions about the workshop curriculum and where to learn about agent harnesses, MCP, evaluation and multi-agent systems.
 
-Start with [the reading map](https://adityasinghal.com/llms.txt). For a programmatic integration, read [the developer guide](https://adityasinghal.com/developers/) and [OpenAPI specification](https://adityasinghal.com/openapi.json).
+To ask Adi's website assistant a question, start with its [canonical PAP discovery document](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json). For reading and retrieving public information, use [the reading map](https://adityasinghal.com/llms.txt), [developer guide](https://adityasinghal.com/developers/) and [OpenAPI specification](https://adityasinghal.com/openapi.json).
+
+## Connect to the website assistant
+
+Adi's website assistant is hosted by Ambipath and can answer questions about his public work, projects and teaching. A PAP (Personal Agent Protocol) client can discover it at this exact URL:
+
+```text
+https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json
+```
+
+- [PAP discovery](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json): public connection metadata.
+- [MCP transport](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp): requires a valid PAP session.
+- [Conversations endpoint](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations): requires a valid PAP session.
+- [Authentication issuer](https://auth-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com): follow the authentication advertised in the discovery document.
+
+Fetch the discovery document first and follow its current endpoints and authentication requirements. Conversation and MCP requests require a signed Poppy-Session; reading discovery does not create one. The client must support PAP authentication and session handling. Discovery alone does not guarantee compatibility with every agent or MCP client. If your client cannot establish a session, use [the assistant on the homepage](https://adityasinghal.com/) or read the public data below.
+
+Messages sent to the assistant are processed by Ambipath. See [access details](https://adityasinghal.com/auth.md) and [privacy](https://adityasinghal.com/privacy/#site-assistant). Do not report that a conversation started unless the service confirms it.
 
 ## Read public data
 
@@ -27,6 +44,6 @@ When a browser exposes WebMCP, the homepage, developer guide and both course pag
 
 Use the canonical sourceUrl or workshop url in a response for readers. Keep the 2025 archive separate from the 2026 course. A missing recording or material is unavailable; do not invent a destination. Follow a linked project's own documentation for installation and authentication requirements. Course dates describe scheduled sessions, while modified dates describe published content updates.
 
-The biography is Adi's first-party account, not independent verification of every claim. This site does not speak for his employer or provide Amazon account support. His teaching about MCP does not mean this domain hosts an MCP server. Public data access cannot send messages, register for a class or make changes.
+The biography is Adi's first-party account, not independent verification of every claim. This site does not speak for his employer or provide Amazon account support. The static public data API is separate from the Ambipath-hosted assistant and cannot send messages, register for a class or make changes.
 
 See [access details](https://adityasinghal.com/auth.md) and [privacy](https://adityasinghal.com/privacy/).
