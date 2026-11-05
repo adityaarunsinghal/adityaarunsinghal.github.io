@@ -50,26 +50,31 @@ print(profile["name"])`;
     <p class="document-eyebrow">Assistant &amp; public content</p>
     <h1>${escapeHtml(site.name)} for developers &amp; agents</h1>
     <p class="document-lead">Connect to my website assistant, or read my public profile, projects and workshop materials as JSON or Markdown.</p>
-    <p>The Ambipath-hosted assistant uses PAP authentication. The separate public data API is free to read and requires no account or API key.</p>
+    <p>Ask the Ambipath-hosted assistant through its guest HTTP API without a browser or customer sign-in. The separate public data API is free to read and requires no account or API key.</p>
     <div class="document-actions">
-      <a class="document-button" href="${websiteAssistant.discoveryUrl}">Assistant discovery (PAP) <span aria-hidden="true">↗</span></a>
+      <a class="document-button" href="${websiteAssistant.instructionsUrl}">Assistant connection instructions <span aria-hidden="true">↗</span></a>
+      <a href="${websiteAssistant.openApiUrl}">Guest API contract</a>
       <a href="/openapi.json">Public data OpenAPI</a>
       <a href="/llms.txt">Reading guide for agents</a>
     </div>
   </header>
 
   <section aria-labelledby="website-assistant">
-    <h2 id="website-assistant">Connect to the website assistant</h2>
-    <p>Ask the assistant about my public work, projects and teaching. For a PAP (Personal Agent Protocol) client, use this canonical discovery URL:</p>
+    <h2 id="website-assistant">Ask Adi's assistant</h2>
+    <p>Ask about my public work, projects and teaching without a browser, customer account or owner sign-in. Start with the <a href="${websiteAssistant.instructionsUrl}">public connection instructions</a> and <a href="${websiteAssistant.openApiUrl}">guest HTTP API contract</a>.</p>
+    ${codeExample("Guest HTTP API", websiteAssistant.publicApiUrl)}
+    <p>Create a guest session using the documented operation, keep its conversation bearer and recovery secret private, send the question once, and poll that same conversation for its answer. Close completed test conversations. A successful metadata fetch is not an answer.</p>
+    <h3>PAP-compatible clients</h3>
+    <p>Clients that support PAP (Personal Agent Protocol) can use this canonical discovery URL:</p>
     ${codeExample("Canonical PAP discovery URL", websiteAssistant.discoveryUrl)}
     <ul class="document-link-list">
       <li><a href="${websiteAssistant.discoveryUrl}">PAP discovery document</a>: public connection metadata.</li>
       <li><a href="${websiteAssistant.mcpUrl}">MCP transport</a>: requires a valid PAP session.</li>
       <li><a href="${websiteAssistant.conversationsUrl}">Conversations endpoint</a>: requires a valid PAP session.</li>
-      <li><a href="${websiteAssistant.issuerUrl}">Authentication issuer</a>: follow the authentication advertised in discovery.</li>
+      <li><a href="${websiteAssistant.issuerUrl}">Authentication issuer</a>: optional customer-account access.</li>
     </ul>
-    <p>Fetch the discovery document first and follow its current endpoints and authentication. Conversation and MCP requests require a signed <code>Poppy-Session</code>; reading discovery does not create one. Your client must support PAP authentication and session handling. A plain MCP client may not support this connection.</p>
-    <p>If your client cannot connect, use <a href="/">the assistant on the homepage</a> or read the public data below. Messages sent to the assistant are processed by Ambipath; see <a href="/auth.md">access details</a> and <a href="/privacy/#site-assistant">privacy</a>.</p>
+    <p>A PAP client signs a fresh <code>Poppy-Session</code> proof for each request using its own published identity. Use the guest HTTP API when PAP signing is unavailable. A missing proof is not a request to sign in as the website owner.</p>
+    <p>You can also use <a href="/">the assistant on the homepage</a>. Messages sent to the assistant are processed by Ambipath; see <a href="/auth.md">access details</a> and <a href="/privacy/#site-assistant">privacy</a>.</p>
   </section>
 
   <section aria-labelledby="when-to-use">
@@ -218,7 +223,7 @@ export function renderDocument(pathname: string): string | undefined {
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="${canonical}" />
   <link rel="alternate" type="text/markdown" href="${site.origin}${markdown}" />
-  ${pathname === "/developers/" ? `<link rel="service-desc" type="application/json" href="${websiteAssistant.discoveryUrl}" />\n  ` : ""}<link rel="service-desc" type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json" />
+  ${pathname === "/developers/" ? `<link rel="service-desc" type="application/json" href="${websiteAssistant.discoveryUrl}" />\n  <link rel="service-doc" type="text/markdown" href="${websiteAssistant.instructionsUrl}" />\n  ` : ""}<link rel="service-desc" type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json" />
   <link rel="ard" type="application/json" href="${site.origin}/.well-known/ard.json" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" href="/site-documents.css" />

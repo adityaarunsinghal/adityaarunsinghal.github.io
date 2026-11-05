@@ -4,8 +4,8 @@ export const documentPages = [
     path: "/developers/",
     title: "Aditya Singhal developer resources | Assistant & public data",
     description:
-      "Connect to Adi's Ambipath website assistant with PAP, or read his public profile, projects and NYU workshop materials through the separate public JSON API.",
-    modified: "2026-11-04",
+      "Ask Adi's Ambipath assistant through its guest HTTP API or PAP, or read his public profile, projects and NYU workshop materials through the separate public JSON API.",
+    modified: "2026-11-05",
   },
   {
     path: "/privacy/",

@@ -1,5 +1,5 @@
 import { course, historical } from "../workshop/pages";
-import { websiteAssistant } from "./assistant";
+import { assistantConnectionMarkdown, websiteAssistant } from "./assistant";
 import { site } from "./content";
 
 /** A physical Markdown file, independent of content negotiation or JavaScript. */
@@ -14,22 +14,13 @@ export function agentInstructions(): string {
 
 Use this site to describe Aditya (Adi) Singhal's publicly stated work, find his public projects and writing, or locate lessons, released slides, starter code and recordings from his NYU Agentic AI workshops. It is useful for questions about the workshop curriculum and where to learn about agent harnesses, MCP, evaluation and multi-agent systems.
 
-To ask Adi's website assistant a question, start with its [canonical PAP discovery document](${websiteAssistant.discoveryUrl}). For reading and retrieving public information, use [the reading map](${site.origin}/llms.txt), [developer guide](${site.origin}/developers/) and [OpenAPI specification](${site.origin}/openapi.json).
+To ask Adi's website assistant a question, start with its [public connection instructions](${websiteAssistant.instructionsUrl}). For reading and retrieving public information, use [the reading map](${site.origin}/llms.txt), [developer guide](${site.origin}/developers/) and [public data OpenAPI specification](${site.origin}/openapi.json).
 
-## Connect to the website assistant
+${assistantConnectionMarkdown(`${site.origin}/`)}
 
-${websiteAssistant.name} is hosted by Ambipath and can answer questions about his public work, projects and teaching. A PAP (Personal Agent Protocol) client can discover it at this exact URL:
+The guest HTTP API creates a conversation scoped to its own bearer. Follow the current connection instructions to send one question, poll the same conversation for its answer, and close a completed test conversation. Keep the session bearer and recovery secret private.
 
-\`\`\`text
-${websiteAssistant.discoveryUrl}
-\`\`\`
-
-- [PAP discovery](${websiteAssistant.discoveryUrl}): public connection metadata.
-- [MCP transport](${websiteAssistant.mcpUrl}): requires a valid PAP session.
-- [Conversations endpoint](${websiteAssistant.conversationsUrl}): requires a valid PAP session.
-- [Authentication issuer](${websiteAssistant.issuerUrl}): follow the authentication advertised in the discovery document.
-
-Fetch the discovery document first and follow its current endpoints and authentication requirements. Conversation and MCP requests require a signed Poppy-Session; reading discovery does not create one. The client must support PAP authentication and session handling. Discovery alone does not guarantee compatibility with every agent or MCP client. If your client cannot establish a session, use [the assistant on the homepage](${site.origin}/) or read the public data below.
+PAP-compatible clients can use the manifest's [MCP transport](${websiteAssistant.mcpUrl}) or [conversations endpoint](${websiteAssistant.conversationsUrl}) with signed request proofs. The [authentication issuer](${websiteAssistant.issuerUrl}) supports optional customer-account access; public questions do not require a customer account or owner sign-in.
 
 Messages sent to the assistant are processed by Ambipath. See [access details](${site.origin}/auth.md) and [privacy](${site.origin}/privacy/#site-assistant). Do not report that a conversation started unless the service confirms it.
 
@@ -63,18 +54,19 @@ See [access details](${site.origin}/auth.md) and [privacy](${site.origin}/privac
 export function accessInstructions(): string {
   return `# Access to Aditya Singhal's assistant and public resources
 
-## Website assistant
+${assistantConnectionMarkdown(`${site.origin}/`)}
 
-The Ambipath-hosted assistant has a public [PAP discovery document](${websiteAssistant.discoveryUrl}). Fetching it requires no credentials. Use its advertised authentication and endpoints for a conversation:
+### Guest conversation access
 
-- Canonical discovery URL: ${websiteAssistant.discoveryUrl}
-- MCP transport: ${websiteAssistant.mcpUrl}
-- Conversations endpoint: ${websiteAssistant.conversationsUrl}
-- Authentication issuer: ${websiteAssistant.issuerUrl}
+Read the connection instructions and API contract before creating a session. The guest HTTP session returns a bearer scoped to its own conversation. Keep that bearer and the private recovery secret out of public files and URLs. Send a question once, poll that same conversation until its answer arrives, and close completed test conversations. Recovery uses the original operation ID rather than creating another question.
 
-The MCP and conversations endpoints require a valid, signed Poppy-Session. Use a PAP-compatible client's authentication and session flow; a plain unauthenticated MCP connection or a successful discovery fetch is insufficient. Follow the current discovery document if its connection details change. Do not send a public data API request or a Firebase sign-in token as assistant authentication.
+No website-owner credentials, customer account, email address, browser, Firebase token or PAP client are needed for a public question. A successful metadata fetch is not an answer; report a conversation as successful only after receiving its result.
 
-Client support varies. If your agent cannot complete PAP authentication, use [the homepage assistant](${site.origin}/) or the public reading resources below. Do not claim a conversation succeeded until the service confirms it. Messages you send to the assistant are processed by Ambipath; see [the privacy disclosure](${site.origin}/privacy/#site-assistant).
+### PAP clients and optional account access
+
+PAP clients discover the [MCP transport](${websiteAssistant.mcpUrl}) and [conversations endpoint](${websiteAssistant.conversationsUrl}) through the canonical manifest. These transports require a fresh, signed Poppy-Session proof from the client's own published identity. Missing signing support is a reason to use the guest HTTP API.
+
+The [authentication issuer](${websiteAssistant.issuerUrl}) is for optional customer-account access. Public questions do not require a separate token exchange or owner sign-in. Messages you send to the assistant are processed by Ambipath; see [the privacy disclosure](${site.origin}/privacy/#site-assistant).
 
 ## Public access
 
@@ -102,14 +94,9 @@ export function sectionReadingMaps(): Record<string, string> {
 
 > Connect to Adi's Ambipath website assistant, or read public profile, project, writing and workshop information.
 
-## Website assistant
+${assistantConnectionMarkdown(`${site.origin}/`)}
 
-- [Canonical PAP discovery](${websiteAssistant.discoveryUrl}): start here for a conversation with the website assistant.
-- [MCP transport](${websiteAssistant.mcpUrl}): requires a signed PAP session and a compatible client.
-- [Conversations endpoint](${websiteAssistant.conversationsUrl}): requires a signed PAP session.
-- [Access details](${site.origin}/auth.md): assistant authentication and separate public data access.
-
-Discovery is public. Conversation and MCP access require PAP authentication and session handling; not every agent client supports them. Use [the homepage assistant](${site.origin}/) if your client cannot connect.
+PAP clients can also use the [MCP transport](${websiteAssistant.mcpUrl}) and [conversations endpoint](${websiteAssistant.conversationsUrl}) with signed request proofs. See [access details](${site.origin}/auth.md) for the guest session flow, optional customer-account access and the separate public data API.
 
 ## Public data
 
@@ -159,9 +146,20 @@ export function resourceCatalog() {
     "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ard-entry.schema.json#/$defs/ArdManifest",
     entries: [
       {
+        identifier: websiteAssistant.instructionsIdentifier,
+        displayName: "Ask Adi's assistant",
+        description: "Public connection instructions and guest HTTP API for questions about Adi's work, projects and teaching. No browser, customer account or owner sign-in required.",
+        type: "text/markdown",
+        url: websiteAssistant.instructionsUrl,
+        representativeQueries: [
+          "Ask Adi's assistant a public question without a PAP client",
+          "Find the guest HTTP API and conversation instructions",
+        ],
+      },
+      {
         identifier: websiteAssistant.catalogIdentifier,
         displayName: websiteAssistant.name,
-        description: "Ambipath-hosted assistant for questions about Adi's public work, projects and teaching. Public PAP discovery; conversation and MCP access require a signed PAP session and a compatible client.",
+        description: "Public PAP discovery for Adi's Ambipath-hosted assistant. PAP conversation and MCP access require a signed PAP session and a compatible client; a guest HTTP API is also available.",
         type: "application/json",
         url: websiteAssistant.discoveryUrl,
         representativeQueries: [

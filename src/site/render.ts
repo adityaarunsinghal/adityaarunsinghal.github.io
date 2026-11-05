@@ -4,7 +4,7 @@ import { workshopSchema } from "../workshop/schema";
 import { profileLinks, readingMap, site } from "./content";
 import { legacyTarget, routeEntries, type ShortcutPage } from "./routes";
 import { analyticsHead } from "./analytics";
-import { websiteAssistant } from "./assistant";
+import { assistantConnectionMarkdown, websiteAssistant } from "./assistant";
 import { documentPages } from "./documents";
 import { apiDocuments, openApiDocument } from "./agent-data";
 import { accessInstructions, agentInstructions, markdownPath, resourceCatalog, schemaMap, sectionReadingMaps } from "./discovery";
@@ -96,6 +96,7 @@ function homeHead(compatibilityScript: string) {
   <link rel="canonical" href="${site.origin}/" />
   <link rel="alternate" type="text/markdown" href="${site.origin}/index.md" />
   <link rel="service-desc" type="application/json" href="${websiteAssistant.discoveryUrl}" />
+  <link rel="service-doc" type="text/markdown" href="${websiteAssistant.instructionsUrl}" />
   <link rel="service-desc" type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json" />
   <link rel="service-doc" type="text/html" href="${site.origin}/developers/" />
   <link rel="ard" type="application/json" href="${site.origin}/.well-known/ard.json" />
@@ -214,19 +215,9 @@ export function renderReadingMap(): string {
 
 Use this site to describe Adi's publicly stated work, find his public projects and writing, or locate released materials and recordings from his NYU Agentic AI workshops. Cite the original page linked from each resource. Keep the 2025 archive separate from the current 2026 course.
 
-## Talk to the website assistant
+${assistantConnectionMarkdown(`${site.origin}/`)}
 
-For a conversation about Adi's public work, projects or teaching, start with his Ambipath-hosted assistant's [canonical PAP discovery document](${websiteAssistant.discoveryUrl}).
-
-Canonical discovery URL: ${websiteAssistant.discoveryUrl}
-
-- [Assistant discovery (PAP)](${websiteAssistant.discoveryUrl}): public metadata for a PAP-compatible client.
-- [MCP transport](${websiteAssistant.mcpUrl}): requires a valid, signed PAP session.
-- [Conversations endpoint](${websiteAssistant.conversationsUrl}): requires a valid, signed PAP session.
-- [Access details](${site.origin}/auth.md): assistant authentication and public data access.
-- [Connection guide](${site.origin}/developers/#website-assistant): how to use the discovery URL.
-
-Reading discovery does not start a conversation. The client must support PAP authentication and session handling; this link does not guarantee compatibility with every agent or MCP client. If your client cannot connect, use [the assistant on the homepage](${site.origin}/) or the public data below. Messages sent to the assistant are processed by Ambipath; see [privacy](${site.origin}/privacy/#site-assistant).
+PAP-compatible clients can also use the manifest's [MCP transport](${websiteAssistant.mcpUrl}) and [conversations endpoint](${websiteAssistant.conversationsUrl}) with signed request proofs. For the guest HTTP session flow and the separate public data API, see [access details](${site.origin}/auth.md) and the [connection guide](${site.origin}/developers/#website-assistant). Messages sent to the assistant are processed by Ambipath; see [privacy](${site.origin}/privacy/#site-assistant).
 
 ## Public data and developer access
 
