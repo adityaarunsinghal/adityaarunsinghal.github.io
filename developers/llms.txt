@@ -2,14 +2,21 @@
 
 > Connect to Adi's Ambipath website assistant, or read public profile, project, writing and workshop information.
 
-## Website assistant
+## Ask Adi's assistant
 
-- [Canonical PAP discovery](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json): start here for a conversation with the website assistant.
-- [MCP transport](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp): requires a signed PAP session and a compatible client.
-- [Conversations endpoint](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations): requires a signed PAP session.
-- [Access details](https://adityasinghal.com/auth.md): assistant authentication and separate public data access.
+Website: https://adityasinghal.com/
 
-Discovery is public. Conversation and MCP access require PAP authentication and session handling; not every agent client supports them. Use [the homepage assistant](https://adityasinghal.com/) if your client cannot connect.
+Public questions can be asked without a browser or customer sign-in.
+
+- Connection instructions: https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f/agent.md
+- Guest HTTP API: https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f
+- API contract: https://console.ambipath.com/api/public-openapi.json
+- PAP discovery: https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json
+
+Use the guest HTTP API when your client does not support PAP. A PAP client signs a fresh Poppy-Session proof for each request using its own published identity. A missing proof is not a request to sign in as the website owner.
+
+
+PAP clients can also use the [MCP transport](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp) and [conversations endpoint](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations) with signed request proofs. See [access details](https://adityasinghal.com/auth.md) for the guest session flow, optional customer-account access and the separate public data API.
 
 ## Public data
 

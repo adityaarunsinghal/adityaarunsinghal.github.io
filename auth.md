@@ -1,17 +1,30 @@
 # Access to Aditya Singhal's assistant and public resources
 
-## Website assistant
+## Ask Adi's assistant
 
-The Ambipath-hosted assistant has a public [PAP discovery document](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json). Fetching it requires no credentials. Use its advertised authentication and endpoints for a conversation:
+Website: https://adityasinghal.com/
 
-- Canonical discovery URL: https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json
-- MCP transport: https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp
-- Conversations endpoint: https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations
-- Authentication issuer: https://auth-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com
+Public questions can be asked without a browser or customer sign-in.
 
-The MCP and conversations endpoints require a valid, signed Poppy-Session. Use a PAP-compatible client's authentication and session flow; a plain unauthenticated MCP connection or a successful discovery fetch is insufficient. Follow the current discovery document if its connection details change. Do not send a public data API request or a Firebase sign-in token as assistant authentication.
+- Connection instructions: https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f/agent.md
+- Guest HTTP API: https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f
+- API contract: https://console.ambipath.com/api/public-openapi.json
+- PAP discovery: https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json
 
-Client support varies. If your agent cannot complete PAP authentication, use [the homepage assistant](https://adityasinghal.com/) or the public reading resources below. Do not claim a conversation succeeded until the service confirms it. Messages you send to the assistant are processed by Ambipath; see [the privacy disclosure](https://adityasinghal.com/privacy/#site-assistant).
+Use the guest HTTP API when your client does not support PAP. A PAP client signs a fresh Poppy-Session proof for each request using its own published identity. A missing proof is not a request to sign in as the website owner.
+
+
+### Guest conversation access
+
+Read the connection instructions and API contract before creating a session. The guest HTTP session returns a bearer scoped to its own conversation. Keep that bearer and the private recovery secret out of public files and URLs. Send a question once, poll that same conversation until its answer arrives, and close completed test conversations. Recovery uses the original operation ID rather than creating another question.
+
+No website-owner credentials, customer account, email address, browser, Firebase token or PAP client are needed for a public question. A successful metadata fetch is not an answer; report a conversation as successful only after receiving its result.
+
+### PAP clients and optional account access
+
+PAP clients discover the [MCP transport](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp) and [conversations endpoint](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations) through the canonical manifest. These transports require a fresh, signed Poppy-Session proof from the client's own published identity. Missing signing support is a reason to use the guest HTTP API.
+
+The [authentication issuer](https://auth-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com) is for optional customer-account access. Public questions do not require a separate token exchange or owner sign-in. Messages you send to the assistant are processed by Ambipath; see [the privacy disclosure](https://adityasinghal.com/privacy/#site-assistant).
 
 ## Public access
 

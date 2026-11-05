@@ -2,9 +2,20 @@
   "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ard-entry.schema.json#/$defs/ArdManifest",
   "entries": [
     {
+      "identifier": "urn:air:adityasinghal.com:agent:guest-instructions",
+      "displayName": "Ask Adi's assistant",
+      "description": "Public connection instructions and guest HTTP API for questions about Adi's work, projects and teaching. No browser, customer account or owner sign-in required.",
+      "type": "text/markdown",
+      "url": "https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f/agent.md",
+      "representativeQueries": [
+        "Ask Adi's assistant a public question without a PAP client",
+        "Find the guest HTTP API and conversation instructions"
+      ]
+    },
+    {
       "identifier": "urn:air:adityasinghal.com:agent:website-assistant",
       "displayName": "Adi's website assistant",
-      "description": "Ambipath-hosted assistant for questions about Adi's public work, projects and teaching. Public PAP discovery; conversation and MCP access require a signed PAP session and a compatible client.",
+      "description": "Public PAP discovery for Adi's Ambipath-hosted assistant. PAP conversation and MCP access require a signed PAP session and a compatible client; a guest HTTP API is also available.",
       "type": "application/json",
       "url": "https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json",
       "representativeQueries": [
