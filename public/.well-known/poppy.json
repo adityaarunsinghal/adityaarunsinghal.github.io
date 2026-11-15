@@ -1,0 +1,27 @@
+{
+  "protocol_version": "1.0",
+  "organization": {
+    "name": "Adi's Website",
+    "domain": "adityasinghal.com"
+  },
+  "agent": {
+    "protocols": [
+      {
+        "type": "poppy",
+        "endpoint": "https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations",
+        "description": "Ask about this organization, its approved information, policies and how to reach the team.",
+        "access": "session"
+      }
+    ]
+  },
+  "apis": [
+    {
+      "type": "mcp",
+      "url": "https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp",
+      "description": "Ask the brand about approved product information, policies and your customer requests."
+    }
+  ],
+  "supported_versions": {
+    "0.4": "https://adityasinghal.com/.well-known/poppy-0.4.json"
+  }
+}

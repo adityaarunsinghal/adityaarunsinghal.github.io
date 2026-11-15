@@ -107,8 +107,8 @@ for (const entry of catalog.entries) {
     assert.equal(entry.type, "application/json");
     assert.equal(entry.url, websiteAssistant.discoveryUrl);
     assert.equal(new URL(entry.url).protocol, "https:");
-    assert.match(entry.description, /signed PAP session/);
-    assert.match(entry.description, /compatible client/);
+    assert.match(entry.description, /signed.session/);
+    assert.match(entry.description, /compatible .*client/);
   } else {
     assert.equal(new URL(entry.url).origin, site.origin);
     assert.ok((await actualFile(new URL(entry.url).pathname)).trim().length > 0);
@@ -135,23 +135,30 @@ for (const name of ["index.html", "static/index.html"]) {
 
 for (const name of ["llms.txt", "agents.md", "auth.md", "developers/llms.txt", "developers.md", "developers/index.html"]) {
   const content = await read(name);
-  for (const url of [websiteAssistant.instructionsUrl, websiteAssistant.publicApiUrl, websiteAssistant.openApiUrl,
-    websiteAssistant.discoveryUrl, websiteAssistant.mcpUrl, websiteAssistant.conversationsUrl]) {
+  for (const url of [websiteAssistant.instructionsUrl, websiteAssistant.openApiUrl, websiteAssistant.discoveryUrl]) {
     assert.ok(content.includes(url), `Canonical assistant connection URL missing: ${name}`);
   }
-  assert.match(content, /PAP/);
+  assert.match(content, /Poppy/);
   assert.match(content, /session/i);
-  assert.match(content, /without a browser or customer sign-in|without a browser, customer account or owner sign-in/);
-  assert.match(content, /missing proof is not a request to sign in as the website owner/);
-  assert.doesNotMatch(content, /does not (?:mean|imply) that (?:this domain|this website) hosts an MCP server/);
+  assert.match(content, /do not require a customer account or owner sign-in/);
+  assert.ok(content.indexOf(websiteAssistant.discoveryUrl) < content.indexOf(websiteAssistant.instructionsUrl),
+    `Recommend on-domain Poppy before the guest fallback: ${name}`);
 }
-for (const name of ["agents.md", "auth.md", "developers.md", "developers/index.html"]) {
-  assert.ok((await read(name)).includes(websiteAssistant.issuerUrl),
-    `Assistant issuer must be available with connection instructions: ${name}`);
-}
+const primaryDiscovery = JSON.parse(await read(".well-known/poppy.json"));
+assert.equal(primaryDiscovery.protocol_version, "1.0");
+assert.equal(primaryDiscovery.organization.domain, new URL(site.origin).hostname);
+assert.equal(primaryDiscovery.agent.protocols[0].endpoint, websiteAssistant.conversationsUrl);
+assert.equal(primaryDiscovery.apis[0].url, websiteAssistant.mcpUrl);
+assert.ok(!primaryDiscovery.auth, "Public on-domain discovery must not imply customer OAuth support");
+const compatibilityUrl = primaryDiscovery.supported_versions["0.4"];
+assert.equal(new URL(compatibilityUrl).origin, site.origin);
+const compatibilityDiscovery = JSON.parse(await actualFile(new URL(compatibilityUrl).pathname));
+assert.equal(compatibilityDiscovery.protocol_version, "0.4");
+assert.deepEqual(compatibilityDiscovery.agent, primaryDiscovery.agent);
+assert.equal(compatibilityDiscovery.organization.domain, primaryDiscovery.organization.domain);
 const wellKnownFiles = await readdir(path.join(output, ".well-known"));
-for (const facade of ["poppy.json", "agent-card.json", "agent.json"]) {
-  assert.ok(!wellKnownFiles.includes(facade), `Do not publish a protocol facade on the static origin: ${facade}`);
+for (const facade of ["agent-card.json", "agent.json", "oauth-protected-resource"]) {
+  assert.ok(!wellKnownFiles.includes(facade), `Do not publish unsupported protocol metadata: ${facade}`);
 }
 assert.ok(!(await readdir(output)).includes("agent.json"), "No unsupported A2A facade.");
 

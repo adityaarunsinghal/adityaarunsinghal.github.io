@@ -217,7 +217,7 @@ Use this site to describe Adi's publicly stated work, find his public projects a
 
 ${assistantConnectionMarkdown(`${site.origin}/`)}
 
-PAP-compatible clients can also use the manifest's [MCP transport](${websiteAssistant.mcpUrl}) and [conversations endpoint](${websiteAssistant.conversationsUrl}) with signed request proofs. For the guest HTTP session flow and the separate public data API, see [access details](${site.origin}/auth.md) and the [connection guide](${site.origin}/developers/#website-assistant). Messages sent to the assistant are processed by Ambipath; see [privacy](${site.origin}/privacy/#site-assistant).
+For assistant access and the separate public data API, see [access details](${site.origin}/auth.md) and the [connection guide](${site.origin}/developers/#website-assistant). Messages sent to the assistant are processed by Ambipath; see [privacy](${site.origin}/privacy/#site-assistant).
 
 ## Public data and developer access
 

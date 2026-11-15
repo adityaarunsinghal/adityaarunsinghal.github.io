@@ -12,7 +12,7 @@ export const websiteAssistant = {
   instructionsUrl: `${publicApiUrl}/agent.md`,
   openApiUrl: "https://console.ambipath.com/api/public-openapi.json",
   origin,
-  discoveryUrl: `${origin}/.well-known/poppy.json`,
+  discoveryUrl: "https://adityasinghal.com/.well-known/poppy.json",
   mcpUrl: `${origin}/mcp`,
   conversationsUrl: `${origin}/conversations`,
   issuerUrl: "https://auth-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com",
@@ -23,13 +23,8 @@ export function assistantConnectionMarkdown(websiteUrl: string): string {
 
 Website: ${websiteUrl}
 
-Public questions can be asked without a browser or customer sign-in.
+Ask through [Poppy discovery on this website](${websiteAssistant.discoveryUrl}). Public questions do not require a customer account or owner sign-in. A compatible client uses its own signed Poppy session.
 
-- Connection instructions: ${websiteAssistant.instructionsUrl}
-- Guest HTTP API: ${websiteAssistant.publicApiUrl}
-- API contract: ${websiteAssistant.openApiUrl}
-- PAP discovery: ${websiteAssistant.discoveryUrl}
-
-Use the guest HTTP API when your client does not support PAP. A PAP client signs a fresh Poppy-Session proof for each request using its own published identity. A missing proof is not a request to sign in as the website owner.
+If your client cannot use Poppy, follow the [guest HTTP connection instructions](${websiteAssistant.instructionsUrl}) and [API contract](${websiteAssistant.openApiUrl}). Send a question once, await its answer, and close completed test conversations. Keep conversation credentials private.
 `;
 }
