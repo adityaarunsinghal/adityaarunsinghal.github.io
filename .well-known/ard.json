@@ -15,9 +15,9 @@
     {
       "identifier": "urn:air:adityasinghal.com:agent:website-assistant",
       "displayName": "Adi's website assistant",
-      "description": "Public PAP discovery for Adi's Ambipath-hosted assistant. PAP conversation and MCP access require a signed PAP session and a compatible client; a guest HTTP API is also available.",
+      "description": "Poppy discovery on this website for Adi's assistant. Use a compatible signed-session client, or the guest HTTP API fallback.",
       "type": "application/json",
-      "url": "https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json",
+      "url": "https://adityasinghal.com/.well-known/poppy.json",
       "representativeQueries": [
         "Ask Adi's website assistant about his work and projects",
         "Ask the website assistant about Adi's NYU Agentic AI teaching"

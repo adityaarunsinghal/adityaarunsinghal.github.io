@@ -8,38 +8,21 @@ Assistant & public content
 
 Connect to my website assistant, or read my public profile, projects and workshop materials as JSON or Markdown.
 
-Ask the Ambipath-hosted assistant through its guest HTTP API without a browser or customer sign-in. The separate public data API is free to read and requires no account or API key.
+Ask the Ambipath-hosted assistant through Poppy discovery on this website, with a guest HTTP API fallback. The separate public data API is free to read and requires no account or API key.
 
-[Assistant connection instructions](https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f/agent.md) [Guest API contract](https://console.ambipath.com/api/public-openapi.json) [Public data OpenAPI](https://adityasinghal.com/openapi.json) [Reading guide for agents](https://adityasinghal.com/llms.txt)
+[Poppy discovery](https://adityasinghal.com/.well-known/poppy.json) [Guest API contract](https://console.ambipath.com/api/public-openapi.json) [Public data OpenAPI](https://adityasinghal.com/openapi.json) [Reading guide for agents](https://adityasinghal.com/llms.txt)
 
 ## Ask Adi's assistant
 
-Ask about my public work, projects and teaching without a browser, customer account or owner sign-in. Start with the [public connection instructions](https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f/agent.md) and [guest HTTP API contract](https://console.ambipath.com/api/public-openapi.json).
+Ask about my public work, projects and teaching through Poppy discovery on this website. Public questions do not require a customer account or owner sign-in. A compatible client uses its own signed Poppy session.
 
-### Guest HTTP API
-
-```
-https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f
-```
-
-Create a guest session using the documented operation, keep its conversation bearer and recovery secret private, send the question once, and poll that same conversation for its answer. Close completed test conversations. A successful metadata fetch is not an answer.
-
-### PAP-compatible clients
-
-Clients that support PAP (Personal Agent Protocol) can use this canonical discovery URL:
-
-### Canonical PAP discovery URL
+### Poppy discovery
 
 ```
-https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json
+https://adityasinghal.com/.well-known/poppy.json
 ```
 
--   [PAP discovery document](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/.well-known/poppy.json): public connection metadata.
--   [MCP transport](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/mcp): requires a valid PAP session.
--   [Conversations endpoint](https://assistant-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/conversations): requires a valid PAP session.
--   [Authentication issuer](https://auth-5fb03649c9914801a952129b908a3ac9.agents.ambipath.com/): optional customer-account access.
-
-A PAP client signs a fresh `Poppy-Session` proof for each request using its own published identity. Use the guest HTTP API when PAP signing is unavailable. A missing proof is not a request to sign in as the website owner.
+If your client cannot use Poppy, follow the [guest HTTP connection instructions](https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f/agent.md) and [API contract](https://console.ambipath.com/api/public-openapi.json). Send a question once, await its answer, and close completed test conversations. Keep conversation credentials private.
 
 You can also use [the assistant on the homepage](https://adityasinghal.com/). Messages sent to the assistant are processed by Ambipath; see [access details](https://adityasinghal.com/auth.md) and [privacy](https://adityasinghal.com/privacy/#site-assistant).
 
