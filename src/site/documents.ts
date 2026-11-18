@@ -1,5 +1,5 @@
-import { apiEndpoints } from "./agent-data";
-import { websiteAssistant } from "./assistant";
+import { apiEndpoints } from "./agents/agent-data";
+import { ambipathHead, websiteAssistant } from "./agents/ambipath";
 import { profileLinks, site } from "./content";
 import { documentPages } from "./document-pages";
 export { documentPages } from "./document-pages";
@@ -140,7 +140,7 @@ function privacyBody(): string {
     <h1>Privacy</h1>
     <p class="document-lead">How this website handles visits, analytics and embedded content.</p>
     <p>This is ${escapeHtml(site.name)}'s personal website. Public pages and content downloads can be read without signing in. This page describes the services used here and the choices available in your browser.</p>
-    <p class="document-updated">Last reviewed <time datetime="2026-11-04">November 4, 2026</time>.</p>
+    <p class="document-updated">Last reviewed <time datetime="2026-11-17">November 17, 2026</time>.</p>
   </header>
 
   <section aria-labelledby="hosting">
@@ -170,7 +170,7 @@ function privacyBody(): string {
 
   <section aria-labelledby="site-assistant">
     <h2 id="site-assistant">Website assistant</h2>
-    <p>The homepage includes an assistant provided by Ambipath. Your browser connects to Ambipath to load the assistant. Messages you send are processed by Ambipath to generate replies.</p>
+    <p>The homepage, developer guide and this page load a chat assistant hosted by Ambipath, and AI agents can ask it public questions directly. Your browser connects to Ambipath to load the assistant. Messages you send it, and any contact details you choose to share, go to Ambipath and are visible to me in its console. See <a href="https://console.ambipath.com/privacy">Ambipath's privacy notice</a>.</p>
   </section>
 
   <section aria-labelledby="signed-in">
@@ -213,7 +213,8 @@ export function renderDocument(pathname: string): string | undefined {
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="${canonical}" />
   <link rel="alternate" type="text/markdown" href="${site.origin}${markdown}" />
-  ${pathname === "/developers/" ? `<link rel="service-desc" type="application/json" href="${websiteAssistant.discoveryUrl}" />\n  <link rel="service-doc" type="text/markdown" href="${websiteAssistant.instructionsUrl}" />\n  ` : ""}<link rel="service-desc" type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json" />
+  ${ambipathHead}
+  <link rel="service-desc" type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json" />
   <link rel="ard" type="application/json" href="${site.origin}/.well-known/ard.json" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" href="/site-documents.css" />

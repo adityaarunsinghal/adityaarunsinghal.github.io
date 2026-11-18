@@ -115,22 +115,27 @@ for (const entry of catalog.entries) {
   }
 }
 
-for (const name of ["index.html", "static/index.html", "developers/index.html"]) {
+for (const name of ["index.html", "static/index.html", "developers/index.html", "privacy/index.html"]) {
   const html = await read(name);
   const head = html.match(/<head>([\s\S]*?)<\/head>/)[1];
-  assert.equal(head.split(`<link rel="service-desc" type="application/json" href="${websiteAssistant.discoveryUrl}"`).length - 1,
-    1, `One canonical assistant discovery link in the static head: ${name}`);
+  assert.equal(head.split(`<link rel="service-desc" type="application/json" href="${websiteAssistant.origin}/.well-known/poppy.json"`).length - 1,
+    1, `One supplied assistant discovery link in the static head: ${name}`);
   assert.equal(head.split(`<link rel="service-doc" type="text/markdown" href="${websiteAssistant.instructionsUrl}"`).length - 1,
     1, `One public connection-instructions link in the static head: ${name}`);
   assert.ok(head.includes(`type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json"`),
     `Public data discovery remains available: ${name}`);
-}
-for (const name of ["index.html", "static/index.html"]) {
-  const html = await read(name);
   const loaders = [...html.matchAll(/<script\b[^>]*\bsrc="https:\/\/console\.ambipath\.com\/widget\/loader\.js"[^>]*>/g)];
   assert.equal(loaders.length, 1, `Exactly one official assistant loader: ${name}`);
   assert.ok(loaders[0][0].includes(`data-ambipath="${websiteAssistant.deploymentId}"`));
   assert.match(loaders[0][0], /\bdefer\b/);
+  assert.ok(head.includes(loaders[0][0]), `The supplied loader belongs in the head: ${name}`);
+  assert.ok(!loaders[0][0].includes("data-context"), "Page context sharing is not enabled.");
+}
+
+for (const name of ["404.html", "login/index.html", "progress/index.html",
+  "agentic-ai-workshop/index.html", "agentic-ai-workshop-2025/index.html"]) {
+  assert.ok(!(await read(name)).includes("console.ambipath.com/widget/loader.js"),
+    `Assistant placement must not expand to unrelated pages: ${name}`);
 }
 
 for (const name of ["llms.txt", "agents.md", "auth.md", "developers/llms.txt", "developers.md", "developers/index.html"]) {
@@ -141,10 +146,14 @@ for (const name of ["llms.txt", "agents.md", "auth.md", "developers/llms.txt", "
   assert.match(content, /Poppy/);
   assert.match(content, /session/i);
   assert.match(content, /do not require a customer account or owner sign-in/);
-  assert.ok(content.indexOf(websiteAssistant.discoveryUrl) < content.indexOf(websiteAssistant.instructionsUrl),
+  const guidance = name.endsWith(".html") ? content.match(/<body\b[^>]*>([\s\S]*?)<\/body>/)[1] : content;
+  assert.ok(guidance.indexOf(websiteAssistant.discoveryUrl) < guidance.indexOf(websiteAssistant.instructionsUrl),
     `Recommend on-domain Poppy before the guest fallback: ${name}`);
 }
 const primaryDiscovery = JSON.parse(await read(".well-known/poppy.json"));
+const ownership = JSON.parse(await read(".well-known/ambipath.json"));
+assert.equal(ownership.deployment, websiteAssistant.deploymentId);
+assert.ok(ownership.proof, "The canonical deployment needs its supplied ownership proof.");
 assert.equal(primaryDiscovery.protocol_version, "1.0");
 assert.equal(primaryDiscovery.organization.domain, new URL(site.origin).hostname);
 assert.equal(primaryDiscovery.agent.protocols[0].endpoint, websiteAssistant.conversationsUrl);
@@ -155,6 +164,7 @@ assert.equal(new URL(compatibilityUrl).origin, site.origin);
 const compatibilityDiscovery = JSON.parse(await actualFile(new URL(compatibilityUrl).pathname));
 assert.equal(compatibilityDiscovery.protocol_version, "0.4");
 assert.deepEqual(compatibilityDiscovery.agent, primaryDiscovery.agent);
+assert.deepEqual(compatibilityDiscovery.apis, primaryDiscovery.apis);
 assert.equal(compatibilityDiscovery.organization.domain, primaryDiscovery.organization.domain);
 const wellKnownFiles = await readdir(path.join(output, ".well-known"));
 for (const facade of ["agent-card.json", "agent.json", "oauth-protected-resource"]) {

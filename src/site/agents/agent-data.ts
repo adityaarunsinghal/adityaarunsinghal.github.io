@@ -1,4 +1,4 @@
-import { profileLinks, readingMap, site } from "./content";
+import { profileLinks, readingMap, site } from "../content";
 import {
   course,
   historical,
@@ -8,7 +8,7 @@ import {
   sessionRecordings,
   sessions,
   type SessionRecording,
-} from "../workshop/pages";
+} from "../../workshop/pages";
 
 const apiVersion = "1";
 const documentationUrl = `${site.origin}/developers/`;

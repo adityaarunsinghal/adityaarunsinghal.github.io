@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import AgenticAIWorkshop from "../components/AgenticAIWorkshop/AgenticAIWorkshop";
 import AgenticAIWorkshop2025 from "../components/AgenticAIWorkshop2025/AgenticAIWorkshop2025";
 import { analyticsMeasurementId } from "../site/analytics";
-import { markdownPath } from "../site/discovery";
+import { markdownPath } from "../site/agents/discovery";
 import { workshopSchema } from "./schema";
 import {
   course,

@@ -1,6 +1,6 @@
-import { course, historical } from "../workshop/pages";
-import { assistantConnectionMarkdown, websiteAssistant } from "./assistant";
-import { site } from "./content";
+import { course, historical } from "../../workshop/pages";
+import { ambipathArdEntry, assistantConnectionMarkdown, websiteAssistant } from "./ambipath";
+import { site } from "../content";
 
 /** A physical Markdown file, independent of content negotiation or JavaScript. */
 export function markdownPath(pathname: string): string {
@@ -142,17 +142,7 @@ export function resourceCatalog() {
           "Find the guest HTTP API and conversation instructions",
         ],
       },
-      {
-        identifier: websiteAssistant.catalogIdentifier,
-        displayName: websiteAssistant.name,
-        description: "Poppy discovery on this website for Adi's assistant. Use a compatible signed-session client, or the guest HTTP API fallback.",
-        type: "application/json",
-        url: websiteAssistant.discoveryUrl,
-        representativeQueries: [
-          "Ask Adi's website assistant about his work and projects",
-          "Ask the website assistant about Adi's NYU Agentic AI teaching",
-        ],
-      },
+      ambipathArdEntry,
       {
         identifier: "urn:air:adityasinghal.com:api:public-data",
         displayName: "Aditya Singhal public data API",

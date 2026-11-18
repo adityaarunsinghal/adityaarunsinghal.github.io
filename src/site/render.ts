@@ -4,17 +4,17 @@ import { workshopSchema } from "../workshop/schema";
 import { profileLinks, readingMap, site } from "./content";
 import { legacyTarget, routeEntries, type ShortcutPage } from "./routes";
 import { analyticsHead } from "./analytics";
-import { assistantConnectionMarkdown, websiteAssistant } from "./assistant";
+import { ambipathFiles, ambipathHead, assistantConnectionMarkdown } from "./agents/ambipath";
 import { documentPages } from "./documents";
-import { apiDocuments, openApiDocument } from "./agent-data";
-import { accessInstructions, agentInstructions, markdownPath, resourceCatalog, schemaMap, sectionReadingMaps } from "./discovery";
+import { apiDocuments, openApiDocument } from "./agents/agent-data";
+import { accessInstructions, agentInstructions, markdownPath, resourceCatalog, schemaMap, sectionReadingMaps } from "./agents/discovery";
 
 export { site, profileLinks, readingMap } from "./content";
 export { appPages, shortcutPages, canonicalLocalRoute, legacyTarget } from "./routes";
 export { documentPages, renderDocument } from "./documents";
-export { apiDocuments, apiEndpoints, openApiDocument } from "./agent-data";
-export { markdownPath } from "./discovery";
-export { websiteAssistant } from "./assistant";
+export { apiDocuments, apiEndpoints, openApiDocument } from "./agents/agent-data";
+export { markdownPath } from "./agents/discovery";
+export { websiteAssistant } from "./agents/ambipath";
 
 export const publicPages = [
   { path: "/", modified: site.modified },
@@ -95,8 +95,7 @@ function homeHead(compatibilityScript: string) {
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="${site.origin}/" />
   <link rel="alternate" type="text/markdown" href="${site.origin}/index.md" />
-  <link rel="service-desc" type="application/json" href="${websiteAssistant.discoveryUrl}" />
-  <link rel="service-doc" type="text/markdown" href="${websiteAssistant.instructionsUrl}" />
+  ${ambipathHead}
   <link rel="service-desc" type="application/vnd.oai.openapi+json" href="${site.origin}/openapi.json" />
   <link rel="service-doc" type="text/html" href="${site.origin}/developers/" />
   <link rel="ard" type="application/json" href="${site.origin}/.well-known/ard.json" />
@@ -261,6 +260,7 @@ export function renderMachineDocuments(): Record<string, string> {
     "/schemamap.xml": schemaMap(latest),
     ...sectionReadingMaps(),
     ...Object.fromEntries(Object.entries(apiDocuments).map(([url, data]) => [url, json(data)])),
+    ...Object.fromEntries(Object.entries(ambipathFiles).map(([url, data]) => [url, json(data)])),
   };
 }
 

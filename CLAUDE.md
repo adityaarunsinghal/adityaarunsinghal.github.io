@@ -36,6 +36,7 @@ Public document build and stack checked: 2026-10-21
 - `src/config.ts` - App configuration (ALLOWED_EMAILS)
 - `src/router.tsx` - React app routes and bridges to public documents
 - `src/site/` - Public content, homepage template, metadata, shortcuts, and compatibility routing
+- `src/site/agents/` - Agent discoverability, public data API, and canonical Ambipath integration
 - `app.html` - Private app entry template, compiled separately from the public homepage
 - `firestore.rules` - Firestore security rules
 - `scripts/build-site-pages.mjs` - Generate public HTML, app entries, shortcuts, discovery files, and custom 404

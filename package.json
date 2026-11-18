@@ -10,7 +10,7 @@
   "homepage": "https://adityasinghal.com/",
   "scripts": {
     "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist --dotfiles",
     "dev": "node scripts/workshop-instructor-portraits.mjs && vite",
     "clean": "rimraf dist",
     "build": "tsc && vite build && node scripts/build-workshop-pages.mjs && node scripts/build-site-pages.mjs",

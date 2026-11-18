@@ -41,8 +41,8 @@ If a different global pnpm version is installed, run the repository's pinned ver
 | `src/site/content.ts` | Public identity, profile links and reading map. |
 | `src/site/home.html` | Homepage template. |
 | `src/site/render.ts` | Homepage, shortcuts, 404, metadata and discovery rendering. |
-| `src/site/agent-data.ts` | Public read-only JSON documents and their OpenAPI contract. |
-| `src/site/documents.ts`, `src/site/discovery.ts` | Developer/privacy pages and public reading guidance. |
+| `src/site/agents/` | Agent discovery, public JSON/OpenAPI documents and the canonical Ambipath integration. |
+| `src/site/documents.ts` | Developer and privacy pages. |
 | `scripts/markdown.mjs` | Generate Markdown twins from the same public HTML. |
 | `src/site/routes.ts` | App/shortcut paths and legacy URL normalization. |
 | `public/static/assets/` | Homepage styles and native browser enhancements. |
