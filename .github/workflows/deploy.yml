@@ -67,13 +67,17 @@ jobs:
         env:
           ARTIFACT_RUN: ${{ inputs.artifact_run_id || github.run_id }}
           EXPLICIT_ARTIFACT: ${{ inputs.artifact_run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           artifact_name=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$ARTIFACT_RUN/artifacts" --jq '.artifacts[] | select(.expired == false and (.name | startswith("paired-pages-"))) | .name' | head -n 1)
           if [ -n "$artifact_name" ]; then
             gh run download "$ARTIFACT_RUN" --repo "$GITHUB_REPOSITORY" --name "$artifact_name" --dir .paired-release
             echo 'restored=true' >> "$GITHUB_OUTPUT"
           elif [ -n "$EXPLICIT_ARTIFACT" ]; then
-            echo 'Requested frozen artifact is absent or expired.' >&2
+            echo 'Requested frozen artifact is absent, expired, or was removed by a rerun. Dispatch a separate workflow with --artifact-run pointing to an available saved release artifact.' >&2
+            exit 1
+          elif [ "$RUN_ATTEMPT" -gt 1 ]; then
+            echo 'This rerun has no frozen artifact; refusing to rebuild a release. GitHub may remove an earlier attempt artifact. Use a separate workflow dispatch with --artifact-run pointing to an available saved release artifact or another successful run.' >&2
             exit 1
           else
             echo 'restored=false' >> "$GITHUB_OUTPUT"

@@ -201,7 +201,7 @@ export async function publishPair(bundle, { repositories, origins, verify = veri
     }
     summary(`Paired release ${manifests.personal.releaseId} verified on both destinations.`);
   } catch (error) {
-    summary(`${started ? 'PARTIAL RELEASE: ' : ''}${error.message}. Rerun this workflow to reuse its frozen artifact; newer runs recover an incomplete pair first.`);
+    summary(`${started ? 'PARTIAL RELEASE: ' : ''}${error.message}. Retry through a separate workflow dispatch: pnpm run deploy --artifact-run RUN_ID, selecting an available frozen artifact. GitHub reruns can remove earlier artifacts; newer runs recover an incomplete pair first.`);
     throw error;
   } finally { rmSync(temporary, { recursive: true, force: true }); }
 }

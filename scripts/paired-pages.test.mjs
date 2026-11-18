@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { inventory, overlay, prepare, publicManifest, publishPair, validatePair, verifyLive } from './paired-pages.mjs';
 
 const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -255,4 +256,37 @@ test('repeat publication keeps résumé files unlisted without another commit', 
   assert.equal(git(root, '--git-dir', repos.personal, 'rev-parse', 'refs/heads/gh-pages'), before);
   assert.doesNotMatch(git(root, '--git-dir', repos.personal, 'show', 'refs/heads/gh-pages:release-manifest.json'), /resume/i);
   assert.equal(git(root, '--git-dir', repos.personal, 'show', 'refs/heads/gh-pages:latest-resume/index.html'), 'resume');
+});
+
+test('workflow never rebuilds a retry with a missing artifact and accepts an explicit available donor', t => {
+  const { root } = fixture(t);
+  const workflow = readFileSync(fileURLToPath(new URL('../.github/workflows/deploy.yml', import.meta.url)), 'utf8');
+  const step = workflow.match(/      - name: Restore frozen release on retry\n([\s\S]*?)(?=\n      - name:)/)?.[1];
+  assert.ok(step, 'restore step is present');
+  const script = step.split('        run: |\n')[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
+  const bin = path.join(root, 'bin');
+  put(bin, 'gh', '#!/bin/sh\nif [ "$1" = api ]; then printf "%s\\n" "$TEST_ARTIFACT_NAME"; else printf "%s\\n" "$*" >> "$TEST_GH_CALLS"; fi\n');
+  chmodSync(path.join(bin, 'gh'), 0o755);
+  for (const scenario of [
+    { name: 'fresh', attempt: '1', explicit: '', artifact: '', status: 0, restored: 'false' },
+    { name: 'missing retry', attempt: '2', explicit: '', artifact: '', status: 1 },
+    { name: 'missing explicit', attempt: '1', explicit: '123', artifact: '', status: 1 },
+    { name: 'explicit donor on retry', attempt: '2', explicit: '123', artifact: 'paired-pages-abc', status: 0, restored: 'true' },
+  ]) {
+    const output = path.join(root, `output-${scenario.name}`);
+    const calls = path.join(root, `calls-${scenario.name}`);
+    const result = spawnSync('bash', ['-e', '-o', 'pipefail', '-c', script], {
+      cwd: root,
+      encoding: 'utf8',
+      env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, GITHUB_REPOSITORY: 'test/repo', ARTIFACT_RUN: '123', EXPLICIT_ARTIFACT: scenario.explicit, RUN_ATTEMPT: scenario.attempt, GITHUB_OUTPUT: output, TEST_ARTIFACT_NAME: scenario.artifact, TEST_GH_CALLS: calls },
+    });
+    assert.equal(result.status, scenario.status, `${scenario.name}: ${result.stderr}`);
+    if (scenario.restored) assert.match(readFileSync(output, 'utf8'), new RegExp(`restored=${scenario.restored}`));
+    else {
+      assert.equal(existsSync(output), false);
+      assert.match(result.stderr, /separate workflow/);
+      assert.equal(existsSync(calls), false);
+    }
+    if (scenario.artifact) assert.match(readFileSync(calls, 'utf8'), /run download 123 .*--name paired-pages-abc/);
+  }
 });
