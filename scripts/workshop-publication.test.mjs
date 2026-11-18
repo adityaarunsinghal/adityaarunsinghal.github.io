@@ -7,7 +7,7 @@ import test from "node:test";
 import vm from "node:vm";
 import {
   learningWorkshopPublication as learning, personalWorkshopPublication,
-  renderWorkshop, workshopCanonicalUrl,
+  renderWorkshop, workshopAssistantLinks, workshopCanonicalUrl, workshopMachineDocuments,
 } from "../dist-ssr/workshop/render.mjs";
 
 test("canonical rollout keeps old paths readable and preserves 2025 feedback", () => {
@@ -23,6 +23,24 @@ test("canonical rollout keeps old paths readable and preserves 2025 feedback", (
   assert.ok(html.includes('href="/2025/"'));
   assert.ok(html.includes('origin=https%3A%2F%2Flearningwithagents.com'));
   assert.ok(html.includes('"@id":"https://adityasinghal.com/#person"'));
+});
+
+test("hosted assistant links belong only to dedicated support navigation and guidance", () => {
+  const personal = renderWorkshop("/agentic-ai-workshop-2026/", "/style.css");
+  const dedicated = renderWorkshop("/2026/", "/style.css", undefined, undefined, learning);
+  assert.ok(!personal.includes(workshopAssistantLinks.chat));
+  assert.ok(!personal.includes(workshopAssistantLinks.guestInstructions));
+  assert.ok(dedicated.includes(`href="${workshopAssistantLinks.chat}" target="_blank" rel="noopener noreferrer"`));
+  assert.ok(dedicated.includes(`href="${workshopAssistantLinks.guestInstructions}" target="_blank" rel="noopener noreferrer"`));
+  assert.ok(!dedicated.match(/<main\b[^>]*>[\s\S]*<\/main>/)[0].includes(workshopAssistantLinks.chat));
+  assert.ok(!dedicated.includes("widget/loader.js"));
+  assert.ok(!dedicated.includes("data-ambipath"));
+  for (const path of ["/llms.txt", "/agents.md", "/auth.md"]) {
+    const document = workshopMachineDocuments(learning)[path];
+    assert.ok(document.includes(workshopAssistantLinks.chat));
+    assert.ok(document.includes(workshopAssistantLinks.guestInstructions));
+    assert.ok(!document.includes("/.well-known/ambipath"));
+  }
 });
 
 const script = await readFile(new URL("../src/workshop/agent-tools.js", import.meta.url), "utf8");

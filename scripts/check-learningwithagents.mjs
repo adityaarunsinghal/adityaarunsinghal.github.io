@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { inspectArtifact } from "./check-public-artifacts.mjs";
 import {
   learningWorkshopPublication, workshopAssets, workshopCanonicalUrl,
-  workshopMachineDocuments, workshopMarkdownPath, workshopPages,
+  workshopAssistantLinks, workshopMachineDocuments, workshopMarkdownPath, workshopPages,
 } from "../dist-ssr/workshop/render.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -93,6 +93,9 @@ for (const page of pages) {
   assert.ok(html.includes(`href="${publication.origin}${workshopMarkdownPath(page.path)}"`));
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.ok(html.includes('id="main-content"'));
+  assert.ok(html.includes(`href="${workshopAssistantLinks.chat}" target="_blank" rel="noopener noreferrer"`));
+  assert.ok(html.includes(`href="${workshopAssistantLinks.guestInstructions}" target="_blank" rel="noopener noreferrer"`));
+  assert.doesNotMatch(html, /widget\/loader\.js|data-ambipath/);
   assert.doesNotMatch(html, /<script[^>]+(?:type="module"|src="\/assets\/index-)/);
   assert.doesNotMatch(html, /http-equiv="refresh"|window\.location/);
   const coursePage = ["current", "archive"].includes(page.kind);

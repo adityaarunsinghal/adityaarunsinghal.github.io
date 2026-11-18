@@ -3,6 +3,7 @@ import AgenticAIWorkshop from "../components/AgenticAIWorkshop/AgenticAIWorkshop
 import AgenticAIWorkshop2025 from "../components/AgenticAIWorkshop2025/AgenticAIWorkshop2025";
 import { analyticsMeasurementId } from "../site/analytics";
 import { workshopSchema } from "./schema";
+import { workshopAssistantLinks } from "./discovery";
 import {
   personalOrigin, personalWorkshopPublication, workshopCanonicalUrl,
   workshopEditionPath, workshopMarkdownPath, workshopPages, type WorkshopPublication,
@@ -202,6 +203,10 @@ export function renderWorkshop(
             <InformationPage kind={page.kind} state={state} publication={publication} />
           )}
           <nav className="workshop-resource-links" aria-label="Site resources">
+            {publication.role === "learning" && <>
+              <a href={workshopAssistantLinks.chat} target="_blank" rel="noopener noreferrer">Ask Adi’s assistant</a>
+              <a href={workshopAssistantLinks.guestInstructions} target="_blank" rel="noopener noreferrer">Assistant connection instructions</a>
+            </>}
             <a href={publication.role === "learning" ? `${personalOrigin}/developers/` : "/developers/"}>For developers</a>
             <a href={publication.role === "learning" ? `${personalOrigin}/privacy/` : "/privacy/"}>Privacy</a>
           </nav>

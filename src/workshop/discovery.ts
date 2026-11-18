@@ -1,6 +1,12 @@
 import { course, historical, historicalRecordings, pageDefinitions, resources as workshopResources, sessionRecordings, sessions, type SessionRecording } from "./pages";
 import { learningWorkshopPublication, personalOrigin, workshopCanonicalUrl, workshopEditionPath, type WorkshopPublication } from "./publication";
 
+/** Public hosted destinations; no inline installation or ownership payload. */
+export const workshopAssistantLinks = {
+  chat: "https://console.ambipath.com/widget/?deploymentId=2a1f524e-434f-4e9a-b275-e608270d07a6",
+  guestInstructions: "https://console.ambipath.com/api/v1/public/2a1f524e-434f-4e9a-b275-e608270d07a6/agent.md",
+};
+
 function publishedRecordings(recordings: SessionRecording[]) {
   return recordings.filter((recording) => recording.youtubeId !== null).map((recording) => {
     const url = `https://www.youtube.com/watch?v=${recording.youtubeId}`;
@@ -125,6 +131,8 @@ export function workshopMachineDocuments(publication = learningWorkshopPublicati
 - [API specification](${origin}/openapi.json): Available read-only GET endpoints.
 - [Agent guidance](${origin}/agents.md): Reading and citation instructions.
 - [Access](${origin}/auth.md): Public access and failure handling.
+- [Ask Adi's assistant](${workshopAssistantLinks.chat}): Open the hosted assistant for questions about Adi's work and teaching.
+- [Assistant connection instructions](${workshopAssistantLinks.guestInstructions}): Public guest HTTP access for agent clients.
 - [Privacy](${personalOrigin}/privacy/): Shared privacy information.
 `;
   const guidance = `# Reading Learning with Agents
@@ -136,12 +144,16 @@ Read [the workshop JSON](${origin}/api/v1/workshops.json), [the API index](${ori
 If WebMCP is available, course pages offer get_public_workshops with optional year 2025 or 2026. It reads the same public JSON and performs no writes. Use HTTPS GET otherwise. An unavailable material has no destination; do not invent one.
 
 Shared [developer information](${personalOrigin}/developers/) and [privacy information](${personalOrigin}/privacy/) are hosted on Adi's personal site.
+
+For questions, open [Adi's hosted assistant](${workshopAssistantLinks.chat}). Agent clients can follow the [public guest HTTP connection instructions](${workshopAssistantLinks.guestInstructions}). This external Ambipath service is separate from the read-only workshop JSON. Report that a message was sent or answered only when the service confirms it; keep conversation credentials private.
 `;
   const access = `# Public workshop access
 
 No login, API key, token or payment is required to read this site's HTML, Markdown or JSON. GET ${origin}/api/v1/workshops.json returns the published course information. The API is read-only and does not accept registration or messages.
 
 Check HTTP status and Content-Type before parsing JSON. Unknown paths return a genuine HTML 404. Retry temporary failures only with a small bounded budget and respect Retry-After when supplied. External links may have their own access requirements.
+
+To ask a question, use [Adi's hosted assistant](${workshopAssistantLinks.chat}) or follow its [public guest HTTP connection instructions](${workshopAssistantLinks.guestInstructions}). Assistant conversations are handled by Ambipath, separately from this site's static documents. See the shared [privacy information](${personalOrigin}/privacy/#site-assistant).
 `;
   const openapi = {
     openapi: "3.1.1",
