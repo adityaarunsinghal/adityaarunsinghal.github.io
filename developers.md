@@ -24,7 +24,7 @@ https://adityasinghal.com/.well-known/poppy.json
 
 If your client cannot use Poppy, follow the [guest HTTP connection instructions](https://console.ambipath.com/api/v1/public/2a1f524e-434f-4e9a-b275-e608270d07a6/agent.md) and [API contract](https://console.ambipath.com/api/public-openapi.json). Send a question once, await its answer, and close completed test conversations. Keep conversation credentials private.
 
-You can also use [the assistant on the homepage](https://adityasinghal.com/). Messages sent to the assistant are processed by Ambipath; see [access details](https://adityasinghal.com/auth.md) and [privacy](https://adityasinghal.com/privacy/#site-assistant).
+You can also use [the assistant on the homepage](https://adityasinghal.com/). Where the assistant appears on Learning with Agents, it connects to the same Ambipath-hosted assistant. Messages sent to the assistant are processed by Ambipath; see [access details](https://adityasinghal.com/auth.md) and [privacy](https://adityasinghal.com/privacy/#site-assistant).
 
 ## When to use these resources
 
