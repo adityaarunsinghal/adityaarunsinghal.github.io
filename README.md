@@ -121,7 +121,7 @@ Workshop headings use self-hosted Source Serif 4. The current title uses a small
 
 Source lives on `master`. One workflow builds and checks both `dist/` (personal site) and `dist-learningwithagents/` (workshops), freezes their manifests, and publishes their respective `gh-pages` branches. Pushes publish automatically when the source repository variable `PAIRED_PAGES_ENABLED` is `true`. Manual dispatch remains available during bootstrap and for recovery.
 
-The workflow requires Node.js 22, pnpm 10.32.1 and FFmpeg, and the separate SSH secrets `PERSONAL_PAGES_DEPLOY_KEY` and `WORKSHOPS_PAGES_DEPLOY_KEY`. Each key has write access only to its destination repository. `WORKSHOP_CANONICAL_ORIGIN=https://learningwithagents.com` enables the final personal-site workshop canonical URLs after the new domain passes HTTPS checks. Leave it unset during bootstrap.
+The workflow runs on Ubuntu 24.04 with Node.js 22, pnpm 10.32.1 and FFmpeg, and uses the separate SSH secrets `PERSONAL_PAGES_DEPLOY_KEY` and `WORKSHOPS_PAGES_DEPLOY_KEY`. Each key has write access only to its destination repository. `WORKSHOP_CANONICAL_ORIGIN=https://learningwithagents.com` enables the final personal-site workshop canonical URLs after the new domain passes HTTPS checks. Leave it unset during bootstrap.
 
 From a clean, pushed `master` checkout, dispatch and wait for the same workflow:
 
