@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { inventory, overlay, prepare, publishPair, validatePair, verifyLive } from './paired-pages.mjs';
+import { inventory, overlay, prepare, publicManifest, publishPair, validatePair, verifyLive } from './paired-pages.mjs';
 
 const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 const put = (root, name, contents) => { mkdirSync(path.dirname(path.join(root, name)), { recursive: true }); writeFileSync(path.join(root, name), contents); };
@@ -188,4 +188,71 @@ test('explicit rollback can abandon an unfinishable partial release', async t =>
   assert.equal(restoredArtifact, false);
   const workshop = checkout(first.root, repos.workshops, 'partial-rollback');
   assert.equal(JSON.parse(readFileSync(path.join(workshop, 'release-manifest.json'))).releaseId, 'release-a');
+});
+
+test('public marker omits unlisted résumé paths while frozen inventory and live verification remain complete', async t => {
+  const { root } = fixture(t);
+  put(root, 'dist/latest-resume/index.html', 'known resume URL');
+  put(root, 'dist/Aditya_Resume.pdf', 'resume document');
+  const bundle = path.join(root, 'with-resume');
+  const frozen = prepare(root, bundle, { sourceSha: 'c'.repeat(40), sourceDigest: 'c'.repeat(64), releaseId: 'release-c' }).personal;
+  assert.ok(frozen.files['latest-resume/index.html']);
+  const destination = path.join(root, 'published');
+  put(destination, 'résumé/archived.pdf', 'retained accented path');
+  const complete = overlay(destination, path.join(bundle, 'personal'), 'personal');
+  const markerText = readFileSync(path.join(destination, 'release-manifest.json'), 'utf8');
+  assert.doesNotMatch(markerText, /resume|résumé/i);
+  assert.deepEqual(JSON.parse(markerText), publicManifest(complete));
+  assert.ok(complete.retainedFiles['résumé/archived.pdf']);
+  assert.ok(validatePair(bundle).personal.files['Aditya_Resume.pdf']);
+  const calls = [];
+  const fetcher = async url => {
+    const name = decodeURIComponent(new URL(url).pathname.slice(1));
+    calls.push(name);
+    return new Response(readFileSync(path.join(destination, name)));
+  };
+  await verifyLive(complete, 'https://example.invalid', { fetcher, attempts: 1 });
+  for (const name of ['latest-resume/index.html', 'Aditya_Resume.pdf', 'résumé/archived.pdf']) assert.ok(calls.includes(name));
+  put(destination, 'Aditya_Resume.pdf', 'unexpected drift');
+  await assert.rejects(verifyLive(complete, 'https://example.invalid', { fetcher, attempts: 1 }), /Live file differs/);
+});
+
+test('migration preserves unlisted documents from old manifests and publishes stable sanitized markers', async t => {
+  const { root, bundle } = fixture(t);
+  const destination = path.join(root, 'legacy');
+  put(destination, 'latest-resume/index.html', 'existing hidden entry');
+  const first = overlay(destination, path.join(bundle, 'personal'), 'personal');
+  // Model the old publisher, including an unlisted HTML page as managed output.
+  const legacy = { ...first, files: { ...first.files, 'latest-resume/index.html': first.retainedFiles['latest-resume/index.html'] }, retainedFiles: {} };
+  put(destination, 'release-manifest.json', JSON.stringify(legacy));
+  const next = overlay(destination, path.join(bundle, 'personal'), 'personal');
+  assert.equal(readFileSync(path.join(destination, 'latest-resume/index.html'), 'utf8'), 'existing hidden entry');
+  const marker = readFileSync(path.join(destination, 'release-manifest.json'), 'utf8');
+  assert.doesNotMatch(marker, /resume/i);
+  overlay(destination, path.join(bundle, 'personal'), 'personal');
+  assert.equal(readFileSync(path.join(destination, 'release-manifest.json'), 'utf8'), marker);
+  assert.ok(next.retainedFiles['latest-resume/index.html']);
+  const fetcher = async url => {
+    const name = decodeURIComponent(new URL(url).pathname.slice(1));
+    return new Response(name === 'release-manifest.json' ? JSON.stringify(legacy) : readFileSync(path.join(destination, name)));
+  };
+  await assert.rejects(verifyLive(legacy, 'https://example.invalid', { fetcher, attempts: 1 }), /Live manifest/);
+  await verifyLive(legacy, 'https://example.invalid', { fetcher, attempts: 1, allowLegacyMarker: true });
+});
+
+test('repeat publication keeps résumé files unlisted without another commit', async t => {
+  const { root } = fixture(t);
+  put(root, 'dist/latest-resume/index.html', 'resume');
+  const bundle = path.join(root, 'repeat-unlisted');
+  prepare(root, bundle, { sourceSha: 'd'.repeat(40), sourceDigest: 'd'.repeat(64), releaseId: 'release-d' });
+  const repos = repositories(root);
+  const verify = async manifest => {
+    if (manifest.role === 'personal') assert.ok(manifest.files['latest-resume/index.html']);
+  };
+  await publishPair(bundle, { repositories: repos, skipSourceCheck: true, verify });
+  const before = git(root, '--git-dir', repos.personal, 'rev-parse', 'refs/heads/gh-pages');
+  await publishPair(bundle, { repositories: repos, skipSourceCheck: true, verify });
+  assert.equal(git(root, '--git-dir', repos.personal, 'rev-parse', 'refs/heads/gh-pages'), before);
+  assert.doesNotMatch(git(root, '--git-dir', repos.personal, 'show', 'refs/heads/gh-pages:release-manifest.json'), /resume/i);
+  assert.equal(git(root, '--git-dir', repos.personal, 'show', 'refs/heads/gh-pages:latest-resume/index.html'), 'resume');
 });

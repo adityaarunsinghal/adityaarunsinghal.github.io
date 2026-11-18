@@ -15,6 +15,16 @@ const targets = {
 const command = (name, args, options = {}) => execFileSync(name, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...options }).trim();
 const git = (cwd, ...args) => command('git', args, { cwd });
 const json = filename => JSON.parse(readFileSync(filename, 'utf8'));
+const unlistedPath = name => /resume/i.test(name.normalize('NFD').replace(/\p{M}/gu, ''));
+// The frozen inventory remains complete for integrity checks. Its public marker
+// must not turn intentionally unlisted documents into discoverable URLs.
+export function publicManifest(manifest) {
+  const result = { ...manifest };
+  for (const field of ['files', 'retainedFiles']) {
+    if (manifest[field]) result[field] = Object.fromEntries(Object.entries(manifest[field]).filter(([name]) => !unlistedPath(name)));
+  }
+  return result;
+}
 function safePath(name) {
   if (!name || name === manifestName || name.startsWith('/') || name.includes('\\') || name.split('/').some(part => !part || part === '.' || part === '..' || part === '.git')) throw new Error(`Unsafe artifact path: ${name}`);
 }
@@ -98,15 +108,15 @@ export function overlay(directory, source, role) {
   // initial inventory and old asset URLs, while allowing managed pages to retire.
   for (const name of Object.keys(before)) {
     const managed = role === 'workshops' || (old?.files && name in old.files);
-    if (managed && !(name in next.files) && (role === 'workshops' || !compatibilityAsset(name))) rmSync(path.join(directory, name));
+    if (managed && !(name in next.files) && (role === 'workshops' || (!compatibilityAsset(name) && !unlistedPath(name)))) rmSync(path.join(directory, name));
   }
   cpSync(source, directory, { recursive: true });
   const retainedFiles = Object.fromEntries(Object.entries(inventory(directory, { checkout: true })).filter(([name]) => !(name in next.files)));
   const published = { ...next, retainedFiles };
-  writeFileSync(path.join(directory, manifestName), `${JSON.stringify(published, null, 2)}\n`);
+  writeFileSync(path.join(directory, manifestName), `${JSON.stringify(publicManifest(published), null, 2)}\n`);
   return published;
 }
-export async function verifyLive(manifest, origin, { fetcher = fetch, attempts = 40, delayMs = 15000 } = {}) {
+export async function verifyLive(manifest, origin, { fetcher = fetch, attempts = 40, delayMs = 15000, allowLegacyMarker = false } = {}) {
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   let lastError;
   for (let attempt = 0; attempt < attempts; attempt++) {
@@ -116,7 +126,9 @@ export async function verifyLive(manifest, origin, { fetcher = fetch, attempts =
       if (!response.ok) throw new Error(`Manifest HTTP ${response.status}`);
       if (response.url && new URL(response.url).origin !== origin) throw new Error('Manifest redirected to another origin');
       const live = await response.json();
-      if (JSON.stringify(live) !== JSON.stringify(manifest)) throw new Error('Live manifest does not match prepared artifact');
+      const matchesPublicMarker = JSON.stringify(live) === JSON.stringify(publicManifest(manifest));
+      const matchesLegacyMarker = allowLegacyMarker && JSON.stringify(live) === JSON.stringify(manifest);
+      if (!matchesPublicMarker && !matchesLegacyMarker) throw new Error('Live manifest does not match prepared artifact');
       const entries = Object.entries({ ...manifest.retainedFiles, ...manifest.files });
       // Bounded concurrency checks every generated and retained file, not just the manifest.
       for (let offset = 0; offset < entries.length; offset += 8) await Promise.all(entries.slice(offset, offset + 8).map(async ([name, hash]) => {
@@ -141,7 +153,7 @@ export function publishCheckout(state, source, role) {
     git(state.directory, 'push', '--quiet', `--force-with-lease=refs/heads/gh-pages:${state.head}`, 'origin', 'HEAD:refs/heads/gh-pages');
   }
   state.head = git(state.directory, 'rev-parse', 'HEAD');
-  state.manifest = manifest;
+  state.manifest = publicManifest(manifest);
   return manifest;
 }
 function summary(message) {
@@ -176,7 +188,7 @@ export async function publishPair(bundle, { repositories, origins, verify = veri
     // A matching previous pair may still be waiting for Pages propagation after
     // a failed verification. Finish observing it before advancing either head.
     if (!allowRollback && oldWorkshop && oldPersonal && oldWorkshop.releaseId === oldPersonal.releaseId && oldWorkshop.releaseId !== manifests.workshops.releaseId) {
-      for (const role of Object.keys(targets)) await verify(states[role].manifest, origins?.[role] || targets[role].origin);
+      for (const role of Object.keys(targets)) await verify(states[role].manifest, origins?.[role] || targets[role].origin, { allowLegacyMarker: true });
     }
     for (const role of ['workshops', 'personal']) {
       // Reject a changed second destination before mutating the first, too.
