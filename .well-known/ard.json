@@ -6,21 +6,21 @@
       "displayName": "Ask Adi's assistant",
       "description": "Public connection instructions and guest HTTP API for questions about Adi's work, projects and teaching. No browser, customer account or owner sign-in required.",
       "type": "text/markdown",
-      "url": "https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f/agent.md",
+      "url": "https://console.ambipath.com/api/v1/public/2a1f524e-434f-4e9a-b275-e608270d07a6/agent.md",
       "representativeQueries": [
         "Ask Adi's assistant a public question without a PAP client",
         "Find the guest HTTP API and conversation instructions"
       ]
     },
     {
-      "identifier": "urn:air:adityasinghal.com:agent:website-assistant",
-      "displayName": "Adi's website assistant",
+      "identifier": "urn:air:adityasinghal.com:agent:d25001ed-19e2-4376-a95f-c870b8da0769",
+      "displayName": "Adi's Website",
       "description": "Poppy discovery on this website for Adi's assistant. Use a compatible signed-session client, or the guest HTTP API fallback.",
       "type": "application/json",
       "url": "https://adityasinghal.com/.well-known/poppy.json",
       "representativeQueries": [
-        "Ask Adi's website assistant about his work and projects",
-        "Ask the website assistant about Adi's NYU Agentic AI teaching"
+        "Ask Adi's assistant about his work, projects or teaching",
+        "How can I reach Aditya Singhal?"
       ]
     },
     {

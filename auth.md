@@ -6,7 +6,7 @@ Website: https://adityasinghal.com/
 
 Ask through [Poppy discovery on this website](https://adityasinghal.com/.well-known/poppy.json). Public questions do not require a customer account or owner sign-in. A compatible client uses its own signed Poppy session.
 
-If your client cannot use Poppy, follow the [guest HTTP connection instructions](https://console.ambipath.com/api/v1/public/a6436a43-e728-456d-879c-c7674b0d814f/agent.md) and [API contract](https://console.ambipath.com/api/public-openapi.json). Send a question once, await its answer, and close completed test conversations. Keep conversation credentials private.
+If your client cannot use Poppy, follow the [guest HTTP connection instructions](https://console.ambipath.com/api/v1/public/2a1f524e-434f-4e9a-b275-e608270d07a6/agent.md) and [API contract](https://console.ambipath.com/api/public-openapi.json). Send a question once, await its answer, and close completed test conversations. Keep conversation credentials private.
 
 
 Messages sent to the assistant are processed by Ambipath; see [privacy](https://adityasinghal.com/privacy/#site-assistant). Report success only when the service returns an answer. A metadata fetch alone does not start a conversation.

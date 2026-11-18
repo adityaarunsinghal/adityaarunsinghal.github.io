@@ -10,7 +10,7 @@ How this website handles visits, analytics and embedded content.
 
 This is Aditya Singhal's personal website. Public pages and content downloads can be read without signing in. This page describes the services used here and the choices available in your browser.
 
-Last reviewed November 4, 2026.
+Last reviewed November 17, 2026.
 
 ## Hosting and request data
 
@@ -40,7 +40,7 @@ Choosing a contact link does not send a message on your behalf. You decide what 
 
 ## Website assistant
 
-The homepage includes an assistant provided by Ambipath. Your browser connects to Ambipath to load the assistant. Messages you send are processed by Ambipath to generate replies.
+The homepage, developer guide and this page load a chat assistant hosted by Ambipath, and AI agents can ask it public questions directly. Your browser connects to Ambipath to load the assistant. Messages you send it, and any contact details you choose to share, go to Ambipath and are visible to me in its console. See [Ambipath's privacy notice](https://console.ambipath.com/privacy).
 
 ## Signed-in utilities and browser storage
 
