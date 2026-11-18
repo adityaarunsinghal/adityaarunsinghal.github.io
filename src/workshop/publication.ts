@@ -18,6 +18,8 @@ export const learningWorkshopPublication: WorkshopPublication = {
 
 /** Flip only after the dedicated host has passed its live HTTPS checks. */
 export function personalWorkshopPublication(canonicalOrigin = personalOrigin): WorkshopPublication {
+  // Actions exposes unset repository variables as empty environment strings.
+  canonicalOrigin ||= personalOrigin;
   if (![personalOrigin, learningOrigin].includes(canonicalOrigin)) {
     throw new Error(`Unsupported workshop canonical origin: ${canonicalOrigin}`);
   }
