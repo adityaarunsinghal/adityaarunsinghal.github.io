@@ -8,6 +8,8 @@ import { ambipathFiles, ambipathHead, assistantConnectionMarkdown } from "./agen
 import { documentPages } from "./documents";
 import { apiDocuments, openApiDocument } from "./agents/agent-data";
 import { accessInstructions, agentInstructions, markdownPath, resourceCatalog, schemaMap, sectionReadingMaps } from "./agents/discovery";
+import { siteWorkshopPublication } from "./workshop-publication";
+import { personalOrigin } from "../workshop/publication";
 
 export { site, profileLinks, readingMap } from "./content";
 export { appPages, shortcutPages, canonicalLocalRoute, legacyTarget } from "./routes";
@@ -20,6 +22,7 @@ export const publicPages = [
   { path: "/", modified: site.modified },
   ...pageDefinitions
     .filter((page) => page.path === page.canonical
+      && siteWorkshopPublication.canonicalOrigin === personalOrigin
       && (page.kind === "current" || page.kind === "archive"))
     .map((page) => ({
       path: page.path,
@@ -243,7 +246,7 @@ ${readingMap.map((group) =>
 
 export function renderMachineDocuments(): Record<string, string> {
   const json = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
-  const graphs = [profileGraph(), workshopSchema(course.path), workshopSchema(course.archivePath)];
+  const graphs = [profileGraph(), workshopSchema(course.path, siteWorkshopPublication), workshopSchema(course.archivePath, siteWorkshopPublication)];
   const schemaFeed = graphs.flatMap((graph) =>
     graph ? graph["@graph"].map((node) => ({ "@context": graph["@context"], ...node })) : [],
   ).map((node) => JSON.stringify(node)).join("\n") + "\n";

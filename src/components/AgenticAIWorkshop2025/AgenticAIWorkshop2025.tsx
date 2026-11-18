@@ -1,12 +1,15 @@
 import { quotes } from '../../workshop/quotes';
 import { historicalRecordings, type SessionRecording } from '../../workshop/pages';
 import SessionRecordings from '../AgenticAIWorkshop/SessionRecordings';
+import { personalWorkshopPublication, workshopEditionPath, type WorkshopPublication } from '../../workshop/publication';
 
 // Course body preserved from b349c17; navigation, recordings and quotes are archival additions.
 const AgenticAIWorkshop2025 = ({
   recordings = historicalRecordings,
+  publication = personalWorkshopPublication(),
 }: {
   recordings?: SessionRecording[];
+  publication?: WorkshopPublication;
 }) => {
   const sessions = [
     {
@@ -68,7 +71,8 @@ const AgenticAIWorkshop2025 = ({
         <strong>2025 workshop archive</strong>
         <p>These materials describe the October 2025 course.</p>
         <nav aria-label="Archive navigation">
-          <a href="/agentic-ai-workshop/">Visit the 2026 workshop</a>
+          {publication.role === "learning" && <a href="/">Learning with Agents</a>}
+          <a href={publication.role === "learning" ? workshopEditionPath(2026, publication) : "/agentic-ai-workshop/"}>Visit the 2026 workshop</a>
           <a href="#recordings">Full recordings</a>
           <a href="https://www.youtube.com/playlist?list=PLgF7i4LH-YxYvhXK-yywN7eFRjRjQrq89">2025 highlights</a>
           <a href="https://github.com/adityaarunsinghal/agentic-ai-workshop-2025">2025 code</a>
@@ -130,14 +134,14 @@ const AgenticAIWorkshop2025 = ({
               
             </div>
             
-            <a href="/agentic-ai-workshop-2025/feedback/" className="secondary-button">
+            <a href={`${workshopEditionPath(2025, publication)}feedback/`} className="secondary-button">
               Workshop Feedback
             </a>
           </div>
         </div>
       </div>
 
-      <SessionRecordings recordings={recordings} />
+      <SessionRecordings recordings={recordings} servingOrigin={publication.origin} />
 
       <div className="content-section">
         <div className="intro-section">

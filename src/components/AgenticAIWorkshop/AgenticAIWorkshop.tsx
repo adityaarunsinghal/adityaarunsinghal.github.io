@@ -11,6 +11,7 @@ import {
 import StudentCrowd from "./StudentCrowd";
 import Instructors from "./Instructors";
 import SessionRecordings from "./SessionRecordings";
+import { personalWorkshopPublication, personalOrigin, workshopEditionPath, type WorkshopPublication } from "../../workshop/publication";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -81,18 +82,21 @@ function BriefingExample() {
 export default function AgenticAIWorkshop({
   state = course.state,
   recordings = sessionRecordings,
+  publication = personalWorkshopPublication(),
 }: {
   state?: CourseState;
   recordings?: SessionRecording[];
+  publication?: WorkshopPublication;
 }) {
-  const action = courseAction(state);
+  const action = { ...courseAction(state), href: `${workshopEditionPath(2026, publication)}#recordings` };
+  const archivePath = workshopEditionPath(2025, publication);
   const availableRecordings = recordings.filter((recording) => recording.youtubeId);
   return (
     <div className="workshop-2026">
       <header className="course-header">
         <div className="course-wrap header-inner">
           <a href="/" className="site-signature">
-            Adi Singhal <span>/ NYU CDS</span>
+            {publication.role === "learning" ? "Learning with Agents" : "Adi Singhal"} <span>/ NYU CDS</span>
           </a>
           <nav aria-label="Workshop navigation">
             <a href="#schedule">Schedule</a>
@@ -101,7 +105,8 @@ export default function AgenticAIWorkshop({
             <a href="#feedback">Feedback</a>
             {recordings.length > 0 && <a href="#recordings">Recordings</a>}
             <a href={course.appStoreUrl}>App store <Arrow /></a>
-            <a href={course.archivePath}>
+            {publication.role === "learning" && <a href={workshopEditionPath(2026, publication)}>2026 workshop</a>}
+            <a href={archivePath}>
               2025 archive <Arrow />
             </a>
           </nav>
@@ -139,7 +144,7 @@ export default function AgenticAIWorkshop({
                 </a>
               </p>
             )}
-            <a className="subtle-link" href={course.archivePath}>
+            <a className="subtle-link" href={archivePath}>
               Looking for last year’s workshop?{" "}
               <span>
                 Explore 2025 <Arrow />
@@ -318,7 +323,7 @@ export default function AgenticAIWorkshop({
             ))}
           </div>
         </section>
-        <SessionRecordings recordings={recordings} />
+        <SessionRecordings recordings={recordings} servingOrigin={publication.origin} />
         <section
           className="course-wrap demo-section"
           id="demo-day"
@@ -368,7 +373,7 @@ export default function AgenticAIWorkshop({
             <a href={historical.repository}>
               2025 course code <Arrow />
             </a>
-            <a href={course.archivePath}>
+            <a href={archivePath}>
               2025 workshop website <Arrow />
             </a>
           </div>
@@ -476,9 +481,9 @@ export default function AgenticAIWorkshop({
         </section>
       </main>
       <footer className="course-wrap course-footer">
-        <a href="/">Adi Singhal</a>
+        <a href={publication.role === "learning" ? `${personalOrigin}/` : "/"}>Adi Singhal</a>
         <span>NYU Center for Data Science · Fall 2026</span>
-        <a href={course.archivePath}>
+        <a href={archivePath}>
           2025 archive <Arrow />
         </a>
       </footer>

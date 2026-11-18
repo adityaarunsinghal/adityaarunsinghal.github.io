@@ -64,7 +64,7 @@ print(profile["name"])`;
     <p>Ask about my public work, projects and teaching through Poppy discovery on this website. Public questions do not require a customer account or owner sign-in. A compatible client uses its own signed Poppy session.</p>
     ${codeExample("Poppy discovery", websiteAssistant.discoveryUrl)}
     <p>If your client cannot use Poppy, follow the <a href="${websiteAssistant.instructionsUrl}">guest HTTP connection instructions</a> and <a href="${websiteAssistant.openApiUrl}">API contract</a>. Send a question once, await its answer, and close completed test conversations. Keep conversation credentials private.</p>
-    <p>You can also use <a href="/">the assistant on the homepage</a>. Messages sent to the assistant are processed by Ambipath; see <a href="/auth.md">access details</a> and <a href="/privacy/#site-assistant">privacy</a>.</p>
+    <p>You can also use <a href="/">the assistant on the homepage</a>. Where the assistant appears on Learning with Agents, it connects to the same Ambipath-hosted assistant. Messages sent to the assistant are processed by Ambipath; see <a href="/auth.md">access details</a> and <a href="/privacy/#site-assistant">privacy</a>.</p>
   </section>
 
   <section aria-labelledby="when-to-use">
@@ -139,26 +139,26 @@ function privacyBody(): string {
     <p class="document-eyebrow">About this website</p>
     <h1>Privacy</h1>
     <p class="document-lead">How this website handles visits, analytics and embedded content.</p>
-    <p>This is ${escapeHtml(site.name)}'s personal website. Public pages and content downloads can be read without signing in. This page describes the services used here and the choices available in your browser.</p>
-    <p class="document-updated">Last reviewed <time datetime="2026-11-17">November 17, 2026</time>.</p>
+    <p>This notice covers ${escapeHtml(site.name)}'s personal website at <code>adityasinghal.com</code> and workshop pages at <code>learningwithagents.com</code>. Public pages and content downloads can be read without signing in. This page describes the services used across these sites and the choices available in your browser.</p>
+    <p class="document-updated">Last reviewed <time datetime="2026-11-18">November 18, 2026</time>.</p>
   </header>
 
   <section aria-labelledby="hosting">
     <h2 id="hosting">Hosting and request data</h2>
-    <p>GitHub Pages hosts this site. Requests to the site reach GitHub's infrastructure, which may process technical information such as your IP address, browser and request time to deliver and protect the service. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a> for its handling of that information.</p>
+    <p>GitHub Pages hosts these sites. Requests reach GitHub's infrastructure, which may process technical information such as your IP address, browser and request time to deliver and protect the service. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a> for its handling of that information.</p>
   </section>
 
   <section aria-labelledby="analytics">
     <h2 id="analytics">Public-page analytics</h2>
-    <p>The homepage and the 2026 and 2025 workshop pages use Google Analytics 4 to understand visits and use of public resources. Google's tag uses cookies and processes usage and device information. The site has Google signals and advertising personalization signals disabled.</p>
-    <p>The site's custom events record page views and selected resource, social-link and video interactions. Their page address is the canonical page URL, without query strings or fragments; their referrer is reduced to its origin. Those custom events do not include chapter-search text, email addresses, complete outbound URLs or private application content.</p>
+    <p>The personal homepage and the 2026 and 2025 workshop pages use the same Google Analytics 4 property to understand visits and use of public resources. Reports can distinguish visits by domain. Google's tag uses cookies and processes usage and device information. Google signals and advertising personalization signals are disabled.</p>
+    <p>The sites' custom events record page views and selected resource, social-link and video interactions. Their page address uses the domain serving the page and a normalized local path, without query strings or fragments; their referrer is reduced to its origin. A workshop's search-engine canonical address does not change its analytics domain. These custom events do not include chapter-search text, email addresses, complete outbound URLs or private application content.</p>
     <p>The developer guide, this privacy page and public JSON or Markdown files do not load the analytics tag. You can restrict cookies or block analytics requests through your browser. Google also provides an <a href="https://tools.google.com/dlpage/gaoptout">Analytics opt-out browser add-on</a>. See <a href="https://policies.google.com/privacy">Google's privacy policy</a> for information about its services.</p>
   </section>
 
   <section aria-labelledby="fonts">
     <h2 id="fonts">Fonts and video</h2>
-    <p>The homepage requests its font stylesheet and font files from Google Fonts. This sends technical request information to Google. The workshop fonts are served from this website. See <a href="https://developers.google.com/fonts/faq/privacy">Google Fonts' privacy information</a>.</p>
-    <p>Personal-video previews on the homepage are stored on this site. A YouTube player loads after you choose a video. Workshop recordings use lazy-loaded YouTube players, which can contact YouTube as they approach the visible part of the page, before playback.</p>
+    <p>The personal homepage requests its font stylesheet and font files from Google Fonts. This sends technical request information to Google. Workshop fonts are served from the site displaying the workshop. See <a href="https://developers.google.com/fonts/faq/privacy">Google Fonts' privacy information</a>.</p>
+    <p>Personal-video previews on the personal homepage are stored on that site. A YouTube player loads after you choose a video. Workshop recordings use lazy-loaded YouTube players, which can contact YouTube as they approach the visible part of the page, before playback.</p>
     <p>The embedded players use YouTube's privacy-enhanced domain, <code>youtube-nocookie.com</code>. Loading or playing a video still involves requests to YouTube and related services. See <a href="https://support.google.com/youtube/answer/171780">YouTube's explanation of privacy-enhanced embeds</a>. You can follow the ordinary video links to watch on YouTube instead.</p>
   </section>
 
@@ -170,12 +170,12 @@ function privacyBody(): string {
 
   <section aria-labelledby="site-assistant">
     <h2 id="site-assistant">Website assistant</h2>
-    <p>The homepage, developer guide and this page load a chat assistant hosted by Ambipath, and AI agents can ask it public questions directly. Your browser connects to Ambipath to load the assistant. Messages you send it, and any contact details you choose to share, go to Ambipath and are visible to me in its console. See <a href="https://console.ambipath.com/privacy">Ambipath's privacy notice</a>.</p>
+    <p>The personal homepage, developer guide and this page load a chat assistant hosted by Ambipath, and AI agents can ask it public questions directly. Where a workshop page offers the assistant, it uses the same assistant and the same data handling. Your browser connects to Ambipath to load it. Messages you send it, and any contact details you choose to share, go to Ambipath and are visible to me in its console. See <a href="https://console.ambipath.com/privacy">Ambipath's privacy notice</a>.</p>
   </section>
 
   <section aria-labelledby="signed-in">
     <h2 id="signed-in">Signed-in utilities and browser storage</h2>
-    <p>Separate private utilities use Google sign-in through Firebase Authentication and store authorized application data in Firebase Firestore. Authentication information and application data are used to provide access to those utilities. The public profile and workshop pages do not require this sign-in.</p>
+    <p>Separate private utilities on the personal website use Google sign-in through Firebase Authentication and store authorized application data in Firebase Firestore. Authentication information and application data are used to provide access to those utilities. The public profile and workshop pages do not require this sign-in.</p>
     <p>Firebase can keep sign-in state and cached application data in your browser. Sign out after use on a shared device; browser settings can also clear this site's stored data. Clearing browser storage does not by itself delete data stored by a service.</p>
   </section>
 

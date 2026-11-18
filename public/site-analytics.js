@@ -3,20 +3,21 @@
 (() => {
   const id = document.currentScript?.dataset.measurementId;
   if (!/^G-[A-Z0-9]+$/.test(id || "") || window.__publicAnalyticsStarted) return;
-  const origin = "https://adityasinghal.com";
-  const paths = new Set(["/", "/agentic-ai-workshop/", "/agentic-ai-workshop-2025/"]);
-  const aliases = new Set(["/", "/static/"]);
-  const canonicalLink = document.querySelector('link[rel="canonical"]');
-  let canonical;
-  try {
-    canonical = new URL(canonicalLink?.href);
-  } catch {
-    return;
-  }
-  const path = canonical.pathname;
-  if (window.location.origin !== origin || canonical.origin !== origin ||
-      canonical.search || canonical.hash || !paths.has(path)) return;
-  if (!(window.location.pathname === path || (path === "/" && aliases.has(window.location.pathname)))) return;
+  const origin = window.location.origin;
+  const workshopHost = origin === "https://learningwithagents.com";
+  if (origin !== "https://adityasinghal.com" && !workshopHost) return;
+  const workshopYears = new Map([
+    ["/agentic-ai-workshop/", 2026],
+    ["/agentic-ai-workshop-2026/", 2026],
+    ["/agentic-ai-workshop-2025/", 2025],
+    ...(workshopHost ? [["/", 2026], ["/2026/", 2026], ["/2025/", 2025]] : []),
+  ]);
+  // SEO canonicals can point at the other domain. Analytics describes the
+  // actual serving host and a known local route, never the canonical URL.
+  const localPath = window.location.pathname;
+  const normalizedPath = localPath.endsWith("/") ? localPath : `${localPath}/`;
+  const path = !workshopHost && normalizedPath === "/static/" ? "/" : normalizedPath;
+  if (path !== "/" && !workshopYears.has(path)) return;
   if (window.location.search.startsWith("?/")) return; // Old app-route bookmarks normalize first.
   if (/\bnoindex\b/i.test(document.querySelector('meta[name="robots"]')?.content || "")) return;
   if (document.getElementById("root")) return;
@@ -30,7 +31,7 @@
     // No referrer is expected for direct navigation.
   }
   const page = {
-    page_location: canonical.href,
+    page_location: origin + path,
     page_referrer: referrer,
     page_title: document.title,
   };
@@ -54,10 +55,6 @@
     gtag("event", name, { ...page, ...parameters, send_to: id });
   }
 
-  const workshopYears = new Map([
-    ["/agentic-ai-workshop/", 2026],
-    ["/agentic-ai-workshop-2025/", 2025],
-  ]);
   const repositoryYears = new Map([
     ["agentic-ai-workshop-2026", 2026],
     ["agentic-ai-workshop-2025", 2025],
@@ -111,7 +108,7 @@
       const videoId = event.detail?.videoId;
       if (!/^[A-Za-z0-9_-]{11}$/.test(videoId || "") || seen.has(videoId)) return;
       seen.add(videoId);
-      emit(eventName, { video_id: videoId, video_context: path === "/" ? "personal" : "workshop" });
+      emit(eventName, { video_id: videoId, video_context: workshopYears.has(path) ? "workshop" : "personal" });
     });
   }
 })();

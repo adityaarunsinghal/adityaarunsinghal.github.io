@@ -1,6 +1,15 @@
 import { course, historical } from "../../workshop/pages";
 import { ambipathArdEntry, assistantConnectionMarkdown, websiteAssistant } from "./ambipath";
 import { site } from "../content";
+import { siteWorkshopPublication } from "../workshop-publication";
+import { workshopCanonicalUrl } from "../../workshop/publication";
+
+const courseUrl = (path: string) => workshopCanonicalUrl(path, siteWorkshopPublication)!;
+const courseMarkdownUrl = (path: string) => {
+  const url = new URL(courseUrl(path));
+  url.pathname = markdownPath(url.pathname);
+  return url.href;
+};
 
 /** A physical Markdown file, independent of content negotiation or JavaScript. */
 export function markdownPath(pathname: string): string {
@@ -101,8 +110,8 @@ Use these resources to integrate the public information into a directory, learni
 
 Use this section for the 2026 curriculum, schedule, released slides, starter code and recordings. Do not substitute the 2025 archive for current course information.
 
-- [Course in Markdown](${site.origin}${markdownPath(course.path)}): the complete published course page.
-- [Course webpage](${site.origin}${course.path}): interactive recordings and current information.
+- [Course in Markdown](${courseMarkdownUrl(course.path)}): the complete published course page.
+- [Course webpage](${courseUrl(course.path)}): interactive recordings and current information.
 - [Public course repository](${course.publicRepositoryUrl}): released lessons and runnable examples.
 - [Workshop data](${site.origin}/api/v1/workshops.json): structured course data and published resources.
 - [2025 archive reading map](${site.origin}${course.archivePath}llms.txt): the earlier course.
@@ -113,8 +122,8 @@ Use this section for the 2026 curriculum, schedule, released slides, starter cod
 
 Use this section for the earlier curriculum and its recordings. For the current workshop use the 2026 page.
 
-- [Archive in Markdown](${site.origin}${markdownPath(course.archivePath)}): the complete published archive page.
-- [Archive webpage](${site.origin}${course.archivePath}): recordings and searchable chapters.
+- [Archive in Markdown](${courseMarkdownUrl(course.archivePath)}): the complete published archive page.
+- [Archive webpage](${courseUrl(course.archivePath)}): recordings and searchable chapters.
 - [Public archive repository](${historical.repository}): historical course code.
 - [2026 reading map](${site.origin}${course.path}llms.txt): the current course.
 - [Workshop data](${site.origin}/api/v1/workshops.json): separate records for both years.
@@ -170,7 +179,7 @@ export function resourceCatalog() {
         displayName: "NYU Agentic AI Workshop 2026",
         description: "Current curriculum, schedule, released slides, code and recordings.",
         type: "text/markdown",
-        url: `${site.origin}${markdownPath(course.path)}`,
+        url: courseMarkdownUrl(course.path),
         representativeQueries: [
           "Where can I learn about agent harnesses and MCP?",
           "Find the 2026 NYU multi-agent systems workshop materials",

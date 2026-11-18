@@ -1,102 +1,157 @@
-name: Deploy to GitHub Pages
-
-# Uncomment the lines below to enable auto-deployment on push
-# on:
-#   push:
-#     branches: [ master ]
-#   pull_request:
-#     branches: [ master ]
+name: Deploy paired GitHub Pages
+run-name: Paired Pages ${{ inputs.request_id || github.sha }}
 
 on:
-  workflow_dispatch: # Allows manual triggering from GitHub UI
+  push:
+    branches: [master]
+  workflow_dispatch:
     inputs:
-      deploy_pages:
-        description: Publish website pages
-        type: boolean
-        default: true
-      deploy_functions:
-        description: Deploy Firebase Functions after separate backend review
+      request_id:
+        description: Correlation ID for the local dispatch command
+        type: string
+      source_sha:
+        description: Exact source commit on master (blank uses current master)
+        type: string
+      artifact_run_id:
+        description: Retry or rollback using the frozen artifact from this run
+        type: string
+      rollback:
+        description: Explicitly restore the selected older artifact on both sites
         type: boolean
         default: false
-      deploy_rules:
-        description: Deploy Firestore rules after separate authorization review
-        type: boolean
-        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+# The local deploy command dispatches this same workflow and shares this lock.
+# Never cancel a run between the two publications.
+concurrency:
+  group: paired-production-pages
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  publish:
+    if: github.ref == 'refs/heads/master' && (github.event_name == 'workflow_dispatch' || vars.PAIRED_PAGES_ENABLED == 'true')
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+      WORKSHOP_CANONICAL_ORIGIN: ${{ vars.WORKSHOP_CANONICAL_ORIGIN }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 10.32.1
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v5
-      with:
-        node-version: '22'
-        cache: 'pnpm'
-
-    - name: Configure Git
-      run: |
-        git config --global user.email "adityaarunsinghal@gmail.com"
-        git config --global user.name "Aditya Singhal"
-
-    - name: Install dependencies
-      run: pnpm install --frozen-lockfile
-      
-    - name: Install Functions dependencies
-      if: inputs.deploy_functions
-      run: cd functions && npm ci
-      
-    - name: Build Functions
-      if: inputs.deploy_functions
-      run: cd functions && npm run build
-      
-    - name: Build
-      # Root deps are installed via pnpm above; npm run build would run without
-      # node_modules. Use pnpm to match the install step.
-      run: pnpm run build
-      env:
-        VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
-        VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
-        VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
-        VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
-        VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
-        VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
-        VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
-
-    - name: Check site and workshop documents
-      run: |
-        pnpm lint
-        pnpm check:site
-        pnpm check:workshop
-        pnpm check:agents
-
-    - name: Check public artifacts
-      run: pnpm check:public
-    
-    - name: Deploy Firebase Functions
-      if: inputs.deploy_functions
-      env:
-        TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      run: pnpm dlx firebase-tools deploy --only functions --project aditya-singhal-website --token "$FIREBASE_TOKEN"
-
-    - name: Deploy Firestore Rules
-      if: inputs.deploy_rules
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      run: pnpm dlx firebase-tools deploy --only firestore:rules --project aditya-singhal-website --token "$FIREBASE_TOKEN"
-        
-    - name: Deploy GitHub Pages
-      if: inputs.deploy_pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.source_sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate trusted source
+        env:
+          ROLLBACK: ${{ inputs.rollback }}
+          ARTIFACT_RUN: ${{ inputs.artifact_run_id }}
+        run: |
+          git fetch origin master
+          git merge-base --is-ancestor HEAD origin/master
+          if [ "$ROLLBACK" = true ] && [ -z "$ARTIFACT_RUN" ]; then
+            echo 'Rollback requires a frozen artifact run ID.' >&2
+            exit 1
+          fi
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: pnpm
+      - name: Restore frozen release on retry
+        id: artifact
+        env:
+          ARTIFACT_RUN: ${{ inputs.artifact_run_id || github.run_id }}
+          EXPLICIT_ARTIFACT: ${{ inputs.artifact_run_id }}
+        run: |
+          artifact_name=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$ARTIFACT_RUN/artifacts" --jq '.artifacts[] | select(.expired == false and (.name | startswith("paired-pages-"))) | .name' | head -n 1)
+          if [ -n "$artifact_name" ]; then
+            gh run download "$ARTIFACT_RUN" --repo "$GITHUB_REPOSITORY" --name "$artifact_name" --dir .paired-release
+            echo 'restored=true' >> "$GITHUB_OUTPUT"
+          elif [ -n "$EXPLICIT_ARTIFACT" ]; then
+            echo 'Requested frozen artifact is absent or expired.' >&2
+            exit 1
+          else
+            echo 'restored=false' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install build tools and dependencies
+        if: steps.artifact.outputs.restored != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+          pnpm install --frozen-lockfile
+      - name: Build both destinations
+        if: steps.artifact.outputs.restored != 'true'
+        run: pnpm build:paired
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
+      - name: Check both outputs and release safety
+        if: steps.artifact.outputs.restored != 'true'
+        run: |
+          pnpm lint
+          pnpm check:site
+          pnpm check:workshop
+          pnpm check:agents
+          pnpm check:public
+          pnpm check:learningwithagents
+          pnpm check:release
+          node --test scripts/site-analytics.test.mjs scripts/workshop-publication.test.mjs
+      - name: Freeze checked outputs
+        if: steps.artifact.outputs.restored != 'true'
+        run: node scripts/paired-pages.mjs prepare .paired-release
+      - name: Validate frozen pair
+        id: manifest
+        run: |
+          node scripts/paired-pages.mjs check .paired-release
+          frozen_sha=$(node -p "require('./.paired-release/personal/release-manifest.json').sourceSha")
+          git merge-base --is-ancestor "$frozen_sha" origin/master
+          echo "sha=$(node -p "require('./.paired-release/personal/release-manifest.json').sourceSha")" >> "$GITHUB_OUTPUT"
+      - name: Retain immutable pair for retry and rollback
+        if: steps.artifact.outputs.restored != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: paired-pages-${{ steps.manifest.outputs.sha }}
+          path: .paired-release/
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: error
+      - name: Configure repository-scoped publication keys
+        env:
+          PERSONAL_KEY: ${{ secrets.PERSONAL_PAGES_DEPLOY_KEY }}
+          WORKSHOPS_KEY: ${{ secrets.WORKSHOPS_PAGES_DEPLOY_KEY }}
+        run: |
+          test -n "$PERSONAL_KEY" && test -n "$WORKSHOPS_KEY"
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$PERSONAL_KEY" > ~/.ssh/pages-personal
+          printf '%s\n' "$WORKSHOPS_KEY" > ~/.ssh/pages-workshops
+          chmod 600 ~/.ssh/pages-personal ~/.ssh/pages-workshops
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          cat >> ~/.ssh/config <<'SSH'
+          Host pages-personal
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/pages-personal
+            IdentitiesOnly yes
+          Host pages-workshops
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/pages-workshops
+            IdentitiesOnly yes
+          SSH
+      - name: Publish and verify workshop, then personal site
+        env:
+          ALLOW_ROLLBACK: ${{ inputs.rollback }}
+        run: node scripts/paired-pages.mjs publish .paired-release
+      - name: Remove deployment keys
+        if: always()
+        run: rm -f ~/.ssh/pages-personal ~/.ssh/pages-workshops

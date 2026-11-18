@@ -17,10 +17,10 @@ export function recordingWatchUrl(youtubeId: string, seconds = 0) {
   return url.href;
 }
 
-export function recordingEmbedUrl(youtubeId: string) {
+export function recordingEmbedUrl(youtubeId: string, servingOrigin = "https://adityasinghal.com") {
   const url = new URL(`https://www.youtube-nocookie.com/embed/${youtubeId}`);
   url.searchParams.set("enablejsapi", "1");
-  url.searchParams.set("origin", "https://adityasinghal.com");
+  url.searchParams.set("origin", servingOrigin);
   url.searchParams.set("playsinline", "1");
   url.searchParams.set("rel", "0");
   return url.href;

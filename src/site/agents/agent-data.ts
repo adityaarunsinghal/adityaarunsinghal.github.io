@@ -1,14 +1,7 @@
 import { profileLinks, readingMap, site } from "../content";
-import {
-  course,
-  historical,
-  historicalRecordings,
-  pageDefinitions,
-  resources as workshopResources,
-  sessionRecordings,
-  sessions,
-  type SessionRecording,
-} from "../../workshop/pages";
+import { course } from "../../workshop/pages";
+import { workshopData } from "../../workshop/discovery";
+import { siteWorkshopPublication } from "../workshop-publication";
 
 const apiVersion = "1";
 const documentationUrl = `${site.origin}/developers/`;
@@ -41,28 +34,6 @@ export const apiEndpoints = [
   },
 ] as const;
 
-function publishedRecordings(recordings: SessionRecording[]) {
-  return recordings.filter((recording) => recording.youtubeId !== null).map((recording) => {
-    const url = `https://www.youtube.com/watch?v=${recording.youtubeId}`;
-    return {
-      id: recording.id,
-      session: recording.session,
-      date: recording.date,
-      title: recording.title,
-      url,
-      durationSeconds: recording.durationSeconds,
-      chapters: recording.chapters.map((chapter) => ({
-        title: chapter.title,
-        startSeconds: chapter.startSeconds,
-        url: `${url}&t=${chapter.startSeconds}s`,
-      })),
-    };
-  });
-}
-
-const currentPage = pageDefinitions.find((page) => page.kind === "current")!;
-const archivePage = pageDefinitions.find((page) => page.kind === "archive")!;
-
 const profileDocument = {
   apiVersion,
   sourceUrl: `${site.origin}/`,
@@ -89,81 +60,7 @@ const resourcesDocument = {
   }))),
 };
 
-const workshopsDocument = {
-  apiVersion,
-  sourceUrl: `${site.origin}${course.path}`,
-  modified: course.modified >= historical.modified ? course.modified : historical.modified,
-  workshops: [
-    {
-      year: course.year,
-      status: course.state,
-      title: currentPage.title,
-      url: `${site.origin}${currentPage.canonical}`,
-      description: currentPage.description,
-      modified: course.modified,
-      repositoryUrl: course.publicRepositoryUrl,
-      schedule: {
-        dates: course.dates,
-        time: course.time,
-        timeZone: "America/New_York",
-        venue: course.venue,
-        address: course.address,
-      },
-      sessions: sessions.map((session) => ({
-        date: session.date,
-        title: session.title,
-        description: session.description,
-        topics: [...session.topics],
-        attendance: session.attendance,
-      })),
-      materials: workshopResources.map((resource) => ({
-        name: resource.name,
-        description: resource.description,
-        access: resource.links.some((link) => link.url === course.appStoreUrl)
-          ? "registered-students" : "public",
-        links: resource.links
-          .filter((link) => link.url !== null)
-          .map((link) => ({
-            url: link.url!,
-            ...(link.action ? { label: link.action } : {}),
-            ...(link.download ? { download: link.download } : {}),
-          })),
-        ...(resource.note ? { note: resource.note } : {}),
-      })).filter((resource) => resource.links.length > 0),
-      recordings: publishedRecordings(sessionRecordings),
-    },
-    {
-      year: 2025,
-      status: "archived",
-      title: archivePage.title,
-      url: `${site.origin}${archivePage.canonical}`,
-      description: archivePage.description,
-      modified: historical.modified,
-      repositoryUrl: historical.repository,
-      materials: [
-        {
-          name: "2025 public repository",
-          description: "Public code and materials from the archived workshop.",
-          access: "public",
-          links: [{ url: historical.repository, label: "Open the repository" }],
-        },
-        {
-          name: "2025 recording playlist",
-          description: "The archived workshop's public video playlist.",
-          access: "public",
-          links: [{ url: historical.playlist, label: "Open the playlist" }],
-        },
-        ...historical.clips.map((clip) => ({
-          name: clip.title,
-          description: clip.description,
-          access: "public",
-          links: [{ url: clip.url, label: "Watch the clip" }],
-        })),
-      ],
-      recordings: publishedRecordings(historicalRecordings),
-    },
-  ],
-};
+const workshopsDocument = workshopData(siteWorkshopPublication);
 
 export const apiDocuments: Record<string, unknown> = {
   "/api/v1/index.json": {

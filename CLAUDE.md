@@ -16,17 +16,22 @@ Public document build and stack checked: 2026-10-21
 - `pnpm build` - Type-check, build app entries, and generate public/workshop HTML and discovery files
 - `pnpm check:site` - Check homepage/schema, app isolation, shortcuts, and legacy routing
 - `pnpm check:workshop` - Check generated workshop routes, metadata, content, and assets
-- `pnpm run deploy` - Build and deploy to GitHub Pages (gh-pages -d dist) (must use `run` — `pnpm deploy` is reserved)
+- `pnpm build:paired` - Build personal and isolated workshop artifacts
+- `pnpm check:learningwithagents` - Verify the isolated workshop artifact and content parity
+- `pnpm check:release` - Test paired publication and recovery in temporary repositories
+- `pnpm run deploy` - Dispatch and wait for the paired Pages workflow (must use `run` — `pnpm deploy` is reserved)
 - `pnpm lint` - Run ESLint
 - `pnpm preview` - Preview production build locally
 
 ## Deployment
-1. Code lives on `master` branch
-2. `pnpm run deploy` builds to `dist/` and pushes to `gh-pages` branch
-3. GitHub Pages serves from `gh-pages` branch
-4. Custom domain: adityasinghal.com (redirects from adityaarunsinghal.github.io)
-5. Public pages and app entries have physical HTML documents; a generated 404 helper preserves known legacy bookmarks and case variants
-6. Firestore rules deployed separately: `pnpm dlx firebase-tools deploy --only firestore:rules --project aditya-singhal-website`
+1. Authored code lives on `master`; each site serves its own `gh-pages` branch.
+2. `.github/workflows/deploy.yml` builds `dist/` and `dist-learningwithagents/` from one source SHA, checks both, and retains a frozen artifact for 90 days.
+3. Push publication is enabled by `PAIRED_PAGES_ENABLED=true`; manual workflow dispatch works during bootstrap. `pnpm run deploy` dispatches the same workflow and requires a clean, pushed checkout.
+4. Separate `PERSONAL_PAGES_DEPLOY_KEY` and `WORKSHOPS_PAGES_DEPLOY_KEY` SSH secrets publish the workshop site first, verify all live files, then publish and verify the personal site. `WORKSHOP_CANONICAL_ORIGIN=https://learningwithagents.com` enables final workshop canonicals after HTTPS readiness.
+5. Retry with `pnpm run deploy --artifact-run RUN_ID`; explicit paired rollback adds `--rollback`. New runs recover unfinished pairs first. Do not bypass the workflow with direct publisher commands.
+6. Personal-site historical assets and bootstrap files are retained with hashes; managed obsolete documents are removed. The new workshop site uses only its allowlisted artifact. Keep dotfiles and the unlisted résumé intact.
+7. Public pages and app entries have physical HTML documents; a generated 404 helper preserves known personal-site legacy bookmarks and case variants. The workshop site has its own real 404.
+8. Firebase deployments remain separate: `pnpm dlx firebase-tools deploy --only firestore:rules --project aditya-singhal-website`. No backend operation runs in the paired workflow.
 
 ## Project Structure
 - `src/components/` - React components (folder per component: Component.tsx + Component.css)

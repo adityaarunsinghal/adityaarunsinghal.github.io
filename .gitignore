@@ -57,3 +57,7 @@ scripts/backfill-data.json
 /docs/visitsdenmark/TODOS.md
 /functions/.env*
 /functions/.secret.local
+
+# Generated second Pages site and immutable paired release staging.
+/dist-learningwithagents/
+/.paired-release/

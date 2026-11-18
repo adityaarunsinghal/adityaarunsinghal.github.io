@@ -5,6 +5,7 @@ import vm from "node:vm";
 
 const code = readFileSync(new URL("../public/site-analytics.js", import.meta.url), "utf8");
 const origin = "https://adityasinghal.com";
+const workshopOrigin = "https://learningwithagents.com";
 
 function page(options = {}) {
   const listeners = new Map();
@@ -48,14 +49,44 @@ test("public tracking refuses disabled IDs, app routes, noindex pages, previews 
   for (const options of [
     { id: "" }, { id: "UA-OLD" }, { robots: "noindex, follow" }, { appRoot: true },
     { location: { origin: "http://127.0.0.1:4182" } },
+    { location: { origin: "https://www.learningwithagents.com" } },
+    { location: { origin: "https://learningwithagents.com.evil.example" } },
+    { location: { origin: "http://learningwithagents.com" } },
     { location: { pathname: "/progress/" } },
     { location: { search: "?/progress&private=value" } },
     { location: { pathname: "/index.html" } },
-    { canonical: origin + "/?email=person@example.com" },
+    { location: { pathname: "/2026/" } },
+    { location: { origin: workshopOrigin, pathname: "/static/" } },
+    { location: { origin: workshopOrigin, pathname: "/2026/registration-form/" } },
+    { location: { origin: workshopOrigin, pathname: "/agentic-ai-workshop/feedback/" } },
   ]) {
     const result = page(options);
     assert.equal(result.scripts.length, 0);
     assert.equal(result.events().length, 0);
+  }
+});
+
+test("serving host and normalized route determine page location independently of SEO canonical", () => {
+  for (const [servingOrigin, pathname, expectedPath] of [
+    [origin, "/agentic-ai-workshop/", "/agentic-ai-workshop/"],
+    [origin, "/agentic-ai-workshop-2026/", "/agentic-ai-workshop-2026/"],
+    [origin, "/static/", "/"],
+    [workshopOrigin, "/", "/"],
+    [workshopOrigin, "/2026", "/2026/"],
+    [workshopOrigin, "/2025/", "/2025/"],
+    [workshopOrigin, "/agentic-ai-workshop/", "/agentic-ai-workshop/"],
+    [workshopOrigin, "/agentic-ai-workshop-2026/", "/agentic-ai-workshop-2026/"],
+    [workshopOrigin, "/agentic-ai-workshop-2025/", "/agentic-ai-workshop-2025/"],
+  ]) {
+    for (const canonical of [workshopOrigin + "/2026/", origin + "/agentic-ai-workshop/", "invalid canonical?private=secret"]) {
+      const result = page({
+        canonical,
+        location: { origin: servingOrigin, pathname, search: "?recording=private&t=42", hash: "#private-search" },
+      });
+      assert.equal(result.scripts.length, 1, `${servingOrigin}${pathname}`);
+      assert.equal(result.events()[0][2].page_location, servingOrigin + expectedPath);
+      assert.ok(!JSON.stringify(result.calls()).includes("private"));
+    }
   }
 });
 
@@ -115,4 +146,23 @@ test("video tracking distinguishes player opening from real play and emits each 
   result.video("site:video-play", "private email@example.com");
   assert.deepEqual(result.events().slice(1).map(([, name]) => name), ["video_open", "video_play"]);
   assert.equal(result.events()[1][2].video_context, "personal");
+});
+
+test("dedicated root and local year routes retain workshop context and bounded resource events", () => {
+  for (const [pathname, year] of [["/", 2026], ["/2026/", 2026], ["/2025/", 2025]]) {
+    const result = page({ location: { origin: workshopOrigin, pathname } });
+    result.video("site:video-open", "Gaa14VT4eWI");
+    result.video("site:video-play", "Gaa14VT4eWI");
+    result.click("https://external.example/slides?private=secret", { slides: true });
+    result.click("https://github.com/adityaarunsinghal/agentic-ai-workshop");
+    const nextYear = year === 2026 ? 2025 : 2026;
+    result.click(`${workshopOrigin}/${nextYear}/?private=secret#private`);
+    assert.deepEqual(result.events().slice(1).map(([, name]) => name),
+      ["video_open", "video_play", "resource_open", "resource_open", "resource_open"]);
+    assert.equal(result.events()[1][2].video_context, "workshop");
+    assert.equal(result.events()[2][2].video_context, "workshop");
+    assert.deepEqual(result.events().slice(3).map(([, , payload]) => [payload.resource_kind, payload.course_year]),
+      [["slides", year], ["code", year], ["workshop", nextYear]]);
+    assert.ok(!JSON.stringify(result.calls()).includes("private"));
+  }
 });

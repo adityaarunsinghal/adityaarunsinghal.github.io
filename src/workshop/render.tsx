@@ -2,28 +2,35 @@ import { renderToStaticMarkup } from "react-dom/server";
 import AgenticAIWorkshop from "../components/AgenticAIWorkshop/AgenticAIWorkshop";
 import AgenticAIWorkshop2025 from "../components/AgenticAIWorkshop2025/AgenticAIWorkshop2025";
 import { analyticsMeasurementId } from "../site/analytics";
-import { markdownPath } from "../site/agents/discovery";
 import { workshopSchema } from "./schema";
+import {
+  personalOrigin, personalWorkshopPublication, workshopCanonicalUrl,
+  workshopEditionPath, workshopMarkdownPath, workshopPages, type WorkshopPublication,
+} from "./publication";
 import {
   course,
   courseAction,
   historical,
   historicalRecordings,
   sessionRecordings,
-  workshopPage,
   type CourseState,
   type SessionRecording,
 } from "./pages";
 
 export { course, pageDefinitions, sessionRecordings, historicalRecordings } from "./pages";
 export { analyticsMeasurementId };
+export * from "./publication";
+export * from "./discovery";
+export * from "./assets";
 
 function InformationPage({
   kind,
   state,
+  publication,
 }: {
   kind: string;
   state: CourseState;
+  publication: WorkshopPublication;
 }) {
   const action = courseAction(state);
   const feedback = kind === "feedback";
@@ -31,7 +38,7 @@ function InformationPage({
   return (
     <main className="workshop-2026 info-page" id="main-content">
       <div className="info-content">
-        <a href={archived ? course.archivePath : course.path}>
+        <a href={workshopEditionPath(archived ? 2025 : 2026, publication)}>
           ← {archived ? "2025 workshop archive" : "2026 workshop"}
         </a>
         <h1>
@@ -60,8 +67,8 @@ function InformationPage({
             feedback
               ? historical.feedback
               : archived
-                ? course.path
-                : action.href
+                ? workshopEditionPath(2026, publication)
+                : `${workshopEditionPath(2026, publication)}#recordings`
           }
         >
           {feedback
@@ -94,8 +101,9 @@ export function renderWorkshop(
   stylesheet: string,
   state: CourseState = course.state,
   recordings: SessionRecording[] = sessionRecordings,
+  publication: WorkshopPublication = personalWorkshopPublication(),
 ) {
-  const page = workshopPage(pathname);
+  const page = workshopPages(publication).find((entry) => entry.path === (pathname.endsWith("/") ? pathname : `${pathname}/`));
   if (!page) return null;
   const pageRecordings = page.kind === "archive" ? historicalRecordings : recordings;
   const year =
@@ -104,9 +112,9 @@ export function renderWorkshop(
     page.kind === "archived-registration"
       ? 2025
       : 2026;
-  const canonical = `https://adityasinghal.com${page.canonical}`;
-  const image = `https://adityasinghal.com/workshops/workshop-social-${year}.png`;
-  const schema = workshopSchema(page.canonical);
+  const canonical = workshopCanonicalUrl(page.path, publication)!;
+  const image = `${publication.canonicalOrigin}/workshops/workshop-social-${year}.png`;
+  const schema = workshopSchema(page.sourcePath, publication, page.path);
   const measurementId = (page.kind === "current" || page.kind === "archive")
     ? analyticsMeasurementId() : null;
   return (
@@ -131,7 +139,7 @@ export function renderWorkshop(
             <script src="/site-analytics.js" data-measurement-id={measurementId} defer />
           )}
           {(page.kind === "current" || page.kind === "archive") && (
-            <script src="/site-agent-tools.js" defer />
+            <script src={publication.role === "learning" ? "/workshops/agent-tools.js" : "/site-agent-tools.js"} defer />
           )}
           {page.kind === "current" && (
             <>
@@ -144,8 +152,9 @@ export function renderWorkshop(
               <script src="/workshops/session-recordings.js" defer />
             )}
           <link rel="canonical" href={canonical} />
-          <link rel="alternate" type="text/markdown" href={`https://adityasinghal.com${markdownPath(page.canonical)}`} />
-          <link rel="service-desc" type="application/vnd.oai.openapi+json" href="https://adityasinghal.com/openapi.json" />
+          <link rel="alternate" type="text/markdown" href={`${publication.origin}${workshopMarkdownPath(publication.role === "personal" ? page.sourceCanonical : page.path)}`} />
+          <link rel="service-desc" type="application/vnd.oai.openapi+json" href={`${publication.origin}/openapi.json`} />
+          {publication.assistant && <script src={publication.assistant.scriptUrl} data-website-id={publication.assistant.websiteId} async />}
           {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{
             __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
           }} />}
@@ -186,15 +195,15 @@ export function renderWorkshop(
             Skip to content
           </a>
           {page.kind === "current" ? (
-            <AgenticAIWorkshop state={state} recordings={recordings} />
+            <AgenticAIWorkshop state={state} recordings={recordings} publication={publication} />
           ) : page.kind === "archive" ? (
-            <AgenticAIWorkshop2025 recordings={pageRecordings} />
+            <AgenticAIWorkshop2025 recordings={pageRecordings} publication={publication} />
           ) : (
-            <InformationPage kind={page.kind} state={state} />
+            <InformationPage kind={page.kind} state={state} publication={publication} />
           )}
           <nav className="workshop-resource-links" aria-label="Site resources">
-            <a href="/developers/">For developers</a>
-            <a href="/privacy/">Privacy</a>
+            <a href={publication.role === "learning" ? `${personalOrigin}/developers/` : "/developers/"}>For developers</a>
+            <a href={publication.role === "learning" ? `${personalOrigin}/privacy/` : "/privacy/"}>Privacy</a>
           </nav>
         </body>
       </html>,

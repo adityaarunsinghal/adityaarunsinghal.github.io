@@ -24,9 +24,10 @@ await build({
   },
 });
 
-const { renderWorkshop, pageDefinitions } = await import(
+const { renderWorkshop, pageDefinitions, personalWorkshopPublication } = await import(
   pathToFileURL(path.join(root, "dist-ssr/workshop/render.mjs")).href
 );
+const publication = personalWorkshopPublication(process.env.WORKSHOP_CANONICAL_ORIGIN);
 await mkdir(path.join(output, "assets"), { recursive: true });
 const base = await readFile(path.join(root, "src/workshop/base.css"), "utf8");
 const recordings = await readFile(path.join(root, "src/workshop/recordings.css"), "utf8");
@@ -55,6 +56,9 @@ for (const page of pageDefinitions) {
   const html = renderWorkshop(
     page.path,
     styles[page.kind === "archive" ? 2025 : 2026],
+    undefined,
+    undefined,
+    publication,
   );
   if (!html) throw new Error(`No HTML rendered for ${page.path}`);
   await writeFile(path.join(directory, "index.html"), html);

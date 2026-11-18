@@ -8,8 +8,10 @@ import {
 
 export default function SessionRecordings({
   recordings,
+  servingOrigin,
 }: {
   recordings: SessionRecording[];
+  servingOrigin?: string;
 }) {
   validateRecordings(recordings);
   if (!recordings.length) return null;
@@ -60,7 +62,7 @@ export default function SessionRecordings({
                       id={`${recording.id}-player`}
                       className="recording-player"
                       title={`Session ${recording.session}: ${recording.title}, recorded ${date}`}
-                      src={recordingEmbedUrl(youtubeId)}
+                      src={recordingEmbedUrl(youtubeId, servingOrigin)}
                       width="640"
                       height="360"
                       loading="lazy"

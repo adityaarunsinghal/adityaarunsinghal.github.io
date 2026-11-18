@@ -9,6 +9,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
 await build({
   root, configFile: false, envFile: false, publicDir: false,
+  define: {
+    "import.meta.env.WORKSHOP_CANONICAL_ORIGIN": JSON.stringify(process.env.WORKSHOP_CANONICAL_ORIGIN || ""),
+  },
   build: {
     ssr: "src/site/render.ts",
     outDir: "dist-ssr/site",

@@ -35,9 +35,16 @@ async function checkLocalUrls(content, checkFragments = false) {
   }
 }
 
-for (const page of publicPages) {
-  assert.match(page.modified, /^\d{4}-\d{2}-\d{2}$/);
-  assert.ok(page.modified <= new Date().toISOString().slice(0, 10), "Content date must not be in the future");
+// Mirrored course pages still have schemas even after their search canonicals
+// move to the workshop domain and they leave the personal sitemap.
+const schemaPages = [...new Map([...publicPages,
+  ...markdownPages.filter((page) => /agentic-ai-workshop-(?:2025|2026)\/$/.test(page.path)),
+].map((page) => [page.path, page])).values()];
+for (const page of schemaPages) {
+  if (page.modified) {
+    assert.match(page.modified, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(page.modified <= new Date().toISOString().slice(0, 10), "Content date must not be in the future");
+  }
   const html = await read(htmlFor(page.path));
   assert.ok(!privateReference.test(html), page.path);
   const alternates = [...html.matchAll(/<link rel="alternate" type="text\/markdown" href="([^"]+)"/g)];
@@ -109,6 +116,10 @@ for (const entry of catalog.entries) {
     assert.equal(new URL(entry.url).protocol, "https:");
     assert.match(entry.description, /signed.session/);
     assert.match(entry.description, /compatible .*client/);
+  } else if (entry.identifier === "urn:air:adityasinghal.com:docs:workshop-2026"
+    && process.env.WORKSHOP_CANONICAL_ORIGIN === "https://learningwithagents.com") {
+    assert.equal(entry.url, "https://learningwithagents.com/2026.md");
+    assert.ok((await readFile(path.join(root, "dist-learningwithagents/2026.md"), "utf8")).startsWith("# "));
   } else {
     assert.equal(new URL(entry.url).origin, site.origin);
     assert.ok((await actualFile(new URL(entry.url).pathname)).trim().length > 0);

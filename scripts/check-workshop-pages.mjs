@@ -9,6 +9,8 @@ import {
   pageDefinitions,
   renderWorkshop,
   sessionRecordings,
+  personalWorkshopPublication,
+  workshopCanonicalUrl,
 } from "../dist-ssr/workshop/render.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -19,6 +21,7 @@ const form =
 const currentPath = "/agentic-ai-workshop-2026/";
 const archivePath = "/agentic-ai-workshop-2025/";
 const measurementId = analyticsMeasurementId();
+const publication = personalWorkshopPublication(process.env.WORKSHOP_CANONICAL_ORIGIN);
 let checked = 0;
 
 for (const page of pageDefinitions) {
@@ -27,7 +30,7 @@ for (const page of pageDefinitions) {
   assert.ok(html.includes(`<title>${page.title}</title>`));
   assert.ok(
     html.includes(
-      `rel="canonical" href="https://adityasinghal.com${page.canonical}"`,
+      `rel="canonical" href="${workshopCanonicalUrl(page.path, publication)}"`,
     ),
   );
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
@@ -241,7 +244,12 @@ assert.notDeepEqual(
   "Social cards lost their year-specific text",
 );
 const sitemap = await read("sitemap.xml");
-assert.ok(sitemap.includes(currentPath) && sitemap.includes(archivePath));
+if (publication.canonicalOrigin === publication.origin) {
+  assert.ok(sitemap.includes(currentPath) && sitemap.includes(archivePath));
+} else {
+  assert.ok(!sitemap.includes(currentPath) && !sitemap.includes(archivePath),
+    "Mirrored courses belong in the preferred workshop domain's sitemap.");
+}
 assert.ok(!(sitemap.includes("feedback") || sitemap.includes("progress")));
 assert.ok(
   (await read("robots.txt")).includes(

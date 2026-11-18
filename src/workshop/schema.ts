@@ -1,13 +1,12 @@
 import { course, historical, instructors, pageDefinitions, sessions } from "./pages";
-
-const origin = "https://adityasinghal.com";
+import { personalOrigin, personalWorkshopPublication, workshopCanonicalUrl, type WorkshopPublication } from "./publication";
 
 /** Structured data describes the course content shown by the public page. */
-export function workshopSchema(pathname: string) {
+export function workshopSchema(pathname: string, publication: WorkshopPublication = personalWorkshopPublication(), servedPath = pathname) {
   const page = pageDefinitions.find((entry) => entry.path === pathname);
   if (!page || (page.kind !== "current" && page.kind !== "archive")) return null;
   const current = page.kind === "current";
-  const url = `${origin}${page.canonical}`;
+  const url = workshopCanonicalUrl(servedPath, publication)!;
   const courseId = `${url}#course`;
   return {
     "@context": "https://schema.org",
@@ -19,7 +18,7 @@ export function workshopSchema(pathname: string) {
         name: page.title,
         description: page.description,
         dateModified: current ? course.modified : historical.modified,
-        isPartOf: { "@id": `${origin}/#website` },
+        isPartOf: { "@id": `${publication.canonicalOrigin}/#website` },
         mainEntity: { "@id": courseId },
       },
       {
@@ -45,7 +44,7 @@ export function workshopSchema(pathname: string) {
           } : {}),
           instructor: instructors.map((instructor) => ({
             "@type": "Person",
-            ...(instructor.id === "adi" ? { "@id": `${origin}/#person` } : {}),
+            ...(instructor.id === "adi" ? { "@id": `${personalOrigin}/#person` } : {}),
             name: instructor.name,
             sameAs: instructor.linkedin,
           })),

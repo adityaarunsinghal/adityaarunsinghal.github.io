@@ -25,12 +25,15 @@ If a different global pnpm version is installed, run the repository's pinned ver
 | Command | Purpose |
 | --- | --- |
 | `pnpm dev` | Generate portrait assets and start Vite development. |
-| `pnpm build` | Type-check, build the applications, and generate public/workshop HTML and discovery files. |
+| `pnpm build` | Type-check, build the applications, and generate personal-site HTML and discovery files. |
+| `pnpm build:paired` | Build `dist/` and the isolated workshop site in `dist-learningwithagents/`. |
 | `pnpm lint` | Run ESLint. |
 | `pnpm check:site` | Check public HTML, metadata, app isolation, shortcuts and legacy routes. |
 | `pnpm check:agents` | Validate the public JSON contract, generated Markdown, discovery files, schema feeds and optional browser tools. |
 | `pnpm check:workshop` | Check workshop content, resources, assets and registration states. |
 | `pnpm check:public` | Check tracked source and build output for known private-artifact and credential patterns. |
+| `pnpm check:learningwithagents` | Check the workshop-only allowlist, routes, dependencies and content parity. |
+| `pnpm check:release` | Exercise paired publication, recovery, retention and live-verification safeguards in temporary repositories. |
 | `pnpm preview` | Preview the production build through Vite. |
 | `pnpm analyze` | Build and write the bundle report to `temp/build-reports/stats.html`. |
 
@@ -116,19 +119,34 @@ Workshop headings use self-hosted Source Serif 4. The current title uses a small
 
 ## Publishing
 
-Source lives on `master`; GitHub Pages serves `gh-pages`. A source push does not publish the website.
+Source lives on `master`. One workflow builds and checks both `dist/` (personal site) and `dist-learningwithagents/` (workshops), freezes their manifests, and publishes their respective `gh-pages` branches. Pushes publish automatically when the source repository variable `PAIRED_PAGES_ENABLED` is `true`. Manual dispatch remains available during bootstrap and for recovery.
 
-Run the build checks above and review the intended output before publishing. For an incremental release, the existing publisher supports additive mode:
+The workflow requires Node.js 22, pnpm 10.32.1 and FFmpeg, and the separate SSH secrets `PERSONAL_PAGES_DEPLOY_KEY` and `WORKSHOPS_PAGES_DEPLOY_KEY`. Each key has write access only to its destination repository. `WORKSHOP_CANONICAL_ORIGIN=https://learningwithagents.com` enables the final personal-site workshop canonical URLs after the new domain passes HTTPS checks. Leave it unset during bootstrap.
+
+From a clean, pushed `master` checkout, dispatch and wait for the same workflow:
 
 ```bash
-pnpm exec gh-pages --dist dist --add --dotfiles --nojekyll --message "Update website"
+pnpm run deploy
+# Retry the immutable artifact from a previous workflow run:
+pnpm run deploy --artifact-run RUN_ID
+# Explicitly restore an older artifact on both sites using new commits:
+pnpm run deploy --artifact-run RUN_ID --rollback
 ```
 
-Additive publication retains prior assets needed by already-open pages. Remove obsolete documents deliberately, and review the complete resulting file set. After the Pages build succeeds, verify the changed documents, assets, routes and HTTP status codes on the live site.
+GitHub Actions' **Re-run jobs** also reuses that run's frozen artifact. Artifacts are retained for 90 days. Both outputs record the same source SHA, input digest and release ID in `release-manifest.json`. The workshop site publishes and passes live file-hash checks before the personal site advances. The shared concurrency lock does not cancel an in-progress pair. A newer run first recovers any incomplete prior pair from its artifact; missing or expired recovery artifacts stop publication visibly. Two Pages deployments are sequential, so a brief mismatch can exist while a pair is publishing.
 
-Include dotfiles when publishing (`--dotfiles` with the CLI, or `dotfiles: true` through its API) so the generated `.well-known/ard.json` is deployed. Public Markdown and JSON are physical files. The current host does not provide custom Accept-based content negotiation, API authentication, or JSON error responses; the developer documentation describes those limits.
+The publisher uses normal descendant commits with an expected-head lease to reject concurrent destination changes. It keeps the initial personal-site inventory and old asset URLs, records retained file hashes, and removes obsolete managed documents. The dedicated workshop tree contains only its current allowlisted output. Dotfiles, including `.well-known/ard.json`, are preserved and verified. Avoid direct `gh-pages` pushes: they bypass the pair's checks and shared lock.
 
-`pnpm run deploy` remains a build-and-publish helper using the publisher's defaults. It does not perform the full checks or additive retention shown above. Firestore rules and Firebase Functions are separate deployments.
+For local preparation without publishing:
+
+```bash
+pnpm build:paired
+pnpm check:learningwithagents
+node scripts/paired-pages.mjs prepare .paired-release
+node scripts/paired-pages.mjs check .paired-release
+```
+
+Remove `.paired-release/` before preparing a new artifact; it is deliberately immutable once created. Firebase Functions and Firestore rules are separate, explicitly invoked operations and are absent from this publishing workflow.
 
 ### IndexNow
 
