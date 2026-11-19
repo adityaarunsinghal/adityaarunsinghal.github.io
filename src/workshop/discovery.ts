@@ -4,7 +4,7 @@ import { learningWorkshopPublication, personalOrigin, workshopCanonicalUrl, work
 /** Public hosted destinations; no inline installation or ownership payload. */
 export const workshopAssistantLinks = {
   chat: "https://console.ambipath.com/widget/?deploymentId=2a1f524e-434f-4e9a-b275-e608270d07a6",
-  guestInstructions: "https://console.ambipath.com/api/v1/public/2a1f524e-434f-4e9a-b275-e608270d07a6/agent.md",
+  guestInstructions: "https://adi-singhal.agents.ambipath.com/api/v1/public/agent.md",
 };
 
 function publishedRecordings(recordings: SessionRecording[]) {

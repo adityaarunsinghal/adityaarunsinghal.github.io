@@ -1,5 +1,5 @@
 import { course, historical } from "../../workshop/pages";
-import { ambipathArdEntry, assistantConnectionMarkdown, websiteAssistant } from "./ambipath";
+import { ambipathArdEntries, assistantConnectionMarkdown, websiteAssistant } from "./ambipath";
 import { site } from "../content";
 import { siteWorkshopPublication } from "../workshop-publication";
 import { workshopCanonicalUrl } from "../../workshop/publication";
@@ -151,7 +151,7 @@ export function resourceCatalog() {
           "Find the guest HTTP API and conversation instructions",
         ],
       },
-      ambipathArdEntry,
+      ...ambipathArdEntries,
       {
         identifier: "urn:air:adityasinghal.com:api:public-data",
         displayName: "Aditya Singhal public data API",
