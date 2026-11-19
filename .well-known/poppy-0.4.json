@@ -8,7 +8,7 @@
     "protocols": [
       {
         "type": "poppy",
-        "endpoint": "https://assistant-d25001ed19e24376a95fc870b8da0769.agents.ambipath.com/conversations",
+        "endpoint": "https://adi-singhal.agents.ambipath.com/conversations",
         "description": "Ask about this organization, its approved information, policies and how to reach the team.",
         "access": "session"
       }
@@ -17,8 +17,8 @@
   "apis": [
     {
       "type": "mcp",
-      "url": "https://assistant-d25001ed19e24376a95fc870b8da0769.agents.ambipath.com/mcp",
-      "description": "Ask the brand about approved product information, policies and your customer requests."
+      "url": "https://adi-singhal.agents.ambipath.com/mcp",
+      "description": "Ask about approved information, policies and customer requests."
     }
   ]
 }

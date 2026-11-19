@@ -6,21 +6,34 @@
       "displayName": "Ask Adi's assistant",
       "description": "Public connection instructions and guest HTTP API for questions about Adi's work, projects and teaching. No browser, customer account or owner sign-in required.",
       "type": "text/markdown",
-      "url": "https://console.ambipath.com/api/v1/public/2a1f524e-434f-4e9a-b275-e608270d07a6/agent.md",
+      "url": "https://adi-singhal.agents.ambipath.com/api/v1/public/agent.md",
       "representativeQueries": [
         "Ask Adi's assistant a public question without a PAP client",
         "Find the guest HTTP API and conversation instructions"
       ]
     },
     {
-      "identifier": "urn:air:adityasinghal.com:agent:d25001ed-19e2-4376-a95f-c870b8da0769",
+      "identifier": "urn:air:adityasinghal.com:agent:2a1f524e-434f-4e9a-b275-e608270d07a6",
       "displayName": "Adi's Website",
-      "description": "Poppy discovery on this website for Adi's assistant. Use a compatible signed-session client, or the guest HTTP API fallback.",
-      "type": "application/json",
+      "description": "Ask public questions through the Personal Agent Protocol or the linked guest API.",
+      "type": "application/poppy+json",
       "url": "https://adityasinghal.com/.well-known/poppy.json",
       "representativeQueries": [
-        "Ask Adi's assistant about his work, projects or teaching",
-        "How can I reach Aditya Singhal?"
+        "What can you help me with?",
+        "What information and policies can you explain?",
+        "How can I contact the team?"
+      ]
+    },
+    {
+      "identifier": "urn:air:adityasinghal.com:agent:2a1f524e-434f-4e9a-b275-e608270d07a6:mcp",
+      "displayName": "Adi's Website",
+      "description": "Ask Adi's Website public questions using MCP.",
+      "type": "application/mcp-server-card+json",
+      "url": "https://adi-singhal.agents.ambipath.com/mcp/server-card",
+      "representativeQueries": [
+        "What can you help me with?",
+        "What information and policies can you explain?",
+        "How can I contact the team?"
       ]
     },
     {

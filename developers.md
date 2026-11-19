@@ -10,7 +10,7 @@ Connect to my website assistant, or read my public profile, projects and worksho
 
 Ask the Ambipath-hosted assistant through Poppy discovery on this website, with a guest HTTP API fallback. The separate public data API is free to read and requires no account or API key.
 
-[Poppy discovery](https://adityasinghal.com/.well-known/poppy.json) [Guest API contract](https://console.ambipath.com/api/public-openapi.json) [Public data OpenAPI](https://adityasinghal.com/openapi.json) [Reading guide for agents](https://adityasinghal.com/llms.txt)
+[Poppy discovery](https://adityasinghal.com/.well-known/poppy.json) [Guest API contract](https://adi-singhal.agents.ambipath.com/api/public-openapi.json) [Public data OpenAPI](https://adityasinghal.com/openapi.json) [Reading guide for agents](https://adityasinghal.com/llms.txt)
 
 ## Ask Adi's assistant
 
@@ -22,7 +22,7 @@ Ask about my public work, projects and teaching through Poppy discovery on this 
 https://adityasinghal.com/.well-known/poppy.json
 ```
 
-If your client cannot use Poppy, follow the [guest HTTP connection instructions](https://console.ambipath.com/api/v1/public/2a1f524e-434f-4e9a-b275-e608270d07a6/agent.md) and [API contract](https://console.ambipath.com/api/public-openapi.json). Send a question once, await its answer, and close completed test conversations. Keep conversation credentials private.
+If your client cannot use Poppy, follow the [guest HTTP connection instructions](https://adi-singhal.agents.ambipath.com/api/v1/public/agent.md) and [API contract](https://adi-singhal.agents.ambipath.com/api/public-openapi.json). Send a question once, await its answer, and close completed test conversations. Keep conversation credentials private.
 
 You can also use [the assistant on the homepage](https://adityasinghal.com/). Where the assistant appears on Learning with Agents, it connects to the same Ambipath-hosted assistant. Messages sent to the assistant are processed by Ambipath; see [access details](https://adityasinghal.com/auth.md) and [privacy](https://adityasinghal.com/privacy/#site-assistant).
 
