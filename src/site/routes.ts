@@ -20,7 +20,7 @@ export const shortcutPages = [
   { path: "/x/", destination: profileLinks.x, title: "Adi Singhal on X" },
   { path: "/twitter/", destination: profileLinks.x, title: "Adi Singhal on X" },
   { path: "/wife/", destination: "https://www.instagram.com/ingy.fs", title: "Ingy on Instagram" },
-  { path: "/latest-resume/", destination: "/Aditya_Singhal_Resume_2026-11-21.pdf", title: "Aditya Singhal's résumé", unlisted: true },
+  { path: "/latest-resume/", destination: "/Aditya_Singhal_Resume_2026-11-22.pdf", title: "Aditya Singhal's résumé", unlisted: true },
 ] as const;
 
 export type ShortcutPage = (typeof shortcutPages)[number];
