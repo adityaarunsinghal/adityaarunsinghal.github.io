@@ -48,13 +48,15 @@ Developer tools and research I'm building in the open.
 
  ~/human-hindsight 
 
- ▸ The prompt you'd write if you knew then what you know now.
+![Human Hindsight’s terminal shows a session history and reflection menu. Lines from its cursor circle the words “Codify your taste.”](https://adityasinghal.com/static/images/human-hindsight-banner.jpg)
 
-Turn your Claude Code, Codex, Kiro, and OpenCode history into reusable first prompts and working preferences for CLAUDE.md, AGENTS.md, or Kiro steering.
+ ▸ Understand how you work. Codify your taste.
 
-Start with a guided CLI, then browse, search, and copy prompts in a local Markdown library. Scanning and export stay offline; distillation uses your chosen agent CLI after you approve the model calls.
+Human Hindsight scans your instructions and corrections across Claude Code, Codex, Kiro, and OpenCode on your machine. Once you approve the calls to your coding tool’s provider, it automatically summarizes each session you selected, finds recurring preferences in your own words, and writes prompts you can reuse.
 
- $   npx human-hindsight@latest  
+Open your reflections locally to edit a preference or copy it into your next session. For work you regularly delegate, run `npx human-hindsight suggest-subagents` and approve its plan to generate specialist instructions.
+
+ $   npx human-hindsight  
 
 [View on GitHub →](https://github.com/adityaarunsinghal/human-hindsight)
 
